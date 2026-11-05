@@ -204,7 +204,7 @@ body.mob.land #miniWrap{top:50px}
 body.mob.land #unitPanel{right:calc(6px + env(safe-area-inset-right));top:50px;bottom:60px;width:262px;max-height:none}
 body.mob.land #unitPanel .acts{grid-template-columns:1fr 1fr}body.mob.land #unitPanel .acts .btn[style*="span 2"],body.mob.land #unitPanel .acts .hint{grid-column:span 2!important}
 body.mob.land #endTurn{font-size:15px;padding:8px 14px;right:calc(6px + env(safe-area-inset-right))}
-body.mob.land #moveBar{left:180px!important;right:278px}
+body.mob.land #moveBar{left:228px!important;right:278px;padding:6px 8px;gap:6px}body.mob.land #moveBar .mt>div:nth-child(3){display:none}body.mob.land #moveBar .go{padding:8px 12px;font-size:15px}body.mob.land #moveBar .btn{min-height:36px}body.mob.land #mvSw{font-size:12px;padding:4px 8px}
 body.mob.land.nopanel #moveBar{right:130px}
 body.mob #unitPanel .mobonly{display:block}
 body.mob #unitPanel .ufoot,body.mob.port #unitPanel .uxp,body.mob.land #waiting{display:none!important}
@@ -250,7 +250,7 @@ body.mob.land #tileInfo{max-width:calc(100vw - 290px)}
 <div id="tileInfo"></div>
 <div id="unitPanel"></div>
 <div id="moveBar"></div>
-<div id="zoomBox"><button class="zb" id="zIn" title="Zoom in">＋</button><button class="zb" id="zOut" title="Zoom out">－</button><button class="zb" id="zHome" title="Center on selected unit / capital">◎</button><button class="zb" id="zMap" title="Show / hide the mini-map">🗺</button></div>
+<div id="zoomBox"><button class="zb" id="zIn" title="Zoom in">＋</button><button class="zb" id="zOut" title="Zoom out">－</button><button class="zb" id="zHome" title="Center on selected unit / capital">◎</button><button class="zb" id="zMap" title="Show / hide the mini-map">🗺</button><button class="zb" id="zSnd" title="Sound on / off">🔊</button></div>
 <div id="waiting"></div>
 <button id="endTurn">End Turn ▶</button>
 <div id="toast"></div>
@@ -1605,7 +1605,8 @@ function buildWorldArt(){
   for(let y=0;y<G.h;y++)for(let x=0;x<G.w;x++){const t=G.tiles[idx(x,y)];if(t.t==='water')continue;const [cx,cy]=at(x,y);hp(cg,cx,cy,HEX*1.12);cg.fillStyle=shade(COL[t.t],(t.v-0.5)*0.16);cg.fill()}
   const lc2=mkCanvas(W,H),c2=lc2.getContext('2d');c2.filter='blur(6px)';c2.drawImage(lc,0,0);c2.filter='none';
   // keep land colour inside an eroded coastline so a sand rim shows
-  const er=mkCanvas(W,H),eg=er.getContext('2d');for(let y=0;y<G.h;y++)for(let x=0;x<G.w;x++){if(G.tiles[idx(x,y)].t==='water')continue;const [cx,cy]=at(x,y);eg.beginPath();eg.arc(cx,cy,HEX*0.9,0,7);eg.fillStyle='#fff';eg.fill()}
+  const er=mkCanvas(W,H),eg=er.getContext('2d');eg.fillStyle='#fff';for(let y=0;y<G.h;y++)for(let x=0;x<G.w;x++){if(G.tiles[idx(x,y)].t==='water')continue;const [cx,cy]=at(x,y);hp(eg,cx,cy,HEX*1.06);eg.fill();eg.beginPath();eg.arc(cx,cy,HEX*1.02,0,7);eg.fill()}
+  eg.globalCompositeOperation='destination-out';for(let y=0;y<G.h;y++)for(let x=0;x<G.w;x++){if(G.tiles[idx(x,y)].t!=='water'||!nbrs(x,y).some(([a,b])=>G.tiles[idx(a,b)].t!=='water'))continue;const [cx,cy]=at(x,y);eg.beginPath();eg.arc(cx,cy,HEX*1.04,0,7);eg.fill()}eg.globalCompositeOperation='source-over';
   const er2=mkCanvas(W,H),e2=er2.getContext('2d');e2.filter='blur(5px)';e2.drawImage(er,0,0);
   c2.filter='none';c2.globalCompositeOperation='destination-in';c2.drawImage(er2,0,0);
   g.drawImage(lc2,0,0);
@@ -1815,7 +1816,7 @@ function spyAct(u,c,kind){const me=G.civs[u.civ],them=G.civs[c.civ];const pl=isP
   else{addAtt(c.civ,u.civ,-4);if(pl)log(`🕵️ Your spy was caught in ${c.name}! The ${them.name} are furious.`,c.x,c.y,true);if(vic)log(`🕵️ We caught a ${me.name} spy in ${c.name}!`,c.x,c.y,true);
     if(them.gov!=='democracy'&&!atWar(c.civ,u.civ)&&Math.random()<0.3)declareWar(c.civ,u.civ)}
   killUnit(u)}
-function nuke(u,x,y){const me=G.civs[u.civ];const c=cityAt(x,y);killUnit(u);G.nukes=(G.nukes||0)+1;
+function nuke(u,x,y){sfx('nuke',null,{gap:0});const me=G.civs[u.civ];const c=cityAt(x,y);killUnit(u);G.nukes=(G.nukes||0)+1;
   const sdiC=G.cities.find(k=>k.b.sdi&&dist(k.x,k.y,x,y)<=1&&k.civ!==me.id);if(sdiC){log(`🛡️ SDI defenses in ${sdiC.name} shot down a nuclear missile!`,x,y,true);if(!atWar(me.id,sdiC.civ))declareWar(me.id,sdiC.civ);if(isPlayer(c.civ)||isPlayer(me.id))fx(x,y,'💥','#fff');return}
   const hit=new Set(G.units.filter(o=>dist(o.x,o.y,x,y)<=1&&o.civ!==me.id).map(o=>o.civ));for(const o of G.units.filter(o=>dist(o.x,o.y,x,y)<=1))killUnit(o);for(const ci of hit)if(ci!==G.barb&&!atWar(me.id,ci))declareWar(me.id,ci);
   if(c){c.pop=Math.max(1,Math.floor(c.pop/2));const bl=Object.keys(c.b).filter(k=>BLD[k]);for(let i=0;i<2&&bl.length;i++)delete c.b[bl.splice(Math.floor(Math.random()*bl.length),1)[0]];
@@ -1986,7 +1987,7 @@ function nameCity(c,after,first){showModal(`<h2>${first==='rename'?'Rename '+c.n
   const ok=()=>{const n=cleanName(inp.value);if(n)c.name=n;closeModal();UI.dirty=true;if(after)after()};
   $('cOk').onclick=ok;inp.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')ok()};
   $('cSug').onclick=()=>{const civ=G.civs[c.civ];const names=CIVS[civ.key].cities;inp.value=names[civ.cn%names.length];civ.cn++;inp.focus()}}
-function playerFound(u){const civ=G.civs[G.player];if(!canFound(u))return;const c=foundCity(civ,u.x,u.y,false);c.build='u:warriors';killUnit(u);updateVis();refreshUI();nameCity(c,()=>{log(`🏙 ${c.name} has been founded!`,c.x,c.y);openCity(c)})}
+function playerFound(u){const civ=G.civs[G.player];if(!canFound(u))return;sfx('city',null,{gap:0});const c=foundCity(civ,u.x,u.y,false);c.build='u:warriors';killUnit(u);updateVis();refreshUI();nameCity(c,()=>{log(`🏙 ${c.name} has been founded!`,c.x,c.y);openCity(c)})}
 function startGame(){
   UI.anim=null;UI.animQ=null;UI.pend=null;
   newGame({civ:NG.civ,opp:NG.opp,size:NG.size,diff:NG.diff});popQ.length=0;
@@ -2008,6 +2009,99 @@ function autosave(){saveGame('roe_auto')}
 function loadGame(key){const r=loadRaw(key);if(!r)return false;try{const d=JSON.parse(r);UI.anim=null;UI.animQ=null;UI.pend=null;G=d.G;buildWorldArt();UI.sel=null;popQ.length=0;setupMini();updateVis();
   const c=citiesOf(G.player)[0]||G.units.find(u=>u.civ===G.player);if(c)centerOn(c.x,c.y);renderLog();refreshUI();
   if(G.over)queuePopup(gameOver);else{nextUnit(true);if(!G.civs[G.player].res)queuePopup(techChoice)}return true}catch(e){toast('Save file is damaged');return false}}
+
+// ===================== SOUND EFFECTS (synthesized, no files) =====================
+const SND={ctx:null,on:true,master:null,last:{},noiseBuf:null,vol:1};
+try{SND.on=localStorage.getItem('roe_snd')!=='off'}catch(e){}
+function sndInit(){if(SIM||!SND.on)return;try{
+  if(!SND.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    if(navigator.audioSession)try{navigator.audioSession.type='ambient'}catch(e){}
+    SND.ctx=new AC();SND.master=SND.ctx.createGain();SND.master.gain.value=0.8;
+    const comp=SND.ctx.createDynamicsCompressor();SND.master.connect(comp);comp.connect(SND.ctx.destination);
+    const n=SND.ctx.sampleRate*1.5;const b=SND.ctx.createBuffer(1,n,SND.ctx.sampleRate);const d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;SND.noiseBuf=b;
+    const s=SND.ctx.createBufferSource();s.buffer=SND.ctx.createBuffer(1,1,22050);s.connect(SND.ctx.destination);s.start(0)}
+  if(SND.ctx.state!=='running')SND.ctx.resume()}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&SND.ctx&&SND.on)try{SND.ctx.resume()}catch(e){}});
+['pointerdown','touchend','keydown'].forEach(ev=>window.addEventListener(ev,sndInit,{passive:true}));
+function sndSet(on){SND.on=on;try{localStorage.setItem('roe_snd',on?'on':'off')}catch(e){}const b=document.getElementById('zSnd');if(b)b.textContent=on?'🔊':'🔇';if(on){sndInit();sfx('ui')}else if(SND.ctx)try{SND.ctx.suspend()}catch(e){}}
+// --- primitives: t = seconds from now
+function _env(g,t,a,peak,dec){const c=SND.ctx;const T=c.currentTime+t;g.gain.setValueAtTime(0.0001,T);g.gain.exponentialRampToValueAtTime(Math.min(0.95,peak*SND.vol),T+a);g.gain.exponentialRampToValueAtTime(0.0001,T+a+dec);return T}
+function tone(t,f,dur,o={}){const c=SND.ctx;const os=c.createOscillator(),g=c.createGain();os.type=o.type||'sine';const T=c.currentTime+t;os.frequency.setValueAtTime(f,T);
+  if(o.to)os.frequency.exponentialRampToValueAtTime(Math.max(20,o.to),T+(o.glide||dur));
+  if(o.vib){const l=c.createOscillator(),lg=c.createGain();l.frequency.value=o.vib;lg.gain.value=o.vibAmt||f*0.04;l.connect(lg);lg.connect(os.frequency);l.start(T);l.stop(T+dur+0.1)}
+  let last=g;if(o.lp){const fl=c.createBiquadFilter();fl.type='lowpass';fl.frequency.value=o.lp;os.connect(fl);fl.connect(g)}else os.connect(g);
+  g.connect(o.pan!=null&&c.createStereoPanner?(()=>{const p=c.createStereoPanner();p.pan.value=o.pan;p.connect(SND.master);return p})():SND.master);
+  _env(g,t,o.a||0.005,(o.v||0.3),dur);os.start(T);os.stop(T+dur+(o.a||0.005)+0.05)}
+function noise(t,dur,o={}){const c=SND.ctx;const s=c.createBufferSource(),g=c.createGain(),f=c.createBiquadFilter();s.buffer=SND.noiseBuf;s.loop=true;f.type=o.ft||'bandpass';const T=c.currentTime+t;
+  f.frequency.setValueAtTime(o.f||1000,T);if(o.to)f.frequency.exponentialRampToValueAtTime(o.to,T+(o.glide||dur));f.Q.value=o.q||1;s.connect(f);f.connect(g);g.connect(SND.master);
+  _env(g,t,o.a||0.003,o.v||0.3,dur);s.start(T,Math.random()*1);s.stop(T+dur+(o.a||0.003)+0.05)}
+// --- building blocks
+const S={
+  step:(t,v=0.25,f=180)=>{noise(t,0.07,{ft:'lowpass',f:f*3,v});tone(t,f,0.06,{to:f*0.6,v:v*0.7});noise(t,0.035,{f:1800,q:0.9,v:v*0.9})},
+  boots:(t,v=0.22)=>{noise(t,0.05,{f:1800,q:0.8,v:v*1.3});noise(t+0.01,0.04,{f:3500,q:1.2,v:v*0.6});tone(t,120,0.07,{to:70,v})},
+  clop:(t,v=0.28)=>{tone(t,900+Math.random()*200,0.03,{type:'triangle',to:500,v});noise(t,0.04,{f:2500,q:2,v:v*0.6})},
+  jingle:(t,v=0.06)=>{for(let i=0;i<3;i++)tone(t+i*0.012,3200+Math.random()*1800,0.12,{type:'square',v:v*0.5})},
+  creak:(t,v=0.08)=>tone(t,260+Math.random()*60,0.22,{type:'sawtooth',to:340,lp:1400,v,vib:28,vibAmt:30}),
+  bell:(t,f,v=0.12)=>{tone(t,f,0.5,{type:'triangle',v});tone(t,f*2.76,0.25,{v:v*0.35})},
+  whoosh:(t,dur=0.25,v=0.25,f=600,to=3000)=>noise(t,dur,{f,to,q:1.5,v,a:dur*0.4}),
+  thud:(t,v=0.4,f=110)=>{tone(t,f,0.18,{to:f*0.45,v});noise(t,0.08,{ft:'lowpass',f:700,v:v*0.6});noise(t,0.05,{f:1600,q:0.8,v:v*0.7});tone(t,f*4,0.06,{type:'square',lp:1800,to:f*2,v:v*0.25})},
+  clang:(t,v=0.22,b=1)=>{for(const k of [1,2.41,3.86,5.3])tone(t,620*b*k*(0.98+Math.random()*0.04),0.35/k+0.08,{type:k===1?'triangle':'sine',v:v/k});noise(t,0.03,{f:5000,v:v*0.8})},
+  crack:(t,v=0.4)=>{noise(t,0.05,{ft:'highpass',f:1500,v});noise(t,0.22,{ft:'lowpass',f:600,v:v*0.7,a:0.005});tone(t,90,0.15,{to:45,v:v*0.6})},
+  boom:(t,v=0.6,f=70,len=0.8)=>{tone(t,f,len,{to:f*0.35,v});noise(t,len*0.9,{ft:'lowpass',f:500,to:80,v:v*0.8,a:0.01});noise(t,0.06,{ft:'highpass',f:2000,v:v*0.5});noise(t,len*0.45,{f:1100,to:350,q:0.6,v:v*0.6,a:0.005});tone(t,f*5,len*0.3,{type:'sawtooth',lp:1500,to:f*2,v:v*0.25})},
+  engine:(t,dur,f=48,v=0.12)=>{tone(t,f,dur,{type:'sawtooth',lp:260,v,vib:11,vibAmt:f*0.25,a:0.05});noise(t,dur,{ft:'lowpass',f:220,v:v*0.8,a:0.05});tone(t,f*6,dur,{type:'sawtooth',lp:1200,v:v*0.45,vib:11,vibAmt:f*1.5,a:0.05});noise(t,dur,{f:900,q:1.5,v:v*0.5,a:0.05})},
+  splash:(t,v=0.2)=>{noise(t,0.3,{f:900,to:300,q:0.7,v,a:0.02})},
+  wave:(t,v=0.12)=>noise(t,0.7,{ft:'lowpass',f:500,to:900,v,a:0.3}),
+  horn:(t,f=92,dur=0.8,v=0.16)=>{tone(t,f,dur,{type:'sawtooth',lp:700,v,a:0.08});tone(t,f*1.5,dur,{type:'sawtooth',lp:700,v:v*0.6,a:0.08})},
+  ping:(t,v=0.16)=>{tone(t,1480,0.9,{v});tone(t+0.45,1480,0.5,{v:v*0.3})},
+  gun:(t,v=0.28)=>{noise(t,0.04,{ft:'highpass',f:1200,v});tone(t,160,0.05,{to:60,v:v*0.6})},
+  whinny:(t,v=0.1)=>tone(t,900,0.55,{type:'sawtooth',to:520,lp:2500,v,vib:16,vibAmt:70,a:0.04}),
+  bugle:(t,v=0.1)=>[392,523,659,784].forEach((f,i)=>tone(t+i*0.11,f,i===3?0.35:0.1,{type:'square',lp:2200,v})),
+  twang:(t,v=0.2)=>{tone(t,330,0.25,{type:'sawtooth',to:180,lp:1800,v});S.whoosh(t+0.04,0.18,0.15,2000,5000)},
+  sparkle:(t,v=0.08)=>[1047,1319,1568,2093].forEach((f,i)=>tone(t+i*0.06,f,0.35,{type:'triangle',v})),
+  tiptoe:(t,v=0.08)=>{tone(t,2200,0.02,{v});tone(t+0.09,1900,0.02,{v:v*0.8})},
+};
+// --- each troop: march (one step) and attack (one exchange of blows)
+const SFX_UNIT={
+  settlers:{mv:t=>{S.step(t,0.18);S.creak(t+0.05,0.06)},atk:t=>{S.thud(t,0.25);S.creak(t+0.05,0.08)}},
+  caravan:{mv:t=>{S.step(t,0.14,140);S.bell(t+0.02,1320+Math.random()*200,0.07);S.bell(t+0.16,990,0.05)},atk:t=>{S.thud(t,0.25);S.bell(t,1100,0.09);S.bell(t+0.08,830,0.07)}},
+  great:{mv:t=>{S.step(t,0.12);S.sparkle(t+0.03,0.05)},atk:t=>S.sparkle(t,0.08)},
+  warriors:{mv:t=>{S.step(t,0.24,170)},atk:t=>{S.whoosh(t,0.12,0.15,400,1500);S.thud(t+0.1,0.45,130)}},
+  archers:{mv:t=>{S.step(t,0.2,200);noise(t+0.08,0.05,{f:3000,v:0.04})},atk:t=>{S.twang(t,0.22);S.thud(t+0.3,0.2,300)}},
+  horsemen:{mv:t=>{S.clop(t);S.clop(t+0.09,0.22);S.clop(t+0.2,0.26);S.clop(t+0.29,0.2)},atk:t=>{S.whinny(t,0.09);S.whoosh(t+0.1,0.14,0.18);S.thud(t+0.22,0.35,160)}},
+  legion:{mv:t=>{S.step(t,0.26,150);S.jingle(t+0.02,0.05)},atk:t=>{S.clang(t,0.2,1.1);S.thud(t+0.05,0.25,140)}},
+  catapult:{mv:t=>{S.creak(t,0.09);S.step(t+0.1,0.15,120)},atk:t=>{S.creak(t,0.08);S.thud(t+0.12,0.4,80);S.whoosh(t+0.15,0.4,0.2,300,900);S.boom(t+0.55,0.35,90,0.4)}},
+  pikemen:{mv:t=>{S.step(t,0.24,165);noise(t+0.05,0.06,{f:900,q:3,v:0.05})},atk:t=>{S.whoosh(t,0.1,0.2,800,2500);S.thud(t+0.08,0.38,150);S.clang(t+0.1,0.08,1.4)}},
+  knights:{mv:t=>{[0,0.1,0.22,0.32].forEach((d,i)=>S.clop(t+d,0.3));S.jingle(t,0.07);S.jingle(t+0.22,0.06)},atk:t=>{S.clang(t,0.26,0.9);S.clang(t+0.14,0.16,1.2)}},
+  riflemen:{mv:t=>{S.boots(t,0.2);S.boots(t+0.17,0.17);noise(t+0.06,0.05,{f:4200,q:3,v:0.08})},atk:t=>{S.crack(t,0.38);S.crack(t+0.22,0.25)}},
+  cannon:{mv:t=>{S.creak(t,0.07);S.thud(t+0.02,0.15,70)},atk:t=>{S.boom(t,0.55,65,0.9)}},
+  cavalry:{mv:t=>{[0,0.07,0.15,0.22].forEach(d=>S.clop(t+d,0.25))},atk:t=>{S.bugle(t,0.07);S.crack(t+0.15,0.28);S.whoosh(t+0.25,0.12,0.18)}},
+  artillery:{mv:t=>{S.engine(t,0.45,55,0.1)},atk:t=>{S.whoosh(t,0.5,0.15,3000,600);S.boom(t+0.45,0.7,55,1.1)}},
+  tanks:{mv:t=>{S.engine(t,0.5,42,0.14);for(let i=0;i<5;i++)noise(t+i*0.09,0.03,{f:2600,q:4,v:0.12})},atk:t=>{S.crack(t,0.45);S.boom(t+0.02,0.5,95,0.6);for(let i=0;i<4;i++)noise(t+0.35+i*0.08,0.03,{f:2600,q:4,v:0.12});S.engine(t+0.3,0.4,40,0.1)}},
+  modinf:{mv:t=>{S.boots(t,0.22);S.boots(t+0.14,0.16)},atk:t=>{for(let i=0;i<6;i++)S.gun(t+i*0.065,0.25)}},
+  spy:{mv:t=>S.tiptoe(t),atk:t=>{S.tiptoe(t,0.14);S.whoosh(t+0.05,0.12,0.18,1500,4000);tone(t+0.12,440,0.3,{type:'triangle',to:330,v:0.16})}},
+  galley:{mv:t=>{S.splash(t,0.16);S.thud(t,0.12,90);S.splash(t+0.22,0.12)},atk:t=>{S.thud(t,0.4,90);S.creak(t+0.05,0.12);noise(t+0.05,0.3,{f:1500,v:0.12})}},
+  galleon:{mv:t=>{S.wave(t,0.14);S.creak(t+0.1,0.05)},atk:t=>{S.boom(t,0.45,75,0.7);S.boom(t+0.25,0.3,80,0.5)}},
+  cruiser:{mv:t=>{S.engine(t,0.4,70,0.08);S.splash(t+0.05,0.14);S.bell(t+0.1,880,0.05);S.bell(t+0.25,880,0.05)},atk:t=>{S.boom(t,0.55,70,0.8);S.crack(t+0.05,0.2)}},
+  battleship:{mv:t=>{S.engine(t,0.6,38,0.12);S.wave(t,0.1);S.horn(t+0.05,70,0.55,0.13)},atk:t=>{S.boom(t,0.7,45,1.2);S.boom(t+0.18,0.5,50,1)}},
+  submarine:{mv:t=>{S.ping(t,0.1);noise(t,0.5,{ft:'lowpass',f:200,v:0.08,a:0.2})},atk:t=>{S.whoosh(t,0.6,0.12,200,700);S.boom(t+0.55,0.6,40,1)}},
+  fighter:{mv:t=>{S.whoosh(t,0.5,0.2,500,4000);tone(t,700,0.5,{type:'sawtooth',to:1200,lp:3000,v:0.04})},atk:t=>{for(let i=0;i<7;i++)S.gun(t+i*0.05,0.22);S.whoosh(t+0.3,0.4,0.15,4000,600)}},
+  bomber:{mv:t=>{tone(t,85,0.6,{type:'sawtooth',lp:500,v:0.1,vib:22,vibAmt:8,a:0.1});noise(t,0.6,{ft:'lowpass',f:400,v:0.06,a:0.1})},atk:t=>{tone(t,1400,0.7,{to:300,v:0.08});S.boom(t+0.65,0.6,55,0.9);S.boom(t+0.85,0.4,65,0.7)}},
+  icbm:{mv:t=>{noise(t,0.9,{ft:'lowpass',f:300,to:2500,v:0.25,a:0.3})},atk:t=>S.boom(t,0.9,30,2.5)},
+};
+const SFX_FALLBACK={mv:t=>S.step(t,0.2),atk:t=>S.thud(t,0.4)};
+// public: sfx(kind, unitType?)
+function sfx(kind,type,opt={}){if(!SND.on||SIM)return;if(!SND.ctx)sndInit();if(!SND.ctx||SND.ctx.state!=='running')return;
+  const now=performance.now(),key=kind+(type||''),gap=opt.gap!=null?opt.gap:60;if(SND.last[key]&&now-SND.last[key]<gap)return;SND.last[key]=now;
+  try{const U=SFX_UNIT[type]||SFX_FALLBACK;
+    if(kind==='move'){SND.vol=type==='spy'||type==='great'||type==='galleon'||type==='fighter'?3:(type==='settlers'||type==='warriors'||type==='pikemen'||type==='legion'||type==='archers'||type==='galley')?2.8:2.2;try{U.mv(0)}finally{SND.vol=1}}
+    else if(kind==='attack')U.atk(0);
+    else if(kind==='win'){[523,659,784,1047].forEach((f,i)=>tone(i*0.1,f,i===3?0.5:0.14,{type:'triangle',v:0.14}))}
+    else if(kind==='lose'){[392,330,262].forEach((f,i)=>tone(i*0.16,f,0.3,{type:'triangle',v:0.12}));S.thud(0.45,0.25,70)}
+    else if(kind==='die'){tone(0,300,0.4,{type:'triangle',to:120,v:0.1})}
+    else if(kind==='nuke'){S.boom(0,1,28,3);noise(0.1,2.5,{ft:'lowpass',f:900,to:60,v:0.5,a:0.2})}
+    else if(kind==='city'){[392,523,659].forEach((f,i)=>{S.bell(i*0.12,f*2,0.08)});S.thud(0,0.2,90)}
+    else if(kind==='ui'){tone(0,880,0.06,{type:'triangle',v:0.08})}
+  }catch(e){}}
 
 // ===================== INPUT =====================
 function tileFromEvent(e){const [wx,wy]=s2w(e.clientX,e.clientY);return pixToHex(wx,wy)}
@@ -2055,7 +2149,7 @@ function onClick(e){
     if(D==='land'&&tileAt(x,y).t==='water'){if(transportAt(u.civ,x,y)&&!u.onboard){planMove(u,x,y);return}toast(G.units.some(o=>o.civ===u.civ&&o.x===x&&o.y===y&&UT[o.type].cap)?'That ship is full':p.seen[idx(x,y)]?"Land units need a ship to cross water — build a Galley in a coastal city":'No route there');return}
     if(D==='sea'&&tileAt(x,y).t!=='water'&&!(cityAt(x,y)&&cityAt(x,y).civ===u.civ)&&!enemyUnitAt(u.civ,x,y)){toast('Ships stay at sea (or in your coastal cities)');return}
     const own=VIS[idx(x,y)]?unitsAt(x,y).filter(o=>o.civ===G.player):[];const oc=cityAt(x,y);
-    if(own.length&&!(oc&&isPlayer(oc.civ))){select(own.find(o=>o.mp>0)||own[0],false);return}
+    if(own.length&&!(oc&&isPlayer(oc.civ))){const alt=own.find(o=>o.mp>0&&o!==u)||own[0];if(u.mp<=0&&!(UI.pend&&UI.pend.u===u&&UI.pend.x===x&&UI.pend.y===y)){select(alt,false);return}const was=UI.pend&&UI.pend.u===u&&UI.pend.x===x&&UI.pend.y===y;planMove(u,x,y);if(was)return;if(UI.pend&&UI.pend.u===u&&UI.pend.x===x&&UI.pend.y===y){UI.pend.swap=alt;renderMoveBar()}else if(!UI.pend)select(alt,false);return}
     const f=foreignAt(u.civ,x,y);
     if(f>=0&&!atWar(u.civ,f)&&u.type!=='spy'){if(UT[u.type].a===0){toast('Cannot move there');return}
       UI.pend=null;renderMoveBar();confirmBox('Declare War?',`That belongs to the <b>${G.civs[f].name}</b>. Attacking means declaring war. Proceed?`,()=>{declareWar(G.player,f);planMove(u,x,y)});return}
@@ -2084,7 +2178,9 @@ function planMove(u,x,y){
 }
 function cancelMove(){UI.pend=null;renderMoveBar();UI.dirty=true}
 function confirmMove(){const p=UI.pend;if(!p)return;UI.pend=null;renderMoveBar();if(G.units.includes(p.u))doMove(p.u,p.x,p.y)}
-function renderMoveBar(){_renderMoveBar();placeHud()}
+function renderMoveBar(){_renderMoveBar();placeHud();keepTargetVisible()}
+function keepTargetVisible(){const p=UI.pend,mb=$('moveBar');if(!MOB||!p||UI.battle||mb.style.display==='none')return;const r=mb.getBoundingClientRect();const [sx,sy]=w2s(...hexCenter(p.x,p.y));const tile=HEX*UI.cam.z;const lim=r.top-tile*0.9,top=56+tile*0.6;
+  if(sy>lim&&sx>r.left-tile&&sx<r.right+tile){const dy=Math.min(sy-lim,sy-top);if(dy>0){UI.pan=null;UI.cam.y+=dy/UI.cam.z;UI.dirty=true}}}
 function _renderMoveBar(){const el=$('moveBar');if(UI.battle)return;const p=UI.pend;if(!p||!G.units.includes(p.u)||UI.sel!==p.u){el.style.display='none';if(p&&UI.sel!==p.u)UI.pend=null;return}
   const T=UT[p.u.type],tl=tileAt(p.x,p.y);const tr=p.turns;const when=p.u.mp<=0?`starts next turn · arrives in ${tr} turn${tr>1?'s':''}`:tr===1?'arrives <b style="color:#9be37f">this turn</b>':`arrives in <b>${tr} turns</b>`;
   let title,sub,btn,odds='';
@@ -2102,8 +2198,8 @@ function _renderMoveBar(){const el=$('moveBar');if(UI.battle)return;const p=UI.p
   else if(p.enemyCity){title=`🏴 March on ${cityAt(p.x,p.y).name}`;sub=`It's undefended right now — ${when}, capturing it on arrival.`;btn='✔ Go';}
   else if(p.u.onboard&&p.path.length===2){title=`🏖 Go ashore onto ${TER[tl.t].n}`;sub='Landing ends this unit\'s turn.';btn='✔ Land'}
   else{title=`Move ${T.n} → ${TER[tl.t].n}${cityAt(p.x,p.y)?' ('+cityAt(p.x,p.y).name+')':''}`;sub=`${p.path.length-1} tile${p.path.length>2?'s':''} · ${when}`;btn='✔ Go here';}
-  el.innerHTML=`${odds}<div class="mt"><b>${title}</b><div>${sub}</div>${p.odds!=null&&p.adj&&p.u.mp<=0?'':'<div style="font-size:11.5px;opacity:.7">Tip: click the same tile again to confirm</div>'}</div><button class="btn gold go" id="mvGo">${btn}</button><button class="btn" id="mvNo">✖ Cancel</button>`;
-  if(TOUCH)el.innerHTML=tw(el.innerHTML);el.querySelectorAll('canvas[data-vf]').forEach(k=>drawFigure(k.getContext('2d'),k.dataset.vf,k.dataset.vc,48,40,62));el.style.display='flex';if(p.odds!=null&&p.adj&&p.u.mp<=0)$('mvGo').disabled=true;$('mvGo').onclick=confirmMove;$('mvNo').onclick=cancelMove}
+  el.innerHTML=`${odds}<div class="mt"><b>${title}</b><div>${sub}</div>${p.odds!=null&&p.adj&&p.u.mp<=0?'':'<div style="font-size:11.5px;opacity:.7">Tip: click the same tile again to confirm</div>'}</div><button class="btn gold go" id="mvGo">${btn}</button><button class="btn" id="mvNo">✖ Cancel</button>${p.swap&&G.units.includes(p.swap)?`<button class="btn" id="mvSw">👆 ${MOB&&innerWidth>innerHeight?'Pick':'Select the'} ${UT[p.swap.type].n}${MOB&&innerWidth>innerHeight?'':' there'}</button>`:''}`;
+  if(TOUCH)el.innerHTML=tw(el.innerHTML);el.querySelectorAll('canvas[data-vf]').forEach(k=>drawFigure(k.getContext('2d'),k.dataset.vf,k.dataset.vc,48,40,62));el.style.display='flex';if(p.odds!=null&&p.adj&&p.u.mp<=0)$('mvGo').disabled=true;$('mvGo').onclick=confirmMove;$('mvNo').onclick=cancelMove;if($('mvSw'))$('mvSw').onclick=()=>{const w=p.swap;UI.pend=null;w.sleep=false;w.auto=null;select(w,false)}}
 function doMove(u,x,y){
   if(dom(u)==='air'){if(u.mp<=0){toast('No moves left this turn');return}if(UT[u.type].nuke){nuke(u,x,y);centerOn(x,y);UI.sel=null;refreshUI();setTimeout(()=>nextUnit(true),1600);return}airAct(u,x,y);return}
   const path=findPath(u,x,y);if(!path){toast('No route there');return}
@@ -2123,7 +2219,9 @@ function doMove(u,x,y){
 function startBattle(B,u,r){UI.pend=null;renderMoveBar();UI.path=null;UI.odds=null;UI.battle={B,u,r,t0:performance.now(),step:Math.max(90,Math.min(160,2200/B.rec.length))};LASTB=null;refreshUI();UI.dirty=true;
   const el=$('moveBar');UI.battle.retMax=Math.floor(B.rec.length*0.4);if(B.pending&&B.rec.length>3){el.innerHTML=`<div class="mt"><b>⚔️ Battle in progress…</b><div>Losing? You can pull back — your troops survive, but the enemy earns a promotion.</div></div><button class="btn red go" id="mvRet">🏳 Retreat</button>`;el.style.display='flex';placeHud();$('mvRet').onclick=()=>{const BT=UI.battle;if(BT&&!BT.done&&(performance.now()-BT.t0)/BT.step<=BT.retMax){BT.retreat=true}}}}
 function drawBattle(s,now){const BT=UI.battle;if(!BT)return;const B=BT.B;if(BT.retreat&&!BT.done){BT.done=true;const k0=Math.min(B.rec.length-2,Math.max(0,Math.floor((now-BT.t0)/BT.step)));BT.rk=k0;B.rec=B.rec.slice(0,k0+1);B.retreated=true;BT.t0=now-k0*BT.step}
-  const el=(now-BT.t0)/BT.step;const k=Math.min(B.rec.length-1,Math.floor(el));const done=el>=B.rec.length-1;if(done&&!BT.done)BT.done=true;if((BT.done||el>BT.retMax)&&$('mvRet'))$('moveBar').style.display='none';
+  const el=(now-BT.t0)/BT.step;const k=Math.min(B.rec.length-1,Math.floor(el));const done=el>=B.rec.length-1;if(done&&!BT.done)BT.done=true;
+  if(!done&&BT.sk!==k&&k>0){BT.sk=k;const hitD=B.rec[k][1]<B.rec[k-1][1];sfx('attack',(hitD?B.a:B.d).type,{gap:90})}
+  if(done&&!BT.snd){BT.snd=1;const mine=B.a.civ===G.player||B.d.civ===G.player;if(mine)sfx(B.retreated?'lose':B.win===(B.a.civ===G.player)?'win':'lose',null,{gap:0})}if((BT.done||el>BT.retMax)&&$('mvRet'))$('moveBar').style.display='none';
   const [ax,ay]=w2s(...hexCenter(B.a.x,B.a.y)),[dx,dy]=w2s(...hexCenter(B.d.x,B.d.y));const mx=(ax+dx)/2,my=(ay+dy)/2;const sz=s*0.92;const [ah,dh]=B.rec[k];
   const lunge=done?0:Math.abs(Math.sin(el*Math.PI))*0.22;
   const gl=(gx,gy,G2,hp,tx,ty,dead)=>{const px=gx+(tx-gx)*lunge,py=gy+(ty-gy)*lunge;const civ=G.civs[G2.civ];ctx.globalAlpha=dead?Math.max(0,1-(el-B.rec.length+1)*1.5):1;
@@ -2146,6 +2244,7 @@ function animPos(A,now){if(A.lunge){const tt=(now-A.t0)/A.step;const [ax,ay]=hex
 const n=A.pts.length-1;const tt=(now-A.t0)/A.step;const k=Math.min(n,Math.floor(tt));const f=k>=n?0:tt-k;
   const [ax,ay]=hexCenter(...A.pts[k]);const [bx,by]=hexCenter(...A.pts[Math.min(n,k+1)]);let ff=A.lunge?Math.min(f,0.55):f;return {wx:ax+(bx-ax)*ff,wy:ay+(by-ay)*ff,k,f,done:tt>=n,tt}}
 function tickAnim(now){const A=UI.anim;if(!A)return;const P=animPos(A,now);
+  if(!A.lunge){if(A.sk!==P.k&&!P.done){A.sk=P.k;const q=A.pts[Math.min(P.k+1,A.pts.length-1)];if(A.ghost.civ===G.player||VIS[idx(q[0],q[1])])sfx('move',A.ghost.type,{gap:110})}}else if(!A.sp){A.sp=1;sfx('attack',A.ghost.type,{gap:0})}
   // reveal the land as the troop walks
   const p=G.civs[G.player];for(let i=UI.revealed;i<=P.k&&!A.lunge;i++){const [x,y]=A.pts[i];const t=tileAt(x,y);for(const [a,b] of inRadius(x,y,(t.t==='hills'||t.t==='mount')?3:2)){VIS[idx(a,b)]=1;p.seen[idx(a,b)]=1}UI.revealed=i+1;FOG.dirty=true}
   // camera follows
@@ -2220,17 +2319,19 @@ function mobileHub(){if(!G)return;const p=G.civs[G.player];let ci=0;for(const c 
    <button class="btn" data-h="log">📜 Recent events<small>Last few turns</small></button>
    <button class="btn" data-h="map">🗺 ${mini?'Hide':'Show'} mini-map<small>Tap it to jump around</small></button>
    <button class="btn" data-h="menu">💾 Game menu<small>Save · Load · New game</small></button>
+   <button class="btn" data-h="snd">${SND.on?'🔇 Turn sound off':'🔊 Turn sound on'}<small>Troop footsteps & battle sounds</small></button>
   </div>
   <h3>🎭 Culture</h3><div>${p.culture} points <span class="muted">(+${ci} per turn) — culture attracts Great People</span></div>
   <h3>⚖️ Trade split</h3><div class="row" style="gap:8px"><b style="font-size:15px">🔬 Science ${p.rate}% · 💰 Gold ${100-p.rate}%</b><button class="btn" id="hUp">🔬 More science</button><button class="btn" id="hDn">💰 More gold</button></div>`);
   const act={tech:techTree,cities:citiesList,diplo:diplomacy,vic:victoryScreen,gov:govModal,menu:gameMenu,
-    map:()=>{document.body.classList.toggle('showmini');closeModal()},
+    map:()=>{document.body.classList.toggle('showmini');closeModal()},snd:()=>{sndSet(!SND.on);mobileHub()},
     log:()=>{const items=G.log.slice(-25).reverse();const m2=showModal(`<span class="x">✕</span><h2>📜 Recent events</h2><div id="hLog">${items.map(l=>`<div class="card" style="margin-bottom:5px" data-i="${G.log.indexOf(l)}"><b style="display:inline;font-size:11px;opacity:.8">${yearStr(l.t)}</b> ${l.text}</div>`).join('')||'<div class="muted">Nothing yet.</div>'}</div>`);
       m2.querySelectorAll('[data-i]').forEach(d=>d.onclick=()=>{const l=G.log[+d.dataset.i];closeModal();if(l.cid){const c=cityById(l.cid);if(c&&isPlayer(c.civ)){openCity(c);return}}if(l.x||l.y)centerOn(l.x,l.y)})}};
   m.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>act[b.dataset.h]());
   m.querySelector('#hUp').onclick=()=>{p.rate=Math.min(100,p.rate+10);refreshUI();mobileHub()};
   m.querySelector('#hDn').onclick=()=>{p.rate=Math.max(0,p.rate-10);refreshUI();mobileHub()}}
 $('bMore').onclick=mobileHub;
+$('zSnd').onclick=()=>sndSet(!SND.on);$('zSnd').textContent=SND.on?'🔊':'🔇';
 $('zMap').onclick=()=>{document.body.classList.toggle('showmini');UI.dirty=true};
 layoutMode();
 resize();
