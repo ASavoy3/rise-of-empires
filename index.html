@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <title>Rise of Empires</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#1e57a6">
 <style>
 html,body{margin:0;height:100%;overflow:hidden;background:#0b0f17;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:#eef2ff;user-select:none}
 #map{position:absolute;inset:0;display:block}
@@ -141,7 +142,90 @@ body{font-family:'Trebuchet MS','Segoe UI',sans-serif}
 .bub b{color:#1d4f99}.bub>b{display:block;margin-bottom:3px}.bub .muted{color:#4a5a78}.bub:before{content:'';position:absolute;left:-18px;top:50%;margin-top:-9px;border:9px solid transparent;border-right:12px solid #fff}
 .vs{display:flex;align-items:center;gap:8px}.vcard{display:flex;align-items:center;gap:6px;background:linear-gradient(#8a6338,#5a3b1e);border:2px solid;border-radius:10px;padding:3px 10px 3px 3px}
 .vcard canvas{width:48px;height:48px}.vcard small{display:block;font-size:11px;color:#f3e2c2}.vcard b{font-size:13px}.vcard .num{font-size:26px;font-weight:900;margin-left:4px;text-shadow:0 2px 3px #000}.vsx{text-align:center;font-size:18px}
-.pill{padding:4px 8px;gap:5px}.tbtn{width:62px}#top{gap:6px}.civbox small{font-size:11px}@media (max-width:1400px){.pill .ico{display:none}.tbtn{width:54px;font-size:11px}.civbox small{display:none}.pill b i{font-size:11px}}</style>
+.pill{padding:4px 8px;gap:5px}.tbtn{width:62px}#top{gap:6px}.civbox small{font-size:11px}@media (max-width:1400px){.pill .ico{display:none}.tbtn{width:54px;font-size:11px}.civbox small{display:none}.pill b i{font-size:11px}}
+#map{touch-action:none}
+#bMore,#zMap,.mobonly{display:none}
+#unitPanel .ucl{position:absolute;right:8px;top:6px;width:30px;height:30px;border-radius:50%;border:1px solid #d6e9ff;background:#0d2b5acc;color:#fff;font-size:15px;cursor:pointer;padding:0;line-height:28px}
+.hubgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hubgrid .btn{padding:12px 10px;font-size:15px;text-align:left}.hubgrid .btn small{display:block;font-size:11.5px;opacity:.8;font-weight:400}
+/* ===== phones ===== */
+body.mob #top{height:50px;padding:0 6px;padding-top:env(safe-area-inset-top);gap:5px}
+body.mob .civbox{padding-right:0;gap:5px;min-width:0}body.mob .civbox b{font-size:13px;max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}body.mob .civbox small{display:block!important;font-size:10px}
+body.mob .flag{width:20px;height:20px}
+body.mob #top .pill{height:40px;padding:3px 7px;border-radius:9px}body.mob .pill small{font-size:9px;letter-spacing:.3px}body.mob .pill b{font-size:12.5px}body.mob .pill b i{font-size:10.5px}
+body.mob #pSci{flex:1;min-width:0}body.mob #pSci>div{min-width:0!important;width:100%}body.mob #pSci b{overflow:hidden;text-overflow:ellipsis}
+body.mob #pGov,body.mob #pCul,body.mob #pRate,body.mob #top .sp,body.mob #bTech,body.mob #bCities,body.mob #bDiplo,body.mob #bVic,body.mob #bMenu{display:none}
+body.mob #bMore{display:flex;width:50px;height:40px;flex:none}
+body.mob.port .civbox b{display:none}
+body.mob #log{top:56px;left:6px;width:min(64vw,330px);font-size:11.5px}body.mob #log div{padding:3px 7px}
+body.mob.tinfo #log{display:none}
+body.mob #tileInfo{top:56px;left:6px;right:auto;max-width:calc(100vw - 64px);white-space:normal;font-size:12px;padding:4px 9px;box-sizing:border-box}
+body.mob #zMap{display:block}
+body.mob #zoomBox{left:auto!important;right:6px;bottom:auto!important;top:58px;gap:4px}
+body.mob .zb{width:42px;height:42px;font-size:20px}
+body.mob #miniWrap{display:none;left:6px;bottom:auto;top:58px;z-index:8}body.mob.showmini #miniWrap{display:block}body.mob.showmini #log{display:none}
+body.mob #mini{max-width:min(46vw,240px);height:auto!important}
+body.mob #endTurn{right:6px;bottom:calc(6px + env(safe-area-inset-bottom));font-size:16px;padding:10px 16px;border-radius:12px}
+body.mob #waiting{right:8px;font-size:11px;text-shadow:0 1px 3px #000}
+body.mob #unitPanel{font-size:12.5px;padding:8px 10px;border-radius:12px;overflow:auto;box-sizing:border-box}
+body.mob #unitPanel .uic{width:46px;height:46px;border-radius:9px}
+body.mob #unitPanel .uhead b{font-size:15px!important;padding-right:34px;display:block}
+body.mob #unitPanel .ustat{font-size:11.5px;gap:5px;margin-top:2px;flex-wrap:wrap}
+body.mob #unitPanel .hint{font-size:11.5px;padding:4px 7px;margin-top:5px}
+body.mob #unitPanel .hint.mv,body.mob #unitPanel .deskonly{display:none}
+body.mob #unitPanel .acts{grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px!important}
+body.mob #unitPanel .acts .btn{padding:8px 5px;font-size:12.5px;text-align:center}
+body.mob #unitPanel .acts .btn small{display:none}
+body.mob #unitPanel .acts .btn[style*="span 2"],body.mob #unitPanel .acts .hint{grid-column:span 3!important}
+body.mob #unitPanel .stack span{font-size:16px}
+body.mob #moveBar{left:6px!important;right:6px;bottom:calc(6px + env(safe-area-inset-bottom));max-width:none;min-width:0;padding:8px 10px;gap:8px;font-size:13px;border-radius:12px}
+body.mob #moveBar .mt{flex:1 1 150px;min-width:0}body.mob #moveBar .mt b{font-size:14px}body.mob #moveBar .mt div{font-size:12px}
+body.mob #moveBar .go{font-size:16px;padding:10px 16px}body.mob #moveBar .odds{font-size:20px;width:58px}
+body.mob #toast{top:58px;max-width:90vw;text-align:center;font-size:13px}
+body.mob #modalBg{align-items:center}
+body.mob #modal{min-width:0;width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px);max-height:calc(100% - 12px);padding:12px 12px 14px;box-sizing:border-box;border-radius:12px;font-size:13.5px}
+body.mob #modal h2{font-size:19px;padding-right:28px}body.mob #modal h3{font-size:14.5px}
+body.mob #modal .x{font-size:26px;right:8px;top:6px;padding:2px 6px}
+body.mob .title{font-size:32px}
+body.mob .civsel{grid-template-columns:repeat(4,1fr)}body.mob.land .civsel{grid-template-columns:repeat(8,1fr)}
+body.mob .cards{grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px}
+body.mob .card{font-size:11.5px;padding:6px}
+body.mob .techgrid{overflow-x:auto;padding-bottom:6px}body.mob .era{min-width:118px}
+body.mob .adv{gap:8px}body.mob .advp{width:62px}body.mob .bub{font-size:13px;padding:9px 10px}
+body.mob table.t{font-size:12px;display:block;overflow-x:auto}body.mob table.t td,body.mob table.t th{padding:4px 5px}
+body.mob .vrow .nm{width:84px}
+/* portrait phone: panels dock to the bottom */
+body.mob.port #unitPanel{left:6px;right:6px;width:auto;bottom:calc(6px + env(safe-area-inset-bottom));max-height:46%}
+/* landscape phone: panel docks to the right */
+body.mob.land #top{height:46px}body.mob.land #top .pill{height:36px}body.mob.land #bMore{height:36px}
+body.mob.land #log,body.mob.land #tileInfo{top:50px;left:calc(6px + env(safe-area-inset-left))}
+body.mob.land #zoomBox{top:auto;bottom:8px!important;right:auto;left:calc(6px + env(safe-area-inset-left))!important;flex-direction:row}
+body.mob.land #zoomBox .zb{width:38px;height:38px}
+body.mob.land #miniWrap{top:50px}
+body.mob.land #unitPanel{right:calc(6px + env(safe-area-inset-right));top:50px;bottom:60px;width:262px;max-height:none}
+body.mob.land #unitPanel .acts{grid-template-columns:1fr 1fr}body.mob.land #unitPanel .acts .btn[style*="span 2"],body.mob.land #unitPanel .acts .hint{grid-column:span 2!important}
+body.mob.land #endTurn{font-size:15px;padding:8px 14px;right:calc(6px + env(safe-area-inset-right))}
+body.mob.land #moveBar{left:180px!important;right:278px}
+body.mob.land.nopanel #moveBar{right:130px}
+body.mob #unitPanel .mobonly{display:block}
+body.mob #unitPanel .ufoot,body.mob.port #unitPanel .uxp,body.mob.land #waiting{display:none!important}
+body.mob #unitPanel .ust{font-size:11px;margin-top:2px!important}
+body.mob #unitPanel .stack{margin-top:5px}
+body.mob.port.moving #unitPanel{display:none!important}
+body.mob .zb{width:38px!important;height:38px!important;font-size:18px}
+body.mob #cAdv{display:none}
+body.mob .mrow #mStart{flex-basis:100%}
+body.mob #unitPanel .uxp{display:none!important}
+body.mob #unitPanel .acts .btn{min-height:40px}
+body.mob #unitPanel .acts .btn:disabled small{display:block;font-size:10.5px}
+body.mob #unitPanel .ucl{width:36px;height:36px;line-height:34px}
+body.mob .btn{min-height:40px}body.mob .btn.small{min-height:34px;padding:4px 10px}body.mob .opt{min-height:40px;display:inline-flex;align-items:center;box-sizing:border-box;padding:5px 14px}
+body.mob select{min-height:38px}body.mob #modal .x{position:sticky;top:0;float:right;z-index:3;width:38px;height:38px;line-height:36px;text-align:center;padding:0;margin:-4px -4px 0 6px;background:#14407f;border:1px solid #d6e9ff;border-radius:50%}
+body.mob #pSci{min-width:96px}body.mob.port .civbox small{max-width:96px;overflow:hidden;text-overflow:ellipsis}
+body.mob.showmini #tileInfo{display:none!important}
+body.mob.land #tileInfo{max-width:calc(100vw - 290px)}
+
+
+</style>
 </head>
 <body>
 <canvas id="map"></canvas>
@@ -150,8 +234,8 @@ body{font-family:'Trebuchet MS','Segoe UI',sans-serif}
   <div class="pill" title="Gold in your treasury and how much you earn each turn"><span class="ico">💰</span><div><small>Gold</small><b id="tGold">-</b></div></div>
   <div class="pill click" id="pSci" title="Click to open the technology tree"><span class="ico">🔬</span><div style="min-width:130px"><small>Researching</small><b id="tSci">-</b><div class="bar sci mini"><i id="tSciBar"></i></div></div></div>
   <div class="pill click" id="pGov" title="Click to change government"><span class="ico">🏛</span><div><small>Government</small><b id="tGov">-</b></div></div>
-  <div class="pill" title="Culture points — they attract Great People"><span class="ico">🎭</span><div><small>Culture</small><b id="tCul">-</b></div></div>
-  <div class="pill" title="How your trade is split between science and gold"><div><small>Trade split</small><b id="tRate">-</b></div>
+  <div class="pill" id="pCul" title="Culture points — they attract Great People"><span class="ico">🎭</span><div><small>Culture</small><b id="tCul">-</b></div></div>
+  <div class="pill" id="pRate" title="How your trade is split between science and gold"><div><small>Trade split</small><b id="tRate">-</b></div>
     <div class="rbtns"><button class="btn small" id="rateUp" title="More science">🔬＋</button><button class="btn small" id="rateDn" title="More gold">💰＋</button></div></div>
   <div class="sp"></div>
   <button class="tbtn" id="bTech"><span>🔬</span>Tech</button>
@@ -159,13 +243,14 @@ body{font-family:'Trebuchet MS','Segoe UI',sans-serif}
   <button class="tbtn" id="bDiplo"><span>🤝</span>Diplomacy</button>
   <button class="tbtn" id="bVic"><span>🏆</span>Victory</button>
   <button class="tbtn" id="bMenu"><span>☰</span>Menu</button>
+  <button class="tbtn" id="bMore"><span>☰</span>More</button>
 </div>
 <div id="log"></div>
 <div id="miniWrap"><canvas id="mini"></canvas></div>
 <div id="tileInfo"></div>
 <div id="unitPanel"></div>
 <div id="moveBar"></div>
-<div id="zoomBox"><button class="zb" id="zIn" title="Zoom in">＋</button><button class="zb" id="zOut" title="Zoom out">－</button><button class="zb" id="zHome" title="Center on selected unit / capital">◎</button></div>
+<div id="zoomBox"><button class="zb" id="zIn" title="Zoom in">＋</button><button class="zb" id="zOut" title="Zoom out">－</button><button class="zb" id="zHome" title="Center on selected unit / capital">◎</button><button class="zb" id="zMap" title="Show / hide the mini-map">🗺</button></div>
 <div id="waiting"></div>
 <button id="endTurn">End Turn ▶</button>
 <div id="toast"></div>
@@ -1218,7 +1303,8 @@ function w2s(wx,wy){const z=UI.cam.z;return [(wx-UI.cam.x)*z+innerWidth/2,(wy-UI
 function s2w(sx,sy){const z=UI.cam.z;return [(sx-innerWidth/2)/z+UI.cam.x,(sy-innerHeight/2)/z+UI.cam.y]}
 function pixToHex(px,py){const q=(SQ3/3*px-py/3)/HEX,r=(2/3*py)/HEX;let cx=q,cz=r,cy=-cx-cz;let rx=Math.round(cx),ry=Math.round(cy),rz=Math.round(cz);
   const dx=Math.abs(rx-cx),dy=Math.abs(ry-cy),dz=Math.abs(rz-cz);if(dx>dy&&dx>dz)rx=-ry-rz;else if(dy>dz)ry=-rx-rz;else rz=-rx-ry;return [rx+(rz-(rz&1))/2,rz]}
-function centerOn(x,y){const [wx,wy]=hexCenter(x,y);UI.cam.x=wx;UI.cam.y=wy;UI.dirty=true}
+function camOff(){if(!MOB||!UI.sel)return [0,0];const up=document.getElementById('unitPanel');if(innerHeight>innerWidth){const h=up&&up.style.display!=='none'&&up.offsetHeight?up.offsetHeight:Math.min(innerHeight*0.32,300);return [0,(h-50)/2]}return [((up&&up.offsetWidth)||262)/2,0]}
+function centerOn(x,y){const [wx,wy]=hexCenter(x,y);const [dx,dy]=camOff();UI.cam.x=wx+dx/UI.cam.z;UI.cam.y=wy+dy/UI.cam.z;UI.dirty=true}
 const colCache={};
 function shade(hex,amt){const k=hex+amt;if(colCache[k])return colCache[k];const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;r=clamp(Math.round(r*(1+amt)),0,255);g=clamp(Math.round(g*(1+amt)),0,255);b=clamp(Math.round(b*(1+amt)),0,255);return colCache[k]=`rgb(${r},${g},${b})`}
 const CORN=[];for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30);CORN.push([Math.cos(a),Math.sin(a)])}
@@ -1645,13 +1731,13 @@ function refreshUI(){
   $('tDot').style.background=p.color;$('tCiv').textContent=p.name;$('tCiv').title=p.leader;
   $('tTurn').textContent=`Turn ${G.turn} · ${yearStr(G.turn)}`;$('tGold').innerHTML=`${p.gold} <i>+${gi}/turn</i>`;
   if(p.res){const pc=Math.min(100,Math.floor(p.sci/techCost(p)*100));$('tSci').innerHTML=`${TECH[p.res].n} <i>${si>0?(n=>n+(n===1?' turn':' turns'))(Math.max(1,Math.ceil((techCost(p)-p.sci)/si))):'stalled'}</i>`;$('tSciBar').style.width=pc+'%'}
-  else{$('tSci').innerHTML='<span style="color:#ffd967">Click to choose!</span>';$('tSciBar').style.width='0%'}
-  $('tCul').innerHTML=`${p.culture} <i>+${ci}/turn</i>`;$('tGov').innerHTML=GOVS[p.gov].n+(p.anarchy?' <i style="color:#ff9a9a">anarchy</i>':'');$('tTurn').textContent=`Turn ${G.turn} · ${yearStr(G.turn)} · ${civEraName(p)} Era`;$('tRate').innerHTML=`🔬 ${p.rate}% · 💰 ${100-p.rate}%`;
+  else{$('tSci').innerHTML=tw('<span style="color:#ffd967">Click to choose!</span>');$('tSciBar').style.width='0%'}
+  $('tCul').innerHTML=`${p.culture} <i>+${ci}/turn</i>`;$('tGov').innerHTML=GOVS[p.gov].n+(p.anarchy?' <i style="color:#ff9a9a">anarchy</i>':'');$('tTurn').textContent=MOB&&innerHeight>innerWidth?`T${G.turn} · ${yearStr(G.turn)}`:`Turn ${G.turn} · ${yearStr(G.turn)} · ${civEraName(p)} Era`;$('tRate').innerHTML=`🔬 ${p.rate}% · 💰 ${100-p.rate}%`;
   renderUnitPanel();renderMoveBar();const w=waitingUnits();const et=$('endTurn');et.classList.toggle('pulse',w.length===0&&!UI.anim);et.style.opacity=UI.anim?0.45:1;et.style.cursor=UI.anim?'wait':'pointer';
   $('waiting').style.display=w.length?'block':'none';$('waiting').textContent=`${w.length} unit${w.length>1?'s':''} awaiting orders`;
-  if(UI.hover)onHover(UI.hover);UI.dirty=true;
+  if(UI.hover&&UI.hoverMouse)onHover(UI.hover);placeHud();UI.dirty=true;
 }
-function renderLog(){const el=$('log');const items=G.log.filter(l=>l.t>=G.turn-2).slice(-7);
+function renderLog(){const el=$('log');const items=G.log.filter(l=>l.t>=G.turn-(MOB?0:2)).slice(MOB?-2:-7);
   el.innerHTML=items.map((l,i)=>`<div class="${l.t<G.turn?'old':''}" data-i="${G.log.indexOf(l)}">${l.text}</div>`).join('');
   el.querySelectorAll('div').forEach(d=>d.onclick=()=>{const l=G.log[+d.dataset.i];if(l.cid){const c=cityById(l.cid);if(c&&isPlayer(c.civ)){openCity(c);return}}if(l.x||l.y)centerOn(l.x,l.y)})}
 function waitingUnits(){if(!G)return [];return unitsOf(G.player).filter(u=>u.mp>0&&!u.fort&&!u.sleep&&!u.goto&&!u.auto)}
@@ -1679,19 +1765,22 @@ function renderUnitPanel(){const el=$('unitPanel');if(UI.anim){el.style.display=
   acts+=isMil(u)?`<button class="btn" id="aFort">🛡 Fortify<small>+50%, +100% after 2 turns</small></button>`:`<button class="btn" id="aFort">💤 Sleep<small>Wait here</small></button>`;
   acts+=`<button class="btn" id="aSkip">⏭ Skip turn<small>Do nothing this turn</small></button>`;
   {const t=tileAt(u.x,u.y);const ok=!t.road&&!t.cid&&(t.own<0||t.own===u.civ)&&u.mp>0;if(!t.road&&!t.cid&&dom(u)==='land'&&!u.onboard)acts+=`<button class="btn" id="aRoad" ${ok?'':'disabled'} style="grid-column:span 2">🛤 Build Road here<small>${ok?'Uses this turn · 3× faster travel':'Needs moves left, on your own or unclaimed land'}</small></button>`}
-  acts+=(dom(u)==='air'?'':`<button class="btn" id="aExp">🧭 Explore<small>Wander automatically</small></button>`)+`<button class="btn" id="aNext">▶ Next unit<small>Select another unit</small></button>`;
-  el.innerHTML=`<div class="uhead"><canvas class="uic" id="uFig" width="140" height="140"></canvas><div style="flex:1"><b style="font-size:18px">${u.vet?'<span style="color:#ffd967">★</span> ':''}${unitName(u)}</b>
+  acts+=(dom(u)==='air'?'':`<button class="btn" id="aExp">🧭 Explore<small>Wander automatically</small></button>`)+`<button class="btn" id="aNext">▶ Next unit<small>Select another unit</small></button><button class="btn red mobonly" id="aDis2">✖ Disband</button>`;
+  el.innerHTML=`<button class="ucl" id="aClose" title="Deselect">✖</button><div class="uhead"><canvas class="uic" id="uFig" width="140" height="140"></canvas><div style="flex:1"><b style="font-size:18px">${u.vet?'<span style="color:#ffd967">★</span> ':''}${unitName(u)}</b>
    ${isMil(u)?`<div class="ustat"><span title="Attack strength (army, veteran and bonuses included)">⚔️ Attack ${Math.round(attStr(u)*10)/10}</span><span title="Defense before terrain and fortify bonuses">🛡 Defense ${Math.round(uD(u)*(u.vet?1.5:1)*10)/10}</span></div>`:''}
    <div class="ustat"><span title="Moves left this turn">👣 Moves ${fmtMp(u.mp)} of ${maxMp(u)}</span><span title="Health">❤️ ${u.hp*10}%</span></div>
-   <div class="muted" style="margin-top:4px">${status} · on ${TER[tileAt(u.x,u.y).t].n}</div></div></div>
-  ${xpTxt?`<div class="muted" style="margin-top:6px">⭐ ${xpTxt}</div>`:''}
+   <div class="muted ust" style="margin-top:4px">${status} · on ${TER[tileAt(u.x,u.y).t].n}</div></div></div>
+  ${xpTxt?`<div class="muted uxp" style="margin-top:6px">⭐ ${xpTxt}</div>`:''}
   ${u.abil&&u.abil.length?`<div style="margin-top:4px">${u.abil.map(a=>`<span class="chip" title="${ABIL[a].d}">✦ ${ABIL[a].n}</span>`).join('')}</div>`:''}
-  ${u.mp>0?`<div class="hint">👉 <b>To move:</b> click any tile on the map. You'll see the route and how many turns it takes, then press <b>Go</b>.</div>`:''}
+  ${u.mp>0?`<div class="hint mv">👉 <b>To move:</b> click any tile on the map. You'll see the route and how many turns it takes, then press <b>Go</b>.</div>`:''}
   <div class="acts" style="margin-top:8px">${acts}</div>
-  ${stack.length>1?`<div class="muted" style="margin-top:8px">Units on this tile (click to pick):</div><div class="stack">${stack.map(o=>`<span data-id="${o.id}" class="${o===u?'sel':''}" title="${unitName(o)}"><canvas data-f="${o.type}" data-n="${o.army?3:1}" width="64" height="64" style="width:32px;height:32px;display:block"></canvas></span>`).join('')}</div>`:''}
-  <div style="display:flex;justify-content:space-between;margin-top:8px"><span class="muted">Right-click = deselect</span><button class="btn red small" id="aDis">✖ Disband</button></div>`;
+  ${stack.length>1?`<div class="muted deskonly" style="margin-top:8px">Units on this tile (click to pick):</div><div class="stack">${stack.map(o=>`<span data-id="${o.id}" class="${o===u?'sel':''}" title="${unitName(o)}"><canvas data-f="${o.type}" data-n="${o.army?3:1}" width="64" height="64" style="width:32px;height:32px;display:block"></canvas></span>`).join('')}</div>`:''}
+  <div class="ufoot" style="display:flex;justify-content:space-between;margin-top:8px"><span class="muted"><span class="deskonly">Right-click or </span>✖ = deselect</span><button class="btn red small" id="aDis">✖ Disband</button></div>`;
+  if(TOUCH)el.innerHTML=tw(el.innerHTML);
   {const fc=el.querySelector('#uFig').getContext('2d');drawFigure(fc,u.type,civ.color,70,62,u.army?100:92,u.army?3:1);el.querySelectorAll('canvas[data-f]').forEach(cv2=>drawFigure(cv2.getContext('2d'),cv2.dataset.f,civ.color,32,28,44,+cv2.dataset.n))}
   const on=(id,f)=>{const b=el.querySelector('#'+id);if(b)b.onclick=f};
+  {const d2=el.querySelector('#aDis2'),d1=el.querySelector('#aDis');if(d2&&d1)d2.onclick=()=>d1.click()}
+  on('aClose',()=>{if(UI.pend)cancelMove();UI.sel=null;UI.path=null;refreshUI()});
   on('aFound',()=>playerFound(u));
   on('aJoin',()=>{here.pop+=settlerPop(civ);killUnit(u);log(`➕ Settlers joined ${here.name} (+${settlerPop(civ)} population).`,here.x,here.y);nextUnit(true)});
   on('aTrade',()=>{const tc=cityAt(u.x,u.y);const g=caravanGold(u,tc);civ.gold+=g;killUnit(u);log(`💰 Your caravan traded in ${tc.name} for ${g} gold!`,tc.x,tc.y);fx(tc.x,tc.y,'💰','#ffd967');nextUnit(true)});
@@ -1741,11 +1830,12 @@ function airAct(u,x,y){const c=cityAt(x,y);
 function eliteChoice(u,opts){if(!G.units.includes(u))return;showModal(`<h2>🎖 Elite Promotion!</h2>${advisorBox('mil',`Sire, our <b>${unitName(u)}</b> has fought bravely and earned an <b>Elite</b> ability. Choose one:`)}
   <div class="cards" style="margin-top:10px">${opts.map(k=>`<div class="card" data-a="${k}"><b>✦ ${ABIL[k].n}</b><div class="ds">${ABIL[k].d}</div></div>`).join('')}</div>`,true);
   $('modal').querySelectorAll('.card').forEach(el=>el.onclick=()=>{u.abil.push(el.dataset.a);if(el.dataset.a==='march')u.mp++;closeModal()})}
-function toast(t){const el=$('toast');el.textContent=t;el.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>el.style.display='none',1800)}
+function tw(h){if(!TOUCH||!h)return h;return ('>'+h+'<').replace(/>([^<]*)</g,(m,t)=>'>'+t.replace(/Hover over any item below and I'll tell you what it does\./g,'Tap an item below to build it.').replace(/Right-click deselects\. /g,'').replace(/\bClick\b/g,'Tap').replace(/\bclick\b/g,'tap').replace(/\bclicking\b/g,'tapping').replace(/\bHover\b/g,'Tap').replace(/\bhover\b/g,'tap')+'<').slice(1,-1)}
+function toast(t){t=tw(t);const el=$('toast');el.textContent=t;el.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>el.style.display='none',1800)}
 
 // ===================== MODALS =====================
 const popQ=[];let modalOpen=false;
-function showModal(html,wide){$('modal').innerHTML=html;$('modal').style.width=wide?'min(1060px,95vw)':'';$('modalBg').style.display='flex';modalOpen=true;
+function showModal(html,wide){$('modal').innerHTML=tw(html);$('modal').style.width=wide?'min(1060px,95vw)':'';$('modalBg').style.display='flex';modalOpen=true;
   const x=$('modal').querySelector('.x');if(x)x.onclick=closeModal;return $('modal')}
 function closeModal(){$('modalBg').style.display='none';modalOpen=false;refreshUI();if(popQ.length)setTimeout(()=>{if(!modalOpen&&popQ.length)popQ.shift()()},60)}
 function queuePopup(f){if(SIM)return;if(modalOpen)popQ.push(f);else f()}
@@ -1800,8 +1890,8 @@ function techChoice(){
 function techTree(){
   const p=G.civs[G.player];const av=availTechs(p).map(t=>t.id);
   const cols=ERAS.map((e,i)=>`<div class="era"><h4>${e}</h4>${TECHS.filter(t=>t.e===i).map(t=>{const cl=p.techs[t.id]?'known':p.res===t.id?'res':av.includes(t.id)?'avail':'';
-    return `<div class="tech ${cl}" data-t="${t.id}" title="Requires: ${t.r.map(r=>TECH[r].n).join(', ')||'nothing'}"><b>${t.n}</b>${unlockText(t.id).replace(' Unlocks: ','')||'<i>prerequisite</i>'}</div>`}).join('')}</div>`).join('');
-  showModal(`<span class="x">✕</span><h2>Technology Tree</h2><p class="muted">Green = known · Gold = researching · Blue = click to research. Hover a tech to see what it requires.</p><div class="techgrid">${cols}</div>`,true);
+    return `<div class="tech ${cl}" data-t="${t.id}" title="Requires: ${t.r.map(r=>TECH[r].n).join(', ')||'nothing'}"><b>${t.n}</b>${unlockText(t.id).replace(' Unlocks: ','')||'<i>prerequisite</i>'}${TOUCH&&!p.techs[t.id]&&t.r.length?`<div style="font-size:10.5px;opacity:.75">Needs ${t.r.map(r=>TECH[r].n).join(', ')}</div>`:''}</div>`}).join('')}</div>`).join('');
+  showModal(`<span class="x">✕</span><h2>Technology Tree</h2><p class="muted">Green = known · Gold = researching · Blue = click to research. ${TOUCH?'':'Hover a tech to see what it requires.'}</p><div class="techgrid">${cols}</div>`,true);
   $('modal').querySelectorAll('.tech.avail,.tech.res').forEach(el=>el.onclick=()=>{if(p.res!==el.dataset.t){p.res=el.dataset.t}techTree()});
 }
 function citiesList(){const cs=citiesOf(G.player);
@@ -1863,6 +1953,7 @@ function help(){showModal(`<span class="x">✕</span><h2>How to Play</h2>
  <p><b>Governments</b> (top bar): Despotism, Monarchy, Republic, Democracy, Communism, Fundamentalism — each with a trade-off. Your <b>civilization</b> gains a new bonus each era (Ancient → Medieval at 5 techs → Industrial at 14 → Modern at 24).</p>
  <p><b>Seas & skies:</b> research Navigation for Galleys (carry 2) and later Galleons, Cruisers, Battleships and Submarines. Move land troops onto your ship to board, sail, then click land to go ashore. Warships next to a coastal battle give <b>naval support</b>. A sunk transport takes its passengers with it. Flight brings Fighters and Bombers: they stay based in your cities, strike enemies within range and fly home. <b>Spies</b> slip across borders to steal gold or tech, sabotage production or disrupt defenses. The Manhattan Project gives one <b>ICBM</b>; an SDI Defense shoots it down. <b>Rivers</b> give +1 trade, and attacking across one is −50% (siege units excepted). During a battle you can press <b>Retreat</b> to save your troops — the enemy gets a promotion.</p>
  <p><b>Explore!</b> Friendly villages 🛖 give gifts, barbarian camps 🚩 hold loot, and six legendary artifacts ✨ (Atlantis, the Seven Cities of Gold…) are hidden around the world.</p>
+ <p><b>Touch (phones & tablets):</b> tap a unit, tap a tile, then <b>Go here</b> (or tap the tile again). Tap ✖ on the unit panel to deselect. Drag with one finger to look around, pinch to zoom, and tap 🗺 for the mini-map. Use <b>☰ More</b> for tech, cities, diplomacy, government and saving.</p>
  <p><b>Mouse:</b> click a unit, click a tile, then <b>Go</b>. Right-click deselects. Drag to pan, wheel or ＋/− to zoom. <b>Diplomacy</b> lets you trade techs, demand tribute, give gifts or bribe a civ to attack another.</p>
  <p class="muted">The game autosaves every turn in this browser. Menu → Save / Load for a manual slot.</p>`)}
 
@@ -1876,7 +1967,7 @@ function mainMenu(){
   <div class="row" style="margin-top:6px;gap:24px"><div><h3>Opponents</h3><div class="opts">${[1,2,3,4,5].map(n=>`<span class="opt ${NG.opp===n?'on':''}" data-o="${n}">${n}</span>`).join('')}</div></div>
   <div><h3>Map size</h3><div class="opts">${Object.keys(SIZES).map(s=>`<span class="opt ${NG.size===s?'on':''}" data-s="${s}">${s[0].toUpperCase()+s.slice(1)}</span>`).join('')}</div></div>
   <div><h3>Difficulty</h3><div class="opts">${DIFF.map((d,i)=>`<span class="opt ${NG.diff===i?'on':''}" data-d="${i}">${d.n}</span>`).join('')}</div></div></div>
-  <div style="display:flex;gap:10px;justify-content:center;margin-top:18px">
+  <div class="mrow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px">
    ${has?'<button class="btn" id="mCont">▶ Continue last game</button>':''}<button class="btn" id="mLoad">📂 Load saved game</button><button class="btn" id="mHelp">❓ How to play</button><button class="btn gold" id="mStart" style="font-size:18px;padding:8px 26px">Start New Game</button></div>`,true);
   const m=$('modal');
   m.querySelectorAll('[data-c]').forEach(e=>e.onclick=()=>{NG.civ=+e.dataset.c;mainMenu()});
@@ -1899,7 +1990,7 @@ function playerFound(u){const civ=G.civs[G.player];if(!canFound(u))return;const 
 function startGame(){
   UI.anim=null;UI.animQ=null;UI.pend=null;
   newGame({civ:NG.civ,opp:NG.opp,size:NG.size,diff:NG.diff});popQ.length=0;
-  buildWorldArt();setupMini();updateVis();const cap=citiesOf(G.player)[0];centerOn(cap.x,cap.y);UI.cam.z=innerWidth>1700?1.6:1.35;renderLog();nextUnit(false);refreshUI();
+  buildWorldArt();setupMini();updateVis();const cap=citiesOf(G.player)[0];centerOn(cap.x,cap.y);UI.cam.z=MOB?(innerHeight>innerWidth?0.95:1.05):innerWidth>1700?1.6:1.35;renderLog();nextUnit(false);refreshUI();
   queuePopup(()=>nameCity(cap,null,true));
   queuePopup(()=>msgBox(`The ${G.civs[0].name} — ${yearStr(1)}`,`<p>Your capital <b>${cap.name}</b> has been founded. <span class="muted">(Tip: troops can build 🛤 roads — units move 3× faster on them.)</span> You also have <b>Settlers</b> ⛺ to found a second city and two <b>Warriors</b> 🪓.</p><p><b>${G.civs[0].name} bonus:</b> ${CIVS[G.civs[0].key].sd}; ${CIVS[G.civs[0].key].eras[0][1]}.</p>
    <p>Select your settlers, move them 3+ tiles away to a good spot (grassland, plains, hills, near water), then press <b>Found City</b>.</p><p class="muted">Press ☰ Menu → How to play any time.</p>`,'dom'));
@@ -1920,24 +2011,33 @@ function loadGame(key){const r=loadRaw(key);if(!r)return false;try{const d=JSON.
 
 // ===================== INPUT =====================
 function tileFromEvent(e){const [wx,wy]=s2w(e.clientX,e.clientY);return pixToHex(wx,wy)}
-cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;UI.pan=null;UI.drag={x:e.clientX,y:e.clientY,cx:UI.cam.x,cy:UI.cam.y,moved:false};cv.setPointerCapture(e.pointerId)});
-cv.addEventListener('pointermove',e=>{
-  if(UI.drag){const dx=e.clientX-UI.drag.x,dy=e.clientY-UI.drag.y;if(Math.abs(dx)+Math.abs(dy)>6)UI.drag.moved=true;
+const PTR=new Map();
+function pinchInfo(){const [a,b]=[...PTR.values()];return {d:Math.hypot(a.x-b.x,a.y-b.y)||1,mx:(a.x+b.x)/2,my:(a.y+b.y)/2}}
+cv.addEventListener('pointerdown',e=>{if(e.button!==0)return;PTR.set(e.pointerId,{x:e.clientX,y:e.clientY});try{cv.setPointerCapture(e.pointerId)}catch(_){}
+  if(PTR.size>=2){UI.noClick=true;UI.drag=null;const P=pinchInfo();UI.pinch={d:P.d,z:UI.cam.z,mx:P.mx,my:P.my};return}
+  UI.pan=null;UI.drag={x:e.clientX,y:e.clientY,cx:UI.cam.x,cy:UI.cam.y,moved:false,touch:e.pointerType!=='mouse'}});
+cv.addEventListener('pointermove',e=>{if(PTR.has(e.pointerId))PTR.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(UI.pinch&&PTR.size>=2){const P=pinchInfo(),Q=UI.pinch;const [bx,by]=s2w(Q.mx,Q.my);UI.cam.z=clamp(Q.z*P.d/Q.d,0.45,2.2);const [ax,ay]=s2w(P.mx,P.my);UI.cam.x+=bx-ax;UI.cam.y+=by-ay;Q.z=UI.cam.z;Q.d=P.d;Q.mx=P.mx;Q.my=P.my;UI.dirty=true;return}
+  if(UI.drag){const dx=e.clientX-UI.drag.x,dy=e.clientY-UI.drag.y;if(Math.abs(dx)+Math.abs(dy)>(UI.drag.touch?12:6))UI.drag.moved=true;
     if(UI.drag.moved){UI.cam.x=UI.drag.cx-dx/UI.cam.z;UI.cam.y=UI.drag.cy-dy/UI.cam.z;UI.dirty=true;return}}
-  if(!G)return;const t=tileFromEvent(e);if(!UI.hover||t[0]!==UI.hover[0]||t[1]!==UI.hover[1]){UI.hover=t;onHover(t)}});
-cv.addEventListener('pointerup',e=>{if(e.button!==0)return;const d=UI.drag;UI.drag=null;if(!d||d.moved||!G||modalOpen||UI.anim||UI.battle)return;onClick(e)});
+  if(!G||e.pointerType!=='mouse')return;UI.hoverMouse=true;const t=tileFromEvent(e);if(!UI.hover||t[0]!==UI.hover[0]||t[1]!==UI.hover[1]){UI.hover=t;onHover(t)}});
+function ptrEnd(e){PTR.delete(e.pointerId);if(PTR.size<2)UI.pinch=null;if(PTR.size===0&&UI.noClick){UI.noClick=false;UI.drag=null;return true}return !!UI.noClick}
+cv.addEventListener('pointercancel',e=>{ptrEnd(e);UI.drag=null});
+cv.addEventListener('pointerup',e=>{if(e.button!==0)return;if(ptrEnd(e))return;const d=UI.drag;UI.drag=null;if(!d||d.moved||!G||modalOpen||UI.anim||UI.battle)return;
+  if(d.touch){UI.hoverMouse=false;const t=tileFromEvent(e);UI.hover=t;onHover(t);clearTimeout(UI.tiT);UI.tiT=setTimeout(()=>{if(UI.hoverMouse)return;UI.hover=null;$('tileInfo').style.display='none';document.body.classList.remove('tinfo')},3500)}
+  onClick(e)});
 cv.addEventListener('contextmenu',e=>{e.preventDefault();if(UI.pend){cancelMove();return}UI.sel=null;UI.path=null;refreshUI()});
 cv.addEventListener('wheel',e=>{e.preventDefault();const [bx,by]=s2w(e.clientX,e.clientY);UI.cam.z=clamp(UI.cam.z*(e.deltaY<0?1.12:0.89),0.45,2.2);const [ax,ay]=s2w(e.clientX,e.clientY);UI.cam.x+=bx-ax;UI.cam.y+=by-ay;UI.dirty=true},{passive:false});
-mini.addEventListener('pointerdown',e=>{const r=mini.getBoundingClientRect();const x=(e.clientX-r.left)/miniScale,y=(e.clientY-r.top)/miniScale;UI.cam.x=x*HEX*SQ3;UI.cam.y=y*HEX*1.5;UI.dirty=true});
+mini.addEventListener('pointerdown',e=>{const r=mini.getBoundingClientRect();const k=mini.width/(r.width||mini.width);const x=(e.clientX-r.left)*k/miniScale,y=(e.clientY-r.top)*k/miniScale;UI.cam.x=x*HEX*SQ3;UI.cam.y=y*HEX*1.5;UI.dirty=true});
 function onHover(t){
   UI.dirty=true;const [x,y]=t;const info=$('tileInfo');
-  if(!inb(x,y)){info.style.display='none';UI.path=null;UI.odds=null;return}
+  if(!inb(x,y)){info.style.display='none';document.body.classList.remove('tinfo');UI.path=null;UI.odds=null;return}
   if(!G.civs[G.player].seen[idx(x,y)]){info.innerHTML='<b>Unexplored</b>';info.style.display='block';UI.path=null;UI.odds=null;const u=UI.sel;if(u&&tileAt(x,y).t!=='water'){const p=findPath(u,x,y,2500);if(p)UI.path=p}return}
   const tl=tileAt(x,y),T=TER[tl.t];let s=`<b>${T.n}</b> · 🌾${T.f} ⚙️${T.p} 💱${T.t}`+(T.def>1?` · 🛡+${Math.round((T.def-1)*100)}%`:'')+(T.mv>1&&T.mv<99?` · 👣${T.mv}`:'');
   if(tl.own>=0)s+=` · <span style="background:${G.civs[tl.own].color};color:#fff;padding:0 6px;border-radius:4px;text-shadow:0 1px 2px #000">${G.civs[tl.own].name}</span>`;
   const c=cityAt(x,y);if(c)s+=` · 🏙 ${c.name} (${c.pop})`;
   if(VIS[idx(x,y)]){const us=unitsAt(x,y).filter(o=>o.civ===G.player||!hidden(o));if(us.length)s+=' · '+us.map(u=>`${UT[u.type].i}${UT[u.type].n}${u.civ!==G.player?' ('+G.civs[u.civ].name+')':''}`).slice(0,3).join(', ')}
-  if(tl.riv)s+=' · 🌊 River (+1 trade, attackers crossing −50%)';if(tl.hut)s+=' · 🛖 Friendly village';if(tl.barbv)s+=' · 🚩 Barbarian village (loot!)';if(tl.art)s+=' · ✨ Something legendary is here…';info.innerHTML=s;info.style.display='block';
+  if(tl.riv)s+=' · 🌊 River (+1 trade, attackers crossing −50%)';if(tl.hut)s+=' · 🛖 Friendly village';if(tl.barbv)s+=' · 🚩 Barbarian village (loot!)';if(tl.art)s+=' · ✨ Something legendary is here…';info.innerHTML=s;info.style.display='block';document.body.classList.add('tinfo');
   UI.path=null;UI.odds=null;const u=UI.sel;
   if(u&&(x!==u.x||y!==u.y)&&tl.t!=='water'&&!(UT[u.type].a===0&&G.units.some(o=>o.x===x&&o.y===y&&o.civ!==u.civ))){const p=findPath(u,x,y,2500);if(p){UI.path=p;const f=foreignAt(u.civ,x,y);
     if(f>=0&&G.units.some(o=>o.x===x&&o.y===y&&o.civ===f)&&UT[u.type].a>0)UI.odds=combatOdds(u,x,y,400)}}
@@ -1984,7 +2084,8 @@ function planMove(u,x,y){
 }
 function cancelMove(){UI.pend=null;renderMoveBar();UI.dirty=true}
 function confirmMove(){const p=UI.pend;if(!p)return;UI.pend=null;renderMoveBar();if(G.units.includes(p.u))doMove(p.u,p.x,p.y)}
-function renderMoveBar(){const el=$('moveBar');if(UI.battle)return;const p=UI.pend;if(!p||!G.units.includes(p.u)||UI.sel!==p.u){el.style.display='none';if(p&&UI.sel!==p.u)UI.pend=null;return}
+function renderMoveBar(){_renderMoveBar();placeHud()}
+function _renderMoveBar(){const el=$('moveBar');if(UI.battle)return;const p=UI.pend;if(!p||!G.units.includes(p.u)||UI.sel!==p.u){el.style.display='none';if(p&&UI.sel!==p.u)UI.pend=null;return}
   const T=UT[p.u.type],tl=tileAt(p.x,p.y);const tr=p.turns;const when=p.u.mp<=0?`starts next turn · arrives in ${tr} turn${tr>1?'s':''}`:tr===1?'arrives <b style="color:#9be37f">this turn</b>':`arrives in <b>${tr} turns</b>`;
   let title,sub,btn,odds='';
   if(p.air==='nuke'){title='☢️ Launch the nuclear missile here?';sub=`Destroys nearby units and halves a city's population. Every leader will hate you${G.civs[p.u.civ].gov!=='despotism'?' and you lose 25% of your culture':''}. SDI defenses can shoot it down.`;btn='☢️ Launch'}
@@ -2002,7 +2103,7 @@ function renderMoveBar(){const el=$('moveBar');if(UI.battle)return;const p=UI.pe
   else if(p.u.onboard&&p.path.length===2){title=`🏖 Go ashore onto ${TER[tl.t].n}`;sub='Landing ends this unit\'s turn.';btn='✔ Land'}
   else{title=`Move ${T.n} → ${TER[tl.t].n}${cityAt(p.x,p.y)?' ('+cityAt(p.x,p.y).name+')':''}`;sub=`${p.path.length-1} tile${p.path.length>2?'s':''} · ${when}`;btn='✔ Go here';}
   el.innerHTML=`${odds}<div class="mt"><b>${title}</b><div>${sub}</div>${p.odds!=null&&p.adj&&p.u.mp<=0?'':'<div style="font-size:11.5px;opacity:.7">Tip: click the same tile again to confirm</div>'}</div><button class="btn gold go" id="mvGo">${btn}</button><button class="btn" id="mvNo">✖ Cancel</button>`;
-  el.querySelectorAll('canvas[data-vf]').forEach(k=>drawFigure(k.getContext('2d'),k.dataset.vf,k.dataset.vc,48,40,62));el.style.display='flex';if(p.odds!=null&&p.adj&&p.u.mp<=0)$('mvGo').disabled=true;$('mvGo').onclick=confirmMove;$('mvNo').onclick=cancelMove}
+  if(TOUCH)el.innerHTML=tw(el.innerHTML);el.querySelectorAll('canvas[data-vf]').forEach(k=>drawFigure(k.getContext('2d'),k.dataset.vf,k.dataset.vc,48,40,62));el.style.display='flex';if(p.odds!=null&&p.adj&&p.u.mp<=0)$('mvGo').disabled=true;$('mvGo').onclick=confirmMove;$('mvNo').onclick=cancelMove}
 function doMove(u,x,y){
   if(dom(u)==='air'){if(u.mp<=0){toast('No moves left this turn');return}if(UT[u.type].nuke){nuke(u,x,y);centerOn(x,y);UI.sel=null;refreshUI();setTimeout(()=>nextUnit(true),1600);return}airAct(u,x,y);return}
   const path=findPath(u,x,y);if(!path){toast('No route there');return}
@@ -2020,7 +2121,7 @@ function doMove(u,x,y){
   checkVictory();
 }
 function startBattle(B,u,r){UI.pend=null;renderMoveBar();UI.path=null;UI.odds=null;UI.battle={B,u,r,t0:performance.now(),step:Math.max(90,Math.min(160,2200/B.rec.length))};LASTB=null;refreshUI();UI.dirty=true;
-  const el=$('moveBar');UI.battle.retMax=Math.floor(B.rec.length*0.4);if(B.pending&&B.rec.length>3){el.innerHTML=`<div class="mt"><b>⚔️ Battle in progress…</b><div>Losing? You can pull back — your troops survive, but the enemy earns a promotion.</div></div><button class="btn red go" id="mvRet">🏳 Retreat</button>`;el.style.display='flex';$('mvRet').onclick=()=>{const BT=UI.battle;if(BT&&!BT.done&&(performance.now()-BT.t0)/BT.step<=BT.retMax){BT.retreat=true}}}}
+  const el=$('moveBar');UI.battle.retMax=Math.floor(B.rec.length*0.4);if(B.pending&&B.rec.length>3){el.innerHTML=`<div class="mt"><b>⚔️ Battle in progress…</b><div>Losing? You can pull back — your troops survive, but the enemy earns a promotion.</div></div><button class="btn red go" id="mvRet">🏳 Retreat</button>`;el.style.display='flex';placeHud();$('mvRet').onclick=()=>{const BT=UI.battle;if(BT&&!BT.done&&(performance.now()-BT.t0)/BT.step<=BT.retMax){BT.retreat=true}}}}
 function drawBattle(s,now){const BT=UI.battle;if(!BT)return;const B=BT.B;if(BT.retreat&&!BT.done){BT.done=true;const k0=Math.min(B.rec.length-2,Math.max(0,Math.floor((now-BT.t0)/BT.step)));BT.rk=k0;B.rec=B.rec.slice(0,k0+1);B.retreated=true;BT.t0=now-k0*BT.step}
   const el=(now-BT.t0)/BT.step;const k=Math.min(B.rec.length-1,Math.floor(el));const done=el>=B.rec.length-1;if(done&&!BT.done)BT.done=true;if((BT.done||el>BT.retMax)&&$('mvRet'))$('moveBar').style.display='none';
   const [ax,ay]=w2s(...hexCenter(B.a.x,B.a.y)),[dx,dy]=w2s(...hexCenter(B.d.x,B.d.y));const mx=(ax+dx)/2,my=(ay+dy)/2;const sz=s*0.92;const [ah,dh]=B.rec[k];
@@ -2057,7 +2158,7 @@ function finishMove(A){const u=A.u;for(const t of A.huts||[])if(t.hut&&G.units.i
   checkVictory();
   if(!G.units.includes(u)||u.mp<=0||u.goto)nextUnit(true);else{UI.reach=null;refreshUI()}}
 function playQueued(){const q=UI.animQ.shift();if(!q){UI.animQ=null;nextUnit(true);return}if(!G.units.includes(q.u)&&!q.dead){playQueued();return}startAnim(q.u,q.pts,q.ghost,q.r,false,0,0,q.huts,true)}
-function panTo(x,y){const [wx,wy]=hexCenter(x,y);UI.pan=[wx,wy];UI.dirty=true}
+function panTo(x,y){const [wx,wy]=hexCenter(x,y);const [dx,dy]=camOff();UI.pan=[wx+dx/UI.cam.z,wy+dy/UI.cam.z];UI.dirty=true}
 window.addEventListener('keydown',e=>{if(!G)return;if(UI.anim||UI.battle)return;
   if(e.key==='Escape'){if(modalOpen)closeModal();else if(UI.pend)cancelMove();else{UI.sel=null;refreshUI()}return}
   if(modalOpen)return;const u=UI.sel;
@@ -2074,13 +2175,13 @@ $('zHome').onclick=()=>{if(!G)return;const u=UI.sel;if(u)centerOn(u.x,u.y);else{
 function placeZoom(){const r=$('miniWrap').getBoundingClientRect();$('zoomBox').style.bottom=(innerHeight-r.top+8)+'px'}
 $('pSci').onclick=()=>{if(G)techTree()};
 $('pGov').onclick=()=>{if(G)govModal()};
-$('endTurn').onclick=()=>{if(!modalOpen&&!UI.anim&&!UI.battle)endTurn()};
+$('endTurn').onclick=()=>{if(modalOpen)return;if(UI.anim||UI.battle){UI.endQ=true;toast('Ending the turn once your units finish moving…');return}endTurn()};
 $('rateUp').onclick=()=>{const p=G.civs[G.player];p.rate=Math.min(100,p.rate+10);refreshUI()};
 $('rateDn').onclick=()=>{const p=G.civs[G.player];p.rate=Math.max(0,p.rate-10);refreshUI()};
 $('bTech').onclick=()=>techTree();$('bCities').onclick=citiesList;$('bDiplo').onclick=diplomacy;$('bVic').onclick=victoryScreen;$('bMenu').onclick=gameMenu;
 $('modalBg').addEventListener('pointerdown',e=>{if(e.target===$('modalBg')&&$('modal').querySelector('.x'))closeModal()});
 
-function loop(){const now=performance.now();if(UI.anim)tickAnim(now);if(UI.battle)UI.dirty=true;
+function loop(){const now=performance.now();if(UI.endQ&&!UI.anim&&!UI.battle&&G&&!modalOpen){UI.endQ=false;endTurn()}if(UI.anim)tickAnim(now);if(UI.battle)UI.dirty=true;
   if(UI.pan){UI.cam.x+=(UI.pan[0]-UI.cam.x)*0.16;UI.cam.y+=(UI.pan[1]-UI.cam.y)*0.16;if(Math.abs(UI.pan[0]-UI.cam.x)+Math.abs(UI.pan[1]-UI.cam.y)<1.5){UI.cam.x=UI.pan[0];UI.cam.y=UI.pan[1];UI.pan=null}UI.dirty=true}
   if(UI.dirty||FX.length||UI.anim){UI.dirty=false;draw()}requestAnimationFrame(loop)}
 
@@ -2096,7 +2197,42 @@ function runSim(turns){
   $('simOut').textContent=out.join('\n');$('simOut').style.display='block';document.title='SIMDONE';
 }
 
-window.addEventListener('resize',resize);
+let MOB=false;
+let TOUCH=false;
+function layoutMode(){const W=innerWidth,H=innerHeight;const coarse=!!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);MOB=Math.min(W,H)<=560||W<=1100||(coarse&&Math.min(W,H)<=1100);TOUCH=MOB||coarse;const b=document.body;b.classList.toggle('mob',MOB);b.classList.toggle('port',MOB&&H>W);b.classList.toggle('land',MOB&&W>=H)}
+function placeHud(){const et=$('endTurn'),wt=$('waiting'),up=$('unitPanel'),mb=$('moveBar');document.body.classList.toggle('nopanel',up.style.display==='none');document.body.classList.toggle('moving',mb.style.display!=='none'&&mb.style.display!=='');
+  if(!MOB){et.style.bottom='';wt.style.bottom='';return}
+  const port=innerHeight>innerWidth;let b=6;
+  if(port){if(up.style.display!=='none')b=Math.max(b,up.offsetHeight+12);if(mb.style.display!=='none')b=Math.max(b,mb.offsetHeight+12)}
+  else if(mb.style.display!=='none'&&mb.getBoundingClientRect().right>innerWidth-140)b=mb.offsetHeight+12;
+  et.style.bottom=b+'px';wt.style.bottom=(b+et.offsetHeight+4)+'px'}
+function onResize(){layoutMode();resize();if(G){renderLog();refreshUI()}}
+window.addEventListener('resize',onResize);
+window.addEventListener('orientationchange',()=>setTimeout(onResize,250));
+function mobileHub(){if(!G)return;const p=G.civs[G.player];let ci=0;for(const c of citiesOf(p.id))ci+=cityYield(c).cul;const mini=document.body.classList.contains('showmini');
+  const m=showModal(`<span class="x">✕</span><h2>${p.name} · ${yearStr(G.turn)}</h2>
+  <div class="hubgrid">
+   <button class="btn" data-h="tech">🔬 Tech tree<small>${p.res?TECH[p.res].n:'Choose research'}</small></button>
+   <button class="btn" data-h="cities">🏙 Cities<small>${citiesOf(p.id).length} cities</small></button>
+   <button class="btn" data-h="diplo">🤝 Diplomacy<small>Talk to other leaders</small></button>
+   <button class="btn" data-h="vic">🏆 Victory<small>Who's winning</small></button>
+   <button class="btn" data-h="gov">🏛 Government<small>${GOVS[p.gov].n}${p.anarchy?' (anarchy)':''}</small></button>
+   <button class="btn" data-h="log">📜 Recent events<small>Last few turns</small></button>
+   <button class="btn" data-h="map">🗺 ${mini?'Hide':'Show'} mini-map<small>Tap it to jump around</small></button>
+   <button class="btn" data-h="menu">💾 Game menu<small>Save · Load · New game</small></button>
+  </div>
+  <h3>🎭 Culture</h3><div>${p.culture} points <span class="muted">(+${ci} per turn) — culture attracts Great People</span></div>
+  <h3>⚖️ Trade split</h3><div class="row" style="gap:8px"><b style="font-size:15px">🔬 Science ${p.rate}% · 💰 Gold ${100-p.rate}%</b><button class="btn" id="hUp">🔬 More science</button><button class="btn" id="hDn">💰 More gold</button></div>`);
+  const act={tech:techTree,cities:citiesList,diplo:diplomacy,vic:victoryScreen,gov:govModal,menu:gameMenu,
+    map:()=>{document.body.classList.toggle('showmini');closeModal()},
+    log:()=>{const items=G.log.slice(-25).reverse();const m2=showModal(`<span class="x">✕</span><h2>📜 Recent events</h2><div id="hLog">${items.map(l=>`<div class="card" style="margin-bottom:5px" data-i="${G.log.indexOf(l)}"><b style="display:inline;font-size:11px;opacity:.8">${yearStr(l.t)}</b> ${l.text}</div>`).join('')||'<div class="muted">Nothing yet.</div>'}</div>`);
+      m2.querySelectorAll('[data-i]').forEach(d=>d.onclick=()=>{const l=G.log[+d.dataset.i];closeModal();if(l.cid){const c=cityById(l.cid);if(c&&isPlayer(c.civ)){openCity(c);return}}if(l.x||l.y)centerOn(l.x,l.y)})}};
+  m.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>act[b.dataset.h]());
+  m.querySelector('#hUp').onclick=()=>{p.rate=Math.min(100,p.rate+10);refreshUI();mobileHub()};
+  m.querySelector('#hDn').onclick=()=>{p.rate=Math.max(0,p.rate-10);refreshUI();mobileHub()}}
+$('bMore').onclick=mobileHub;
+$('zMap').onclick=()=>{document.body.classList.toggle('showmini');UI.dirty=true};
+layoutMode();
 resize();
 if(SIM){try{runSim(+SIM)}catch(e){$('simOut').textContent='ERROR '+e.stack;document.title='SIMDONE'}}
 else{loop();mainMenu()}
