@@ -213,6 +213,75 @@ body.mob #unitPanel .stack{margin-top:5px}
 body.mob.port.moving #unitPanel{display:none!important}
 body.mob .zb{width:38px!important;height:38px!important;font-size:18px}
 body.mob #cAdv{display:none}
+#modalBg.citym{background:none;pointer-events:none;display:block}
+#modalBg.citym #modal{position:absolute;inset:0;width:auto!important;max-width:none;max-height:none;min-width:0;background:none;border:0;box-shadow:none;padding:0;overflow:hidden;border-radius:0;pointer-events:none}
+#modalBg.citym #modal>*{pointer-events:auto}
+.cvTop{position:absolute;left:50%;transform:translateX(-50%);top:8px;width:min(860px,calc(100vw - 16px));box-sizing:border-box;background:linear-gradient(#2f6cbc,#1c4e98 60%,#143a75);border:2px solid #d6e9ff;border-radius:14px;box-shadow:inset 0 1px 0 #ffffff66,0 8px 26px #000a;padding:6px 10px 8px}
+.cvTitle{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px}
+.cvNav{background:none;border:0;color:#cfe5ff;font:inherit;font-size:13px;cursor:pointer;padding:6px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;justify-self:start}.cvNav:hover{color:#fff}#cNext{justify-self:end}
+.cvName{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;text-shadow:0 2px 3px #000a;white-space:nowrap}
+.cvPop{display:inline-grid;place-items:center;min-width:34px;height:34px;border-radius:50%;background:radial-gradient(#9be37f,#2b7a25);border:2px solid #fff;font-size:17px;box-shadow:0 2px 6px #0008}
+.cvRows{display:grid;grid-template-columns:1fr auto;gap:6px 8px;margin-top:6px}
+.cvRow{position:relative;display:flex;align-items:center;gap:8px;background:#0d2b5acc;border:1px solid #9cc8ff66;border-radius:8px;padding:6px 10px 8px;overflow:hidden;min-width:0}
+.cvRow .bar{position:absolute;left:0;right:0;bottom:0;height:4px;border:0;border-radius:0}
+.cvNum{font-weight:800;min-width:58px;white-space:nowrap}.cvNum.food{color:#9be37f}.cvNum.prod{color:#ffd967}
+.cvTxt{font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cvSide{display:flex;gap:6px}.cvSide span{background:#0d2b5acc;border:1px solid #9cc8ff66;border-radius:8px;padding:6px 10px;font-weight:700;white-space:nowrap}
+.cvSide2{display:flex;gap:6px;align-items:center}.cvGold{background:#5a3b10cc;border:1px solid #ffd96788;border-radius:8px;padding:6px 10px;font-size:13px;white-space:nowrap}
+.cvNote{margin-top:6px;background:#3a3418;border:1px solid #ffd967;border-radius:8px;padding:4px 10px;font-size:13.5px}
+.cvMenu{position:absolute;left:12px;top:var(--cvTop,190px);display:flex;flex-direction:column;gap:6px;width:200px}
+.cvTab{display:flex;align-items:center;gap:8px;text-align:left;background:linear-gradient(#2f6cbc,#1c4e98);border:2px solid #9cc8ff;color:#fff;font:inherit;font-weight:700;font-size:15px;padding:9px 12px;border-radius:10px;cursor:pointer;text-shadow:0 1px 2px #0008;box-shadow:0 3px 10px #0007}
+.cvTab:hover{filter:brightness(1.2)}.cvTab.on{background:linear-gradient(#ffe68a,#d9a531);color:#2a1800;border-color:#fff;text-shadow:none}.cvTab .sm{display:none}
+.cvList{position:absolute;left:222px;top:var(--cvTop,190px);width:340px;max-height:calc(100% - var(--cvTop,190px) - 74px);overflow:auto;display:flex;flex-direction:column;gap:5px;padding:2px}
+.crow{display:flex;align-items:center;gap:8px;background:linear-gradient(#2a64b6f2,#1d4f99f2);border:1px solid #cfe5ff;border-radius:9px;padding:6px 9px;cursor:pointer;box-shadow:0 2px 8px #0006;flex:none}
+.crow:hover{filter:brightness(1.15)}.crow.cur{background:linear-gradient(#ffe68a,#d9a531);color:#2a1800;border:2px solid #fff}
+.crow .ic{font-size:22px;width:28px;text-align:center;flex:none}.crow .cm{flex:1;min-width:0}.crow .cm b{display:block;font-size:14px}.crow .cm small{display:block;font-size:11.5px;opacity:.85}
+.crow .ct{text-align:right;white-space:nowrap}.crow .ct b{display:block;font-size:13px}.crow .ct small{font-size:11px;opacity:.85}.crow.dis{cursor:default;filter:none}.crow.rd.dis{opacity:.55}
+.cvNone{background:#0d2b5ae6;border-radius:9px;padding:10px;font-size:13px}
+.cvGar{position:absolute;right:12px;top:var(--cvTop,190px);display:flex;flex-direction:column;gap:6px;max-height:calc(100% - var(--cvTop,190px) - 74px);overflow:auto;padding:2px}
+.cvU{position:relative;width:64px;height:64px;padding:0;border-radius:10px;border:2px solid #e6f2ff;background:radial-gradient(#8cc4f5,#2a64b6);cursor:pointer;flex:none;box-shadow:0 3px 10px #0007}
+.cvU canvas{width:56px;height:56px}.cvU i{position:absolute;left:4px;top:1px;color:#ffd967;font-style:normal}.cvU em{position:absolute;right:2px;bottom:0;font-style:normal;font-size:13px}
+.cvEmpty{background:#7d1b14dd;border:2px solid #ffb3a8;border-radius:10px;padding:6px 10px;font-weight:700}
+.cvBot{position:absolute;left:12px;right:12px;bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;pointer-events:none!important}
+.cvBot>*{pointer-events:auto}.cvHint{background:#0d2b5acc;padding:5px 10px;border-radius:8px;font-size:12.5px;max-width:50%}
+#cExit{font-size:17px;padding:10px 24px}
+body.citymode #top,body.citymode #unitPanel,body.citymode #endTurn,body.citymode #zoomBox,body.citymode #log,body.citymode #miniWrap,body.citymode #waiting,body.citymode #tileInfo,body.citymode #moveBar,body.citymode #rpBar,body.citymode #toast{display:none!important}
+body.mob .cvName{font-size:17px;gap:6px}body.mob .cvPop{min-width:28px;height:28px;font-size:14px}body.mob .cvNav{font-size:12px}
+body.mob .cvTxt{font-size:12.5px}body.mob .cvRow{padding:4px 8px 6px}body.mob .cvNum{min-width:46px;font-size:13px}
+body.mob .cvSide span,body.mob .cvGold{padding:4px 7px;font-size:12px}body.mob #cBuy{min-height:32px;padding:3px 10px;font-size:13px}
+body.mob .cvHint{display:none}body.mob #cExit{font-size:15px;padding:8px 18px}
+body.mob .cvTab .lg{display:none}body.mob .cvTab .sm{display:inline}
+body.mob .cvU{width:48px;height:48px}body.mob .cvU canvas{width:42px;height:42px}
+body.mob .crow .cm small{font-size:11px}
+/* portrait phone: info on top, menu + list as a bottom sheet */
+body.port .cvTop{top:4px;width:calc(100vw - 8px);padding:4px 6px 6px;border-radius:12px}
+body.port .cvRows{grid-template-columns:1fr;gap:4px}
+body.port .cvSide span{flex:1;text-align:center}body.port .cvSide2 .cvGold{flex:1;text-align:center}
+body.port .cvList{left:6px;right:6px;width:auto;top:auto;bottom:62px;height:30%;max-height:none;background:#0d2b5ae0;border:2px solid #d6e9ff;border-radius:12px;padding:6px;box-sizing:border-box}
+body.port .cvMenu{left:6px;right:6px;width:auto;top:auto;bottom:calc(62px + 30% + 6px);flex-direction:row;overflow-x:auto;gap:4px}
+body.port .cvTab{flex:none;padding:7px 8px;font-size:12.5px;gap:4px}body.port .cvMenu{scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}body.mob.replaying #log{display:none}
+body.replaying #log{display:none}
+.cvTitle{grid-template-columns:auto minmax(0,1fr) auto}.cvName{min-width:0;justify-content:center}.cvNm{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cvNav{max-width:30vw}
+body.mob .cvNav,body.mob #cRen,body.mob #cBuy,body.mob .cvTab,body.mob #rpSkip{min-height:40px}body.mob #cRen{min-width:40px}
+body.port .cvMenu{-webkit-mask-image:none;overflow:visible}body.port .cvTab{flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:1px;padding:4px 2px;font-size:10.5px;min-height:46px;text-align:center}
+body.port .cvTab .ti{font-size:17px}body.port .cvNav{max-width:21vw;font-size:11px}body.port .cvGar{bottom:calc(62px + 30% + 60px)}
+
+body.port .cvGar{top:auto;right:6px;bottom:calc(62px + 30% + 56px);flex-direction:row;max-width:calc(100vw - 12px);max-height:none}
+body.port .cvBot{left:6px;right:6px;bottom:6px;justify-content:flex-end}
+body.port #cExit{width:100%}
+/* landscape phone */
+body.mob.land .cvTop{top:4px;width:calc(100vw - 8px);padding:3px 8px 5px}body.mob.land .cvRows{margin-top:3px;gap:4px 6px}
+body.mob.land .cvMenu{left:6px;width:118px;gap:4px}body.mob.land .cvTab{padding:6px 8px;font-size:12.5px}
+body.mob.land .cvList{left:130px;width:min(320px,calc(100vw - 210px));max-height:calc(100% - var(--cvTop,150px) - 6px)}
+body.mob.land .cvGar{right:6px;max-height:calc(100% - var(--cvTop,150px) - 56px)}
+body.mob.land .cvBot{right:6px;bottom:6px;left:auto}
+
+#rpBar{position:absolute;left:50%;top:72px;transform:translateX(-50%);z-index:9;display:none;align-items:center;gap:12px;background:linear-gradient(#8a1f1f,#5a1010);border:2px solid #ffb3a8;border-radius:22px;padding:6px 8px 6px 16px;font-size:15px;box-shadow:0 4px 16px #000a;white-space:nowrap}
+#rpBar .btn{background:linear-gradient(#fff,#f1d9d6);color:#5a1010;text-shadow:none;border-color:#fff}
+body.mob #rpBar{top:58px;font-size:13px}
+body.replaying #endTurn{opacity:.4;pointer-events:none}body.replaying #unitPanel,body.replaying #waiting{display:none!important}
+
 body.mob .mrow #mStart{flex-basis:100%}
 body.mob #unitPanel .uxp{display:none!important}
 body.mob #unitPanel .acts .btn{min-height:40px}
@@ -252,6 +321,7 @@ body.mob.land #tileInfo{max-width:calc(100vw - 290px)}
 <div id="moveBar"></div>
 <div id="zoomBox"><button class="zb" id="zIn" title="Zoom in">＋</button><button class="zb" id="zOut" title="Zoom out">－</button><button class="zb" id="zHome" title="Center on selected unit / capital">◎</button><button class="zb" id="zMap" title="Show / hide the mini-map">🗺</button><button class="zb" id="zSnd" title="Sound on / off">🔊</button></div>
 <div id="waiting"></div>
+<div id="rpBar"></div>
 <button id="endTurn">End Turn ▶</button>
 <div id="toast"></div>
 <div id="modalBg"><div id="modal"></div></div>
@@ -751,7 +821,7 @@ function processCity(c){
     const done=it.n;
     if(G.over)return;
     c.build=chooseBuild(c,it.kind==='u'?c.build:null);
-    if(isPlayer(c.civ)){log(`✅ ${c.name} built ${it.i} ${done}. Now: ${itemInfo(c.build).n}`,c.x,c.y,false,c.id);queuePopup(()=>{centerOn(c.x,c.y);openCity(c,`✅ Finished ${it.i} ${done} — choose what to build next`)})}
+    if(isPlayer(c.civ)){log(`✅ ${c.name} built ${it.i} ${done}. Now: ${itemInfo(c.build).n}`,c.x,c.y,false,c.id);queuePopup(()=>{openCity(c,`✅ Finished ${it.i} ${done} — choose what to build next`)})}
   }
 }
 function wonderEffect(civ,c,id){
@@ -886,7 +956,9 @@ function defStr(d,a){let s=uD(d);if(d.vet)s*=1.5;const t=tileAt(d.x,d.y);s*=TER[
 function bestDefender(x,y,a){const ds=G.units.filter(u=>u.x===x&&u.y===y&&u.civ!==a.civ&&!hidden(u));let b=null,bs=-1;for(const d of ds){const s=defStr(d,a)*d.hp;if(s>bs){bs=s;b=d}}return b}
 function fight(A,D,ah,dh,rec){const p=A/(A+D);while(ah>0&&dh>0){if(Math.random()<p)dh-=1.5;else ah-=1.5;if(rec)rec.push([Math.max(0,ah),Math.max(0,dh)])}return ah>0}
 function combatOdds(a,x,y,n){n=n||300;const d=bestDefender(x,y,a);if(!d)return 1;const A=attStr(a,x,y),D=defStr(d,a);if(hasBon(G.civs[a.civ],'overrun')&&A>=3*D)return 1;let w=0;for(let i=0;i<n;i++)if(fight(A,D,a.hp,d.hp))w++;return w/n}
-let LASTB=null,DEFER=false;
+let LASTB=null,DEFER=false,RPL=null,RPLCAP=[];
+function rplVis(a,b){return !!(VIS&&((a&&VIS[idx(a[0],a[1])])||(b&&VIS[idx(b[0],b[1])])))}
+function rplSnap(u){return {id:u.id,type:u.type,civ:u.civ,army:u.army,vet:u.vet,hp:u.hp,x:u.x,y:u.y,mp:1,abil:u.abil||[]}}
 function gainXp(u){u.xp=(u.xp||0)+1;if(u.vet&&u.xp>=6&&u.xp%3===0&&hasBon(G.civs[u.civ],'eliteup')){const n=upgradeTarget(u);if(n){if(isPlayer(u.civ))log(`⬆️ Your elite ${unitName(u)} upgraded to ${UT[n].n}!`,u.x,u.y);u.type=n}}if(!u.vet&&u.xp>=3){u.vet=true;if(isPlayer(u.civ))log(`⭐ Your ${unitName(u)} became a Veteran (+50% strength)!`,u.x,u.y)}
   else if(u.vet&&u.xp>=6&&u.xp%3===0){const opts=Object.keys(ABIL).filter(k=>!hasAb(u,k));if(!opts.length)return;
     if(isPlayer(u.civ)&&!SIM)queuePopup(()=>eliteChoice(u,opts.sort(()=>Math.random()-0.5).slice(0,3)));else{u.abil.push(pick(opts));if(u.abil[u.abil.length-1]==='march')u.mp++}}}
@@ -897,7 +969,9 @@ function doAttack(a,x,y){
   const last=rec[rec.length-1];
   LASTB={a:{type:a.type,civ:a.civ,army:a.army,x:a.x,y:a.y,vet:a.vet},d:{type:d.type,civ:d.civ,army:d.army,x,y,vet:d.vet},rec,win,A,D};
   if(DEFER){Object.assign(LASTB,{pending:true,att:a,def:d,x,y,last});return}
-  resolveBattle(a,d,x,y,win,last)}
+  const rr=RPL&&!isPlayer(a.civ)&&rplVis([a.x,a.y],[x,y])?{k:'atk',aid:a.id,did:d.id,a:rplSnap(a),d:rplSnap(d),from:[a.x,a.y],x,y,rec,win,A,D}:null;
+  resolveBattle(a,d,x,y,win,last);
+  if(rr){rr.after=G.units.includes(a)?[a.x,a.y]:null;rr.dDead=!G.units.includes(d);rr.aDead=!G.units.includes(a);RPL.push(rr)}if(RPL&&RPLCAP.length){RPL.push(...RPLCAP);RPLCAP=[]}}
 function resolveBattle(a,d,x,y,win,last){
   a.mp=hasAb(a,'blitz')&&a.blitzT!==G.turn?Math.max(1,a.mp-1):0;if(hasAb(a,'blitz'))a.blitzT=G.turn;a.moved=true;a.fort=false;a.fortT=0;
   const vis=isVisible(x,y)||isVisible(a.x,a.y);const pl=isPlayer(a.civ)||isPlayer(d.civ);
@@ -914,7 +988,7 @@ function resolveRetreat(B,k){const a=B.att,d=B.def;const [ah,dh]=B.rec[k];a.hp=M
   if(isPlayer(a.civ))log(`🏳 Your ${unitName(a)} retreated. The ${G.civs[d.civ].name} ${unitName(d)} gained a promotion.`,a.x,a.y)}
 function eliminate(old){const oc=G.civs[old];oc.alive=false;G.units=G.units.filter(u=>u.civ!==old);
   log(`☠️ The ${oc.name} civilization has been destroyed!`,0,0,true);if(isPlayer(old))G.lost=true}
-function captureCity(c,ci){
+function captureCity(c,ci){if(RPL&&VIS&&VIS[idx(c.x,c.y)]&&!isPlayer(ci)){const own=[];G.tiles.forEach((t,i)=>{if(t.city===c.id&&t.own===c.civ)own.push(i)});const e={k:'cap',cid:c.id,old:c.civ,neu:ci,own};RPLCAP.push(e)}
   G.ncap=(G.ncap||0)+1;
   const old=c.civ,oc=G.civs[old],nc=G.civs[ci];
   if(c.cap&&oc.ssLaunch){oc.ssLaunch=0;oc.ss={};log(`💥 With ${c.name} captured, the ${oc.name} spaceship program has been lost!`,c.x,c.y,true)}
@@ -936,11 +1010,15 @@ function captureCity(c,ci){
 function destroyVillage(u,t){t.barbv=0;const civ=G.civs[u.civ];let g=40+Math.floor(Math.random()*60);if(hasBon(civ,'huts2'))g*=2;
   if(hasBon(civ,'barbcity')&&!G.cities.some(c=>dist(c.x,c.y,u.x,u.y)<3)){const c=foundCity(civ,u.x,u.y,false);c.build=chooseBuild(c);if(isPlayer(u.civ))log(`🏕 The barbarian village joins your empire as the city of ${c.name}!`,u.x,u.y,true);return}
   civ.gold+=g;if(isPlayer(u.civ)){log(`🔥 You destroyed a barbarian village and took ${g} gold!`,u.x,u.y);fx(u.x,u.y,'💰','#ffd967')}}
-function stepUnit(u,nx,ny,allowAttack){
+function stepUnit(u,nx,ny,allowAttack){if(!RPL||isPlayer(u.civ)||(hidden(u)&&!u._landing))return _stepUnit(u,nx,ny,allowAttack);
+  const fx=u.x,fy=u.y,sn=rplSnap(u);const land=!!u._landing;u._landing=0;const r=_stepUnit(u,nx,ny,allowAttack);
+  if((r==='moved'||r==='captured')&&(u.x!==fx||u.y!==fy)&&u.type!=='spy'&&u.type!=='icbm'&&rplVis([fx,fy],[u.x,u.y]))RPL.push({k:'mv',id:u.id,u:sn,from:[fx,fy],to:[u.x,u.y],board:!!u.onboard,land});
+  if(RPLCAP.length){RPL.push(...RPLCAP);RPLCAP=[]}return r}
+function _stepUnit(u,nx,ny,allowAttack){
   const t0=tileAt(nx,ny);const D=dom(u);
   if(u.type==='spy'){if(t0.t==='water')return 'blocked';const cost=mcost(u,u.x,u.y,nx,ny);u.x=nx;u.y=ny;u.mp=Math.max(0,r3(u.mp-cost));u.moved=true;if(REC&&u===REC.u)REC.pts.push([nx,ny]);else updateSeen(G.civs[u.civ],nx,ny,2);return 'moved'}
   if(D==='land'&&t0.t==='water'){const sh=transportAt(u.civ,nx,ny);if(!sh||u.onboard)return 'blocked';u.onboard=sh.id;u.x=nx;u.y=ny;u.mp=0;u.moved=true;u.fort=false;u.sleep=true;if(REC&&u===REC.u)REC.pts.push([nx,ny]);if(isPlayer(u.civ))log(`⛵ Your ${unitName(u)} boarded the ${UT[sh.type].n}.`,nx,ny);return 'moved'}
-  if(D==='land'&&u.onboard){if(enemyUnitAt(u.civ,nx,ny)||foreignAt(u.civ,nx,ny)>=0&&cityAt(nx,ny))return 'blocked';u.onboard=null;u.sleep=false;const r=stepUnit(u,nx,ny,false);u.mp=0;return r}
+  if(D==='land'&&u.onboard){if(enemyUnitAt(u.civ,nx,ny)||foreignAt(u.civ,nx,ny)>=0&&cityAt(nx,ny))return 'blocked';u.onboard=null;u.sleep=false;if(RPL)u._landing=1;const r=stepUnit(u,nx,ny,false);u.mp=0;return r}
   const f=foreignAt(u.civ,nx,ny);
   if(f>=0){
     if(u.type==='caravan'&&cityAt(nx,ny)&&!atWar(u.civ,f)){const c=cityAt(nx,ny);const g=caravanGold(u,c);G.civs[u.civ].gold+=g;addAtt(f,u.civ,1);if(isPlayer(u.civ)){log(`💰 Your caravan traded in ${c.name} for ${g} gold!`,c.x,c.y,true);fx(c.x,c.y,'💰','#ffd967')}killUnit(u);return 'dead'}
@@ -1253,6 +1331,7 @@ function barbTurn(){const B=G.civs[G.barb];if(!B)return;
 // ===================== turn flow =====================
 function endTurn(){
   if(!G||G.over)return;UI.pend=null;if(!SIM)renderMoveBar();
+  if(!SIM&&!UI.rp){updateVis();RPL=[]}
   for(const civ of G.civs)if(civ.alive&&civ.ai&&!civ.barb){civ._exp=G.units.some(u=>u.civ===civ.id&&u.explorer);aiTurn(civ)}
   barbTurn();
   for(const civ of majors()){if(!civ.alive)continue;for(const c of citiesOf(civ.id))processCity(c);
@@ -1270,15 +1349,43 @@ function endTurn(){
     u.mp=maxMp(u);u.moved=false}
   checkVictory();
   if(SIM)return;
+  if(RPL&&RPLCAP.length)RPL.push(...RPLCAP);RPLCAP=[];const EV=RPL||[];RPL=null;
   const p=G.civs[G.player];
-  const q=[];
+  const autoMoves=()=>{  const q=[];
   for(const u of unitsOf(p.id)){REC={u,pts:[[u.x,u.y]],huts:[]};const ghost={type:u.type,civ:u.civ,army:u.army};
     if(u.goto){const r=goTo(u,u.goto[0],u.goto[1],false);if(u.goto&&dist(u.x,u.y,u.goto[0],u.goto[1])===1&&foreignAt(u.civ,u.goto[0],u.goto[1])>=0){u.goto=null;log(`🚩 Your ${unitName(u)} has reached the enemy — attack when ready.`,u.x,u.y)}else if(r==='blocked')log(`🚩 Your ${unitName(u)} has reached the enemy — attack when ready.`,u.x,u.y)}else if(u.auto==='explore'){if(!explore(u)){u.auto=null;log(`🧭 Your ${unitName(u)} has nothing left to explore.`,u.x,u.y)}}
     const rec=REC;REC=null;if(rec.pts.length>1)q.push({u,pts:rec.pts,ghost,huts:rec.huts,r:'moved'});else for(const t of rec.huts)popHut(u,t)}
   updateVis();UI.sel=null;
-  autosave();if(q.length&&!G.over){UI.animQ=q;playQueued()}else if(!G.over)nextUnit(true)
+  return q};
+  const after=()=>{const q=G.over?[]:autoMoves();autosave();if(q.length&&!G.over){UI.animQ=q;UI.flushAfterQ=true;playQueued()}else if(!G.over)nextUnit(true)};
+  if(EV.length&&!G.over)rpStart(EV,after);else{after();if(!UI.animQ)flushPopups()}
   refreshUI();
 }
+function flushPopups(){if(popQ.length&&!modalOpen)popQ.shift()()}
+// ---- enemy turn replay ----
+function rpStart(ev,after){const pos=new Map(),snap=new Map();
+  for(const e of ev){if(e.k==='cap')continue;if(e.k==='mv'){if(!pos.has(e.id))pos.set(e.id,e.from.slice());if(!snap.has(e.id))snap.set(e.id,e.u)}
+    else{if(!pos.has(e.aid))pos.set(e.aid,e.from.slice());if(!snap.has(e.aid))snap.set(e.aid,e.a);if(!pos.has(e.did))pos.set(e.did,[e.x,e.y]);if(!snap.has(e.did))snap.set(e.did,e.d)}}
+  for(let i=ev.length-1;i>=0;i--)if(ev[i].k==='cap')rpCap(ev[i],false);FX.length=0;
+  const ob=new Map();for(const e of ev)if(e.k==='mv'&&!ob.has(e.id)){ob.set(e.id,null);if(e.land)pos.delete(e.id)}
+  const n=ev.length;UI.rp={ev,i:0,pos,snap,after,ob,fast:n>18,step:Math.round(Math.max(110,Math.min(280,300-n*7))),gap:Math.round(Math.max(30,Math.min(200,220-n*8)))};UI.sel=null;UI.pend=null;document.body.classList.add('replaying');rpBar();refreshUI();setTimeout(rpNext,200)}
+function rpBar(){const R=UI.rp,el=$('rpBar');if(!R){el.style.display='none';return}el.innerHTML=`<span>👁 Enemy moves <b>${Math.min(R.i,R.ev.length)}/${R.ev.length}</b></span><button class="btn small" id="rpSkip">Skip ⏩</button>`;el.style.display='flex';$('rpSkip').onclick=rpEnd}
+function rpWorld(a,b){const [ax,ay]=hexCenter(a[0],a[1]),[bx,by]=b?hexCenter(b[0],b[1]):[ax,ay];return [(ax+bx)/2,(ay+by)/2]}
+function rpOnScreen(a){const [sx,sy]=w2s(...hexCenter(a[0],a[1]));const m=60;return sx>m&&sx<innerWidth-m&&sy>(MOB?110:120)&&sy<innerHeight-(MOB?90:110)}
+function rpNext(){const R=UI.rp;if(!R)return;if(modalOpen){setTimeout(rpNext,300);return}const e=R.ev[R.i++];rpBar();if(!e){rpEnd();return}
+  if(e.k==='cap'){const c=cityById(e.cid);if(c&&!rpOnScreen([c.x,c.y])){UI.pan=hexCenter(c.x,c.y);UI.dirty=true}R.curCap=e;setTimeout(()=>{if(UI.rp!==R)return;R.curCap=null;rpCap(e,true);sfx('city',null,{gap:0});if(c)fx(c.x,c.y,'🏴','#fff');setTimeout(rpNext,R.gap+350)},R.fast?250:450);return}
+  const A=e.from,B=e.k==='mv'?e.to:[e.x,e.y];
+  const go=()=>{if(UI.rp!==R)return;
+    if(e.k==='mv'){const pts=[e.from,e.to];while(R.ev[R.i]&&R.ev[R.i].k==='mv'&&R.ev[R.i].id===e.id&&R.ev[R.i].from[0]===pts[pts.length-1][0]&&R.ev[R.i].from[1]===pts[pts.length-1][1]){pts.push(R.ev[R.i].to);R.i++}
+      const sn=R.snap.get(e.id)||e.u;R.pos.delete(e.id);
+      let lastE=e;for(let q=R.i-1;q>=0;q--){if(R.ev[q].k==='mv'&&R.ev[q].id===e.id){lastE=R.ev[q];break}}
+      UI.anim={u:{id:e.id},id:e.id,pts,ghost:{type:sn.type,civ:sn.civ,army:sn.army},t0:performance.now(),step:R.step,lunge:false,r:'moved',huts:[],queued:true,rp:true,dead:false,board:lastE.board};UI.dirty=true}
+    else{UI.battle={B:{a:{...e.a,x:e.from[0],y:e.from[1]},d:{...e.d,x:e.x,y:e.y},rec:e.rec,win:e.win,A:e.A,D:e.D},u:null,r:null,t0:performance.now(),step:Math.max(70,Math.min(R.fast?100:140,(R.fast?1000:1500)/e.rec.length)),retMax:-1,replay:true,aid:e.aid,did:e.did,ev:e};UI.dirty=true}};
+  if(!rpOnScreen(A)||!rpOnScreen(B)){const [wx,wy]=rpWorld(A,B);UI.pan=[wx,wy];UI.dirty=true;setTimeout(go,R.fast?260:400)}else setTimeout(go,R.gap)}
+function rpMoveDone(A){const R=UI.rp;if(!R)return;R.pos.set(A.id,A.pts[A.pts.length-1].slice());R.ob.set(A.id,A.board?1:null);UI.dirty=true;rpNext()}
+function rpBattleDone(BT){const R=UI.rp;if(!R)return;const e=BT.ev;if(e.dDead)R.pos.delete(e.did);if(e.aDead)R.pos.delete(e.aid);else if(e.after)R.pos.set(e.aid,e.after.slice());UI.dirty=true;rpNext()}
+function rpEnd(){const R=UI.rp;if(!R)return;UI.rp=null;if(UI.anim&&UI.anim.rp)UI.anim=null;if(UI.battle&&UI.battle.replay)UI.battle=null;for(let i=R.i;i<R.ev.length;i++)if(R.ev[i].k==='cap')rpCap(R.ev[i],true);if(R.curCap)rpCap(R.curCap,true);document.body.classList.remove('replaying');rpBar();updateVis();UI.dirty=true;R.after();refreshUI();if(!UI.animQ)flushPopups()}
+function rpCap(e,neu){const c=cityById(e.cid);if(!c)return;c.civ=neu?e.neu:e.old;for(const i of e.own)G.tiles[i].own=c.civ;UI.dirty=true}
 function score(ci){const civ=G.civs[ci];let s=0;for(const c of citiesOf(ci))s+=c.pop*3+5;s+=Object.keys(civ.techs).length*4;s+=wondersOwned(ci)*10+civ.gpBorn*6+civ.conv*8;s+=Math.floor(civ.culture/60);s+=Math.floor(civ.gold/200);return s}
 function capitalsHeld(ci){return G.cities.filter(c=>c.orig>=0&&c.civ===ci).length}
 function checkVictory(){
@@ -1356,7 +1463,13 @@ function draw(){
   UI.banners=[];
   for(const c of G.cities){if(!p.seen[idx(c.x,c.y)])continue;if(c.x<x0-1||c.x>x1+1||c.y<y0-1||c.y>y1+1)continue;drawCity(c,s)}
   // units
-  const AN=UI.anim,BTL=UI.battle;const byTile=new Map();for(const u of G.units){if(AN&&u===AN.u)continue;if(u.onboard&&u!==UI.sel)continue;if((u.type==='spy'||u.type==='icbm')&&u.civ!==G.player)continue;if(BTL&&((u.x===BTL.B.a.x&&u.y===BTL.B.a.y)||(u.x===BTL.B.d.x&&u.y===BTL.B.d.y))&&(u===BTL.u||u.civ===BTL.B.d.civ))continue;const i=idx(u.x,u.y);if(!VIS[i])continue;if(!byTile.has(i))byTile.set(i,[]);byTile.get(i).push(u)}
+  const AN=UI.anim,BTL=UI.battle,RP=UI.rp;const byTile=new Map();
+  let drawList=G.units;if(RP){drawList=[];const seen=new Set();for(const u of G.units){if(RP.pos.has(u.id)){const p2=RP.pos.get(u.id);drawList.push(Object.assign(Object.create(u),{x:p2[0],y:p2[1]},RP.ob.has(u.id)?{onboard:RP.ob.get(u.id)}:{}));seen.add(u.id)}else if(!RP.snap.has(u.id)||!RP.pending||true)drawList.push(u)}
+    for(const [id,p2] of RP.pos)if(!seen.has(id)){const sn=RP.snap.get(id);if(sn)drawList.push(Object.assign({},sn,{x:p2[0],y:p2[1]}))}
+    // units still waiting for their move are not shown at their destination
+    const busy=new Set();for(let i=Math.max(0,RP.i-1);i<RP.ev.length;i++){const e=RP.ev[i];if(e.k==='mv')busy.add(e.id);else if(e.k==='atk')busy.add(e.aid)}
+    drawList=drawList.filter(u=>RP.pos.has(u.id)||!busy.has(u.id)||!RP.snap.has(u.id))}
+  for(const u of drawList){if(AN&&(u===AN.u||(AN.rp&&u.id===AN.id)))continue;if(BTL&&BTL.replay&&(u.id===BTL.aid||u.id===BTL.did))continue;if(u.onboard&&u!==UI.sel)continue;if((u.type==='spy'||u.type==='icbm')&&u.civ!==G.player)continue;if(BTL&&((u.x===BTL.B.a.x&&u.y===BTL.B.a.y)||(u.x===BTL.B.d.x&&u.y===BTL.B.d.y))&&(u===BTL.u||u.civ===BTL.B.d.civ))continue;const i=idx(u.x,u.y);if(!VIS[i])continue;if(!byTile.has(i))byTile.set(i,[]);byTile.get(i).push(u)}
   for(const [i,us] of byTile){const x=i%G.w,y=(i/G.w)|0;if(x<x0||x>x1||y<y0||y>y1)continue;
     let top=us.includes(UI.sel)?UI.sel:us.slice().sort((a,b)=>(UT[b.type].d+UT[b.type].a)-(UT[a.type].d+UT[a.type].a))[0];
     drawUnit(top,us.length,s,!!cityAt(x,y),now)}
@@ -1836,10 +1949,10 @@ function toast(t){t=tw(t);const el=$('toast');el.textContent=t;el.style.display=
 
 // ===================== MODALS =====================
 const popQ=[];let modalOpen=false;
-function showModal(html,wide){$('modal').innerHTML=tw(html);$('modal').style.width=wide?'min(1060px,95vw)':'';$('modalBg').style.display='flex';modalOpen=true;
+function showModal(html,wide,cls){$('modalBg').className=cls||'';document.body.classList.toggle('citymode',cls==='citym');if(cls!=='citym')$('modal').style.removeProperty('--cvTop');$('modal').innerHTML=tw(html);$('modal').style.width=wide?'min(1060px,95vw)':'';$('modalBg').style.display='flex';modalOpen=true;
   const x=$('modal').querySelector('.x');if(x)x.onclick=closeModal;return $('modal')}
-function closeModal(){$('modalBg').style.display='none';modalOpen=false;refreshUI();if(popQ.length)setTimeout(()=>{if(!modalOpen&&popQ.length)popQ.shift()()},60)}
-function queuePopup(f){if(SIM)return;if(modalOpen)popQ.push(f);else f()}
+function closeModal(){$('modalBg').style.display='none';modalOpen=false;$('modalBg').className='';document.body.classList.remove('citymode');if(UI.cityCam){UI.cam.x=UI.cityCam.x;UI.cam.y=UI.cityCam.y;UI.cam.z=UI.cityCam.z;UI.cityCam=null;UI.dirty=true}if(UI.rp){refreshUI();return}refreshUI();if(popQ.length)setTimeout(()=>{if(!modalOpen&&popQ.length)popQ.shift()()},60)}
+function queuePopup(f){if(SIM)return;if(modalOpen||UI.rp||RPL)popQ.push(f);else f()}
 function msgBox(title,html,adv){showModal(`<span class="x">✕</span><h2>${title}</h2>${adv?advisorBox(adv,html):html}<div style="text-align:right;margin-top:12px"><button class="btn gold" id="mOk">OK</button></div>`);$('mOk').onclick=closeModal}
 function confirmBox(title,text,yes){showModal(`<h2>${title}</h2><p>${text}</p><div style="text-align:right;margin-top:12px"><button class="btn" id="mNo">Cancel</button> <button class="btn gold" id="mYes">Yes</button></div>`);
   $('mNo').onclick=closeModal;$('mYes').onclick=()=>{closeModal();yes()}}
@@ -1848,36 +1961,61 @@ function meetPopup(c){msgBox(`You meet the ${c.name}`,`We have made contact with
 function peaceOffer(c){showModal(`<h2>Peace Proposal</h2>${advisorBox('dom',`Sire, <b>${c.leader}</b> of the ${c.name} proposes an end to the war.`)}<div style="text-align:right"><button class="btn red" id="pNo">Refuse</button> <button class="btn green" id="pYes">Accept Peace</button></div>`);
   $('pNo').onclick=()=>{rel(c.id,G.player).since=G.turn;closeModal()};$('pYes').onclick=()=>{makePeace(c.id,G.player);closeModal()}}
 
-function openCity(c,note){
+function openCity(c,note,cat){
   const civ=G.civs[c.civ];const y=cityYield(c);const need=growNeed(c.pop);const it=c.build?itemInfo(c.build):null;
-  const gt=y.fs>0?Math.ceil((need-c.food)/y.fs)+' turns':y.fs<0?'starving!':'stagnant';
+  const gturns=y.fs>0?Math.ceil((need-c.food)/y.fs):0;
+  const growTxt=y.fs>0?`Population growth in ${gturns} turn${gturns>1?'s':''}`:y.fs<0?'Starving! The city will shrink':'Population is not growing';
   const opts=buildOptions(c);const rc=rushCost(c);
-  const card=k=>{const i=itemInfo(k);const T=i.d;let ds=i.kind==='u'?(T.civil?(i.id==='settlers'?`Founds a city · costs ${settlerPop(civ)} pop`:i.id==='caravan'?'Trades for gold or helps build wonders':''):`⚔️${T.a} 🛡${T.d} 👣${T.m}`)+(T.def?' · defender':'')+(T.mounted?' · mounted':'')+(T.anti?' · ×2 vs mounted':'')+(T.siege?' · ignores walls':''):T.d;
-    return `<div class="card ${c.build===k?'cur':''}" data-k="${k}"><span class="ic">${i.i}</span><b>${i.n}</b>${itemCost(c,k)}⚙ · ${turnsFor(c,k,y)} turns<div class="ds">${ds}</div></div>`};
-  const sec=(t,kind)=>{const l=opts.filter(k=>k[0]===kind);return l.length?`<h3>${t}</h3><div class="cards">${l.map(card).join('')}</div>`:''};
-  const blds=Object.keys(c.b).map(k=>{const d=BLD[k]||WON[k];return d?`<span class="chip" title="${d.d}">${d.i} ${d.n}</span>`:''}).join('')||'<span class="muted">None yet</span>';
-  const units=unitsAt(c.x,c.y).filter(u=>u.civ===c.civ).map(u=>`<button class="btn small gar" data-u="${u.id}" title="Select ${unitName(u)}">${UT[u.type].i} ${unitName(u)}${u.fort?' 🛡':''}</button>`).join(' ')||'<span class="muted">Undefended!</span>';
+  const canBuy=it&&rc>0&&civ.gold>=rc&&c.build!=='w:worldbank'&&c.build!=='w:un';
   const others=citiesOf(c.civ).filter(o=>o!==c&&dist(o.x,o.y,c.x,c.y)<=14).sort((a,b)=>dist(a.x,a.y,c.x,c.y)-dist(b.x,b.y,c.x,c.y)).slice(0,5);
   const plans=others.map(o=>({o,pl:roadPlan(c,o)})).filter(z=>z.pl);
-  const roadsHtml=plans.length?`<h3>🛤 Roads to your other cities</h3><div class="row">${plans.map(({o,pl})=>pl.tiles.length?`<button class="btn small rd" data-o="${o.id}" ${civ.gold>=pl.cost?'':'disabled'} title="Lays road on ${pl.tiles.length} tiles">Build road to ${o.name} · ${pl.tiles.length} tiles · 💰${pl.cost}</button>`:`<span class="chip">✔ Connected to ${o.name}</span>`).join('')}</div><p class="muted" style="margin:4px 0 0">Roads let troops move 3× faster and add +1 trade on grassland, plains and desert.</p>`:'';
-  const m=showModal(`<span class="x">✕</span><h2>${c.cap?'★ ':''}${c.name} <button class="btn small" id="cRen" title="Rename this city">✏️ Rename</button> <span class="muted" style="font-size:15px">· population ${c.pop}</span></h2>
-   ${note?`<div style="background:#3a3418;border:1px solid #ffd967;border-radius:6px;padding:6px 10px;margin-bottom:8px">${note}</div>`:''}<div class="row" style="font-size:14.5px">
-    <span>🌾 Food ${y.f} (${y.fs>=0?'+':''}${y.fs})</span><span>⚙️ Production ${y.p}</span><span>💱 Trade ${y.t}</span><span>🔬 ${y.sci}</span><span>💰 ${y.gold}</span><span>🎭 ${y.cul}</span></div>
-   <div style="margin:8px 0 4px" class="muted">Growth: ${c.food}/${need} (${gt})</div><div class="bar food"><i style="width:${Math.min(100,c.food/need*100)}%"></i></div>
-   <div class="row" style="margin-top:12px"><div style="flex:1"><b>Building: ${it?it.i+' '+it.n:'—'}</b> <span class="muted">${it?`${c.prod}/${itemCost(c,c.build)} · ${turnsFor(c,c.build,y)} turns`:''}</span>
-    <div class="bar" style="margin-top:4px"><i style="width:${it?Math.min(100,c.prod/itemCost(c,c.build)*100):0}%"></i></div></div>
-    <button class="btn gold" id="cBuy" ${it&&rc>0&&civ.gold>=rc&&c.build!=='w:worldbank'&&c.build!=='w:un'?'':'disabled'}>Buy now: 💰${rc}</button></div>
-   <div style="margin-top:10px"><b>Buildings:</b> ${blds}</div>${c.gp&&c.gp.length?`<div style="margin-top:6px"><b>Great People living here:</b> ${c.gp.map(k=>`<span class="chip" title="${GP[k].settle}">🌟 ${GP[k].n}</span>`).join('')}</div>`:''}<div style="margin-top:6px">Garrison <span class="muted">(click to select)</span>: ${units}</div>
-   <div id="cAdv" style="margin-top:10px">${advisorBox('eco',it?`We are building <b>${it.n}</b>. Hover over any item below and I'll tell you what it does.`:'Choose something to build below.')}</div>${roadsHtml}${sec('Units','u')}${sec('Buildings','b')}${sec('Wonders (only one in the world)','w')}${sec('Spaceship Parts (build all four to launch)','p')}
-   <p class="muted">Citizens work the best tiles within ${workRadius(c)} hex${workRadius(c)>1?'es':''}${c.b.courthouse?'':' (a Courthouse expands this to 2)'}. Bought items finish at the end of the turn.</p>`,true);
-  m.querySelectorAll('.card').forEach(el=>el.onmouseenter=()=>{const i=itemInfo(el.dataset.k),T=i.d,b=m.querySelector('#cAdv .bt');if(!b)return;
-    b.innerHTML=i.kind==='u'?`<b>${i.n}</b> cost ${itemCost(c,el.dataset.k)} production (${turnsFor(c,el.dataset.k,y)} turns). Attack ${T.a}, defense ${T.d}, moves ${T.m}. Three of them can form an Army with triple strength.${i.id==='settlers'?` Settlers cost ${settlerPop(civ)} population.`:''}${T.anti?' Strong against horses.':''}${T.siege?' Ignores city walls.':''}`:`<b>${i.n}</b> costs ${itemCost(c,el.dataset.k)} production (${turnsFor(c,el.dataset.k,y)} turns). ${T.d}.`});
-  m.querySelectorAll('.card').forEach(el=>el.onclick=()=>{if(c.build!==el.dataset.k){const was=c.build?itemInfo(c.build).kind:null;const nk=el.dataset.k[0];
-    if(was&&was!==nk&&!(was==='u'&&nk==='u'))c.prod=Math.floor(c.prod*0.5);c.build=el.dataset.k}openCity(c,note)});
-  m.querySelectorAll('.gar').forEach(b=>b.onclick=()=>{const u=G.units.find(z=>z.id===+b.dataset.u);if(u){closeModal();u.fort=false;u.sleep=false;select(u,false)}});
-  $('cRen').onclick=()=>nameCity(c,()=>openCity(c,note),'rename');
-  m.querySelectorAll('.rd').forEach(b=>b.onclick=()=>{const o=cityById(+b.dataset.o);const pl=roadPlan(c,o);if(pl&&civ.gold>=pl.cost){civ.gold-=pl.cost;buildRoadPlan(pl);log(`🛤 Road built from ${c.name} to ${o.name}.`,c.x,c.y);openCity(c,note)}});
-  $('cBuy').onclick=()=>{const r=rushCost(c);if(civ.gold>=r){civ.gold-=r;c.prod=itemCost(c,c.build);openCity(c)}};
+  const CATS=[['u','⚔️','Build Unit','Units'],['b','🏛','Build Building','Buildings'],['w','🗿','Build Wonder','Wonders'],['p','🚀','Spaceship','Space'],['r','🛤','Build Road','Roads'],['h','🏠','View Buildings','Built']]
+    .filter(([k])=>k==='h'||(k==='r'?plans.length:opts.some(o=>o[0]===k)));
+  if(!cat||!CATS.some(z=>z[0]===cat))cat=(UI.cityC===c.id&&UI.cityCat&&CATS.some(z=>z[0]===UI.cityCat))?UI.cityCat:(it&&CATS.some(z=>z[0]===it.kind)?it.kind:'u');
+  UI.cityCat=cat;UI.cityC=c.id;
+  const desc=k=>{const i=itemInfo(k);const T=i.d;return i.kind==='u'?(T.civil?(i.id==='settlers'?`Founds a city · costs ${settlerPop(civ)} pop`:i.id==='caravan'?'Trades for gold or helps build wonders':i.id==='spy'?'Steals, sabotages, crosses borders':''):`⚔️${T.a} 🛡${T.d} 👣${T.m}`)+(T.def?' · defender':'')+(T.mounted?' · mounted':'')+(T.anti?' · ×2 vs mounted':'')+(T.siege?' · ignores walls':''):T.d};
+  const row=k=>{const i=itemInfo(k);return `<div class="crow ${c.build===k?'cur':''}" data-k="${k}"><span class="ic">${i.i}</span><div class="cm"><b>${i.n}</b><small>${desc(k)}</small></div><div class="ct"><b>${turnsFor(c,k,y)} turn${turnsFor(c,k,y)>1?'s':''}</b><small>⚙ ${itemCost(c,k)}</small></div></div>`};
+  let list;
+  if(cat==='r')list=plans.map(({o,pl})=>pl.tiles.length?`<div class="crow rd ${civ.gold>=pl.cost?'':'dis'}" data-o="${o.id}"><span class="ic">🛤</span><div class="cm"><b>Road to ${o.name}</b><small>${pl.tiles.length} tiles · troops move 3× faster, +1 trade on open land</small></div><div class="ct"><b>💰 ${pl.cost}</b><small>${civ.gold>=pl.cost?'build now':'need gold'}</small></div></div>`:`<div class="crow dis"><span class="ic">✔</span><div class="cm"><b>Connected to ${o.name}</b><small>Roads already link these cities</small></div></div>`).join('');
+  else if(cat==='h'){const bl=Object.keys(c.b).map(k=>{const d=BLD[k]||WON[k];return d?`<div class="crow dis"><span class="ic">${d.i}</span><div class="cm"><b>${d.n}</b><small>${d.d}</small></div></div>`:''}).join('');
+    const gp=(c.gp||[]).map(k=>`<div class="crow dis"><span class="ic">🌟</span><div class="cm"><b>${GP[k].n}</b><small>${GP[k].settle}</small></div></div>`).join('');
+    list=(bl+gp)||'<div class="cvNone">No buildings yet. Pick <b>Build Building</b> to start one.</div>'}
+  else list=opts.filter(k=>k[0]===cat).map(row).join('');
+  const gar=unitsAt(c.x,c.y).filter(u=>u.civ===c.civ);
+  const mine=citiesOf(c.civ);const ci=mine.indexOf(c);const prev=mine[(ci-1+mine.length)%mine.length],next=mine[(ci+1)%mine.length];
+  const prevScroll=document.querySelector('#modal .cvList')&&UI.cityKeep?document.querySelector('#modal .cvList').scrollTop:0;UI.cityKeep=false;
+  if(!UI.cityCam)UI.cityCam={x:UI.cam.x,y:UI.cam.y,z:UI.cam.z};
+  const m=showModal(`<div class="cvTop">
+    <div class="cvTitle">${mine.length>1?`<button class="cvNav" id="cPrev" title="Previous city">◀ <span>${prev.name}</span></button>`:'<span></span>'}
+      <div class="cvName"><span class="cvPop" title="Population">${c.pop}</span><span class="cvNm">${c.cap?'★ ':''}${c.name}</span><button class="btn small" id="cRen" title="Rename this city">✏️</button></div>
+      ${mine.length>1?`<button class="cvNav" id="cNext" title="Next city"><span>${next.name}</span> ▶</button>`:'<span></span>'}</div>
+    <div class="cvRows">
+      <div class="cvRow"><span class="cvNum food">${y.fs>=0?'+':''}${y.fs} 🌾</span><span class="cvTxt">${growTxt}</span><div class="bar food"><i style="width:${Math.min(100,c.food/need*100)}%"></i></div></div>
+      <div class="cvSide"><span title="Culture per turn">+${y.cul} 🎭</span><span title="Science per turn">+${y.sci} 🔬</span><span title="Gold per turn">+${y.gold} 💰</span></div>
+      <div class="cvRow"><span class="cvNum prod">+${y.p} ⚙️</span><span class="cvTxt">${it?`${it.i} ${it.n} complete in ${turnsFor(c,c.build,y)} turn${turnsFor(c,c.build,y)>1?'s':''}`:'Nothing being built — pick something below'}</span><div class="bar"><i style="width:${it?Math.min(100,c.prod/itemCost(c,c.build)*100):0}%"></i></div></div>
+      <div class="cvSide2"><button class="btn gold" id="cBuy" ${canBuy?'':'disabled'}>Rush for ${rc} gold</button><span class="cvGold">Total Gold: <b>${civ.gold}</b></span></div>
+    </div>${note?`<div class="cvNote">${note}</div>`:''}</div>
+   <div class="cvMenu">${CATS.map(([k,i,n,sn])=>`<button class="cvTab ${k===cat?'on':''}" data-cat="${k}"><span class="ti">${i}</span><span class="lg">${n}</span><span class="sm">${sn}</span></button>`).join('')}</div>
+   <div class="cvList">${list}</div>
+   <div class="cvGar">${gar.map(u=>`<button class="cvU gar" data-u="${u.id}" title="${unitName(u)} — tap to select"><canvas width="112" height="112" data-f="${u.type}" data-n="${u.army?3:1}"></canvas>${u.vet?'<i>★</i>':''}${u.fort?'<em>🛡</em>':''}</button>`).join('')||'<div class="cvEmpty">⚠️ Undefended</div>'}</div>
+   <div class="cvBot"><span class="cvHint">Citizens work the best tiles within ${workRadius(c)} hex${workRadius(c)>1?'es':''}${c.b.courthouse?'':' (a Courthouse makes it 2)'}. Bought items finish at the end of the turn.</span><button class="btn red" id="cExit">✖ Exit</button></div>`,false,'citym');
+  m.querySelectorAll('canvas[data-f]').forEach(k=>drawFigure(k.getContext('2d'),k.dataset.f,civ.color,56,50,78,+k.dataset.n));
+  const top=m.querySelector('.cvTop').getBoundingClientRect().bottom;m.style.setProperty('--cvTop',(top+8)+'px');
+  if(prevScroll)m.querySelector('.cvList').scrollTop=prevScroll;
+  // frame the city in the open part of the screen
+  {const z=MOB?1.5:1.8;UI.cam.z=z;const W=innerWidth,H=innerHeight;let l=0,r=W,t=top,b=H;const R=s=>m.querySelector(s).getBoundingClientRect();
+    if(document.body.classList.contains('port')){b=Math.min(R('.cvMenu').top,R('.cvGar').height?R('.cvGar').top:H)}else{l=Math.max(R('.cvList').right,R('.cvMenu').right);r=R('.cvGar').width?R('.cvGar').left:W;b=R('.cvBot').top}
+    const tx=(l+r)/2,ty=(t+b)/2;const [wx,wy]=hexCenter(c.x,c.y);UI.pan=null;UI.cam.x=wx-(tx-W/2)/z;UI.cam.y=wy-(ty-H/2)/z;UI.dirty=true}
+  const again=(k)=>{UI.cityKeep=true;openCity(c,note,k||cat)};
+  m.querySelectorAll('.cvTab').forEach(b=>b.onclick=()=>openCity(c,note,b.dataset.cat));
+  m.querySelectorAll('.crow[data-k]').forEach(el=>el.onclick=()=>{if(c.build!==el.dataset.k){const was=c.build?itemInfo(c.build).kind:null;const nk=el.dataset.k[0];
+    if(was&&was!==nk&&!(was==='u'&&nk==='u'))c.prod=Math.floor(c.prod*0.5);c.build=el.dataset.k;sfx('ui')}again()});
+  m.querySelectorAll('.gar').forEach(b=>b.onclick=()=>{const u=G.units.find(z=>z.id===+b.dataset.u);if(u){closeModal();u.fort=false;u.sleep=false;select(u,true)}});
+  $('cRen').onclick=()=>nameCity(c,()=>openCity(c,note,cat),'rename');
+  if($('cPrev'))$('cPrev').onclick=()=>openCity(prev);if($('cNext'))$('cNext').onclick=()=>openCity(next);
+  m.querySelectorAll('.rd').forEach(b=>b.onclick=()=>{const o=cityById(+b.dataset.o);const pl=roadPlan(c,o);if(pl&&civ.gold>=pl.cost){civ.gold-=pl.cost;buildRoadPlan(pl);log(`🛤 Road built from ${c.name} to ${o.name}.`,c.x,c.y);again('r')}});
+  $('cBuy').onclick=()=>{const r=rushCost(c);if(civ.gold>=r){civ.gold-=r;c.prod=itemCost(c,c.build);sfx('city');again()}};
+  $('cExit').onclick=closeModal;
 }
 function govModal(){const p=G.civs[G.player];
   showModal(`<span class="x">✕</span><h2>🏛 Government</h2>${advisorBox('dom',`Sire, we currently live under <b>${GOVS[p.gov].n}</b>. ${hasBon(p,'noanarchy')||civHasWonder(p.id,'pyramids')?'We can change without any anarchy.':'Changing government causes one turn of anarchy (half production, no science or gold).'}`)}
@@ -1898,7 +2036,7 @@ function techTree(){
 function citiesList(){const cs=citiesOf(G.player);
   showModal(`<span class="x">✕</span><h2>🏙 Your Cities</h2><table class="t"><tr><th>City</th><th>Pop</th><th>🌾</th><th>⚙️</th><th>🔬</th><th>💰</th><th>Building</th></tr>
   ${cs.map(c=>{const y=cityYield(c);const it=c.build?itemInfo(c.build):null;return `<tr class="click" data-id="${c.id}"><td>${c.cap?'★ ':''}${c.name}</td><td>${c.pop}</td><td>${y.fs>=0?'+':''}${y.fs}</td><td>${y.p}</td><td>${y.sci}</td><td>${y.gold}</td><td>${it?it.i+' '+it.n+' ('+turnsFor(c,c.build,y)+')':'-'}</td></tr>`}).join('')}</table>`,true);
-  $('modal').querySelectorAll('tr.click').forEach(r=>r.onclick=()=>{const c=cityById(+r.dataset.id);centerOn(c.x,c.y);openCity(c)})}
+  $('modal').querySelectorAll('tr.click').forEach(r=>r.onclick=()=>{const c=cityById(+r.dataset.id);openCity(c)})}
 function diplomacy(){const p=G.player,P=G.civs[p];const known=majors().filter(c=>c.id!==p&&rel(p,c.id).met);const ps=strength(p);
   const row=c=>{const r=rel(p,c.id);const st=strength(c.id);const cmp=st>ps*1.3?'<span style="color:#ff9a9a">Stronger</span>':st<ps*0.77?'<span style="color:#9be37f">Weaker</span>':'Similar';
     const att=attitude(c.id,p);const mood=att>=4?'😊 Friendly':att<=-4?'😠 Hostile':'😐 Neutral';
@@ -2003,10 +2141,10 @@ function gameMenu(){showModal(`<span class="x">✕</span><h2>Menu</h2><div style
   $('gHelp').onclick=help;$('gNew').onclick=()=>confirmBox('New game?','Abandon this game and start a new one?',mainMenu)}
 
 // ===================== SAVE / LOAD =====================
-function saveGame(key){try{localStorage.setItem(key,JSON.stringify({v:1,G}));return true}catch(e){toast('Could not save: '+e.message);return false}}
+function saveGame(key){if(UI.rp)rpEnd();try{localStorage.setItem(key,JSON.stringify({v:1,G}));return true}catch(e){toast('Could not save: '+e.message);return false}}
 function loadRaw(key){try{return localStorage.getItem(key)}catch(e){return null}}
 function autosave(){saveGame('roe_auto')}
-function loadGame(key){const r=loadRaw(key);if(!r)return false;try{const d=JSON.parse(r);UI.anim=null;UI.animQ=null;UI.pend=null;G=d.G;buildWorldArt();UI.sel=null;popQ.length=0;setupMini();updateVis();
+function loadGame(key){const r=loadRaw(key);if(!r)return false;try{const d=JSON.parse(r);UI.anim=null;UI.animQ=null;UI.pend=null;UI.battle=null;UI.rp=null;RPL=null;RPLCAP=[];UI.flushAfterQ=false;document.body.classList.remove('replaying');rpBar();G=d.G;buildWorldArt();UI.sel=null;popQ.length=0;setupMini();updateVis();
   const c=citiesOf(G.player)[0]||G.units.find(u=>u.civ===G.player);if(c)centerOn(c.x,c.y);renderLog();refreshUI();
   if(G.over)queuePopup(gameOver);else{nextUnit(true);if(!G.civs[G.player].res)queuePopup(techChoice)}return true}catch(e){toast('Save file is damaged');return false}}
 
@@ -2114,7 +2252,7 @@ cv.addEventListener('pointermove',e=>{if(PTR.has(e.pointerId))PTR.set(e.pointerI
   if(UI.pinch&&PTR.size>=2){const P=pinchInfo(),Q=UI.pinch;const [bx,by]=s2w(Q.mx,Q.my);UI.cam.z=clamp(Q.z*P.d/Q.d,0.45,2.2);const [ax,ay]=s2w(P.mx,P.my);UI.cam.x+=bx-ax;UI.cam.y+=by-ay;Q.z=UI.cam.z;Q.d=P.d;Q.mx=P.mx;Q.my=P.my;UI.dirty=true;return}
   if(UI.drag){const dx=e.clientX-UI.drag.x,dy=e.clientY-UI.drag.y;if(Math.abs(dx)+Math.abs(dy)>(UI.drag.touch?12:6))UI.drag.moved=true;
     if(UI.drag.moved){UI.cam.x=UI.drag.cx-dx/UI.cam.z;UI.cam.y=UI.drag.cy-dy/UI.cam.z;UI.dirty=true;return}}
-  if(!G||e.pointerType!=='mouse')return;UI.hoverMouse=true;const t=tileFromEvent(e);if(!UI.hover||t[0]!==UI.hover[0]||t[1]!==UI.hover[1]){UI.hover=t;onHover(t)}});
+  if(!G||e.pointerType!=='mouse'||modalOpen)return;UI.hoverMouse=true;const t=tileFromEvent(e);if(!UI.hover||t[0]!==UI.hover[0]||t[1]!==UI.hover[1]){UI.hover=t;onHover(t)}});
 function ptrEnd(e){PTR.delete(e.pointerId);if(PTR.size<2)UI.pinch=null;if(PTR.size===0&&UI.noClick){UI.noClick=false;UI.drag=null;return true}return !!UI.noClick}
 cv.addEventListener('pointercancel',e=>{ptrEnd(e);UI.drag=null});
 cv.addEventListener('pointerup',e=>{if(e.button!==0)return;if(ptrEnd(e))return;const d=UI.drag;UI.drag=null;if(!d||d.moved||!G||modalOpen||UI.anim||UI.battle)return;
@@ -2136,7 +2274,7 @@ function onHover(t){
   if(u&&(x!==u.x||y!==u.y)&&tl.t!=='water'&&!(UT[u.type].a===0&&G.units.some(o=>o.x===x&&o.y===y&&o.civ!==u.civ))){const p=findPath(u,x,y,2500);if(p){UI.path=p;const f=foreignAt(u.civ,x,y);
     if(f>=0&&G.units.some(o=>o.x===x&&o.y===y&&o.civ===f)&&UT[u.type].a>0)UI.odds=combatOdds(u,x,y,400)}}
 }
-function onClick(e){
+function onClick(e){if(UI.rp)return;
   // city banners
   for(const b of UI.banners)if(e.clientX>=b.x&&e.clientX<=b.x+b.w&&e.clientY>=b.y&&e.clientY<=b.y+b.h){if(isPlayer(b.c.civ)){openCity(b.c);return}}
   const [x,y]=tileFromEvent(e);if(!inb(x,y))return;const p=G.civs[G.player];const u=UI.sel;
@@ -2233,7 +2371,8 @@ function drawBattle(s,now){const BT=UI.battle;if(!BT)return;const B=BT.B;if(BT.r
   const lab=done?(B.retreated?'RETREAT':B.win===(B.a.civ===G.player)?'VICTORY!':'DEFEAT'):`${Math.round(B.A*10)/10}  ⚔  ${Math.round(B.D*10)/10}`;
   ctx.font=`900 ${Math.max(16,Math.round(s*(done?0.55:0.38)))}px "Trebuchet MS",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=5;ctx.strokeStyle='#000';ctx.strokeText(lab,mx,my-s*1.05);
   ctx.fillStyle=done?(B.win===(B.a.civ===G.player)?'#ffe27a':'#ff6b6b'):'#fff';ctx.fillText(lab,mx,my-s*1.05);
-  UI.dirty=true;if(el>B.rec.length+0.6){const u=BT.u,r=BT.r;UI.battle=null;$('moveBar').style.display='none';if(B.pending){if(B.retreated)resolveRetreat(B,BT.rk);else resolveBattle(B.att,B.def,B.x,B.y,B.win,B.last)}updateVis();checkVictory();if(!G.units.includes(u)||u.mp<=0)nextUnit(true);else{UI.reach=null;refreshUI()}}}
+  UI.dirty=true;if(el>B.rec.length+0.6&&BT.replay){UI.battle=null;rpBattleDone(BT);return}
+  if(el>B.rec.length+0.6){const u=BT.u,r=BT.r;UI.battle=null;$('moveBar').style.display='none';if(B.pending){if(B.retreated)resolveRetreat(B,BT.rk);else resolveBattle(B.att,B.def,B.x,B.y,B.win,B.last)}updateVis();checkVictory();if(!G.units.includes(u)||u.mp<=0)nextUnit(true);else{UI.reach=null;refreshUI()}}}
 function startAnim(u,pts,ghost,r,enemyT,x,y,huts,queued){
   UI.pend=null;renderMoveBar();UI.path=null;UI.odds=null;
   const lunge=(r==='attacked'||r==='dead')&&pts.length===3&&pts[0][0]===pts[2][0]&&pts[0][1]===pts[2][1];
@@ -2244,21 +2383,21 @@ function animPos(A,now){if(A.lunge){const tt=(now-A.t0)/A.step;const [ax,ay]=hex
 const n=A.pts.length-1;const tt=(now-A.t0)/A.step;const k=Math.min(n,Math.floor(tt));const f=k>=n?0:tt-k;
   const [ax,ay]=hexCenter(...A.pts[k]);const [bx,by]=hexCenter(...A.pts[Math.min(n,k+1)]);let ff=A.lunge?Math.min(f,0.55):f;return {wx:ax+(bx-ax)*ff,wy:ay+(by-ay)*ff,k,f,done:tt>=n,tt}}
 function tickAnim(now){const A=UI.anim;if(!A)return;const P=animPos(A,now);
-  if(!A.lunge){if(A.sk!==P.k&&!P.done){A.sk=P.k;const q=A.pts[Math.min(P.k+1,A.pts.length-1)];if(A.ghost.civ===G.player||VIS[idx(q[0],q[1])])sfx('move',A.ghost.type,{gap:110})}}else if(!A.sp){A.sp=1;sfx('attack',A.ghost.type,{gap:0})}
+  if(!A.lunge){if(A.sk!==P.k&&!P.done){A.sk=P.k;const q=A.pts[Math.min(P.k+1,A.pts.length-1)];if(A.ghost.civ===G.player||VIS[idx(q[0],q[1])])sfx('move',A.ghost.type,{gap:A.rp?60:110})}}else if(!A.sp){A.sp=1;sfx('attack',A.ghost.type,{gap:0})}
   // reveal the land as the troop walks
-  const p=G.civs[G.player];for(let i=UI.revealed;i<=P.k&&!A.lunge;i++){const [x,y]=A.pts[i];const t=tileAt(x,y);for(const [a,b] of inRadius(x,y,(t.t==='hills'||t.t==='mount')?3:2)){VIS[idx(a,b)]=1;p.seen[idx(a,b)]=1}UI.revealed=i+1;FOG.dirty=true}
+  const p=G.civs[G.player];for(let i=UI.revealed;i<=P.k&&!A.lunge&&!A.rp;i++){const [x,y]=A.pts[i];const t=tileAt(x,y);for(const [a,b] of inRadius(x,y,(t.t==='hills'||t.t==='mount')?3:2)){VIS[idx(a,b)]=1;p.seen[idx(a,b)]=1}UI.revealed=i+1;FOG.dirty=true}
   // camera follows
-  const z=UI.cam.z,sx=(P.wx-UI.cam.x)*z,sy=(P.wy-UI.cam.y)*z;if(Math.abs(sx)>innerWidth*0.25||Math.abs(sy)>innerHeight*0.22||A.follow){A.follow=true;UI.cam.x+=(P.wx-UI.cam.x)*0.08;UI.cam.y+=(P.wy-UI.cam.y)*0.08}
-  if(P.done){if(!A.endAt)A.endAt=now;if(now-A.endAt>(A.lunge?350:A.queued?380:750)){UI.anim=null;finishMove(A)}}
+  const z=UI.cam.z,sx=(P.wx-UI.cam.x)*z,sy=(P.wy-UI.cam.y)*z;if(!modalOpen&&(Math.abs(sx)>innerWidth*0.25||Math.abs(sy)>innerHeight*0.22||A.follow)){A.follow=true;UI.cam.x+=(P.wx-UI.cam.x)*0.08;UI.cam.y+=(P.wy-UI.cam.y)*0.08}
+  if(P.done){if(!A.endAt)A.endAt=now;if(now-A.endAt>(A.rp?(UI.rp&&UI.rp.fast?60:140):A.lunge?350:A.queued?380:750)){UI.anim=null;if(A.rp){rpMoveDone(A);return}finishMove(A)}}
 }
 function finishMove(A){const u=A.u;for(const t of A.huts||[])if(t.hut&&G.units.includes(u))popHut(u,t);updateVis();
-  if(A.queued){if(UI.animQ&&UI.animQ.length){playQueued();return}UI.animQ=null;if(!G.over)nextUnit(true);refreshUI();return}
+  if(A.queued){if(UI.animQ&&UI.animQ.length){playQueued();return}UI.animQ=null;if(!G.over)nextUnit(true);refreshUI();if(UI.flushAfterQ){UI.flushAfterQ=false;flushPopups()}return}
   if(A.r==='blocked')toast(A.enemyT?'Arrived next to the enemy — click it again to attack':'Path blocked');
   checkVictory();
   if(!G.units.includes(u)||u.mp<=0||u.goto)nextUnit(true);else{UI.reach=null;refreshUI()}}
-function playQueued(){const q=UI.animQ.shift();if(!q){UI.animQ=null;nextUnit(true);return}if(!G.units.includes(q.u)&&!q.dead){playQueued();return}startAnim(q.u,q.pts,q.ghost,q.r,false,0,0,q.huts,true)}
+function playQueued(){const q=UI.animQ.shift();if(!q){UI.animQ=null;nextUnit(true);if(UI.flushAfterQ){UI.flushAfterQ=false;flushPopups()}return}if(!G.units.includes(q.u)&&!q.dead){playQueued();return}startAnim(q.u,q.pts,q.ghost,q.r,false,0,0,q.huts,true)}
 function panTo(x,y){const [wx,wy]=hexCenter(x,y);const [dx,dy]=camOff();UI.pan=[wx+dx/UI.cam.z,wy+dy/UI.cam.z];UI.dirty=true}
-window.addEventListener('keydown',e=>{if(!G)return;if(UI.anim||UI.battle)return;
+window.addEventListener('keydown',e=>{if(!G)return;if(UI.anim||UI.battle||UI.rp)return;
   if(e.key==='Escape'){if(modalOpen)closeModal();else if(UI.pend)cancelMove();else{UI.sel=null;refreshUI()}return}
   if(modalOpen)return;const u=UI.sel;
   if(e.key==='Enter'){if(UI.pend)confirmMove();else endTurn();}
@@ -2274,7 +2413,7 @@ $('zHome').onclick=()=>{if(!G)return;const u=UI.sel;if(u)centerOn(u.x,u.y);else{
 function placeZoom(){const r=$('miniWrap').getBoundingClientRect();$('zoomBox').style.bottom=(innerHeight-r.top+8)+'px'}
 $('pSci').onclick=()=>{if(G)techTree()};
 $('pGov').onclick=()=>{if(G)govModal()};
-$('endTurn').onclick=()=>{if(modalOpen)return;if(UI.anim||UI.battle){UI.endQ=true;toast('Ending the turn once your units finish moving…');return}endTurn()};
+$('endTurn').onclick=()=>{if(modalOpen||UI.rp)return;if(UI.anim||UI.battle){UI.endQ=true;toast('Ending the turn once your units finish moving…');return}endTurn()};
 $('rateUp').onclick=()=>{const p=G.civs[G.player];p.rate=Math.min(100,p.rate+10);refreshUI()};
 $('rateDn').onclick=()=>{const p=G.civs[G.player];p.rate=Math.max(0,p.rate-10);refreshUI()};
 $('bTech').onclick=()=>techTree();$('bCities').onclick=citiesList;$('bDiplo').onclick=diplomacy;$('bVic').onclick=victoryScreen;$('bMenu').onclick=gameMenu;
