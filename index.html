@@ -2204,7 +2204,7 @@ function mpLoadPeer(){if(window.Peer)return Promise.resolve();if(MP.peerLoad)ret
     s.onload=()=>res();s.onerror=()=>{MP.peerLoad=null;rej(new Error('Could not load multiplayer. Check your internet connection.'))};document.head.appendChild(s)});return MP.peerLoad}
 function mpPeerOpts(){const q=mpParam('peerhost');if(q){const [h,p]=q.split(':');return {host:h,port:+p||9000,path:'/',secure:false,debug:0}}return {debug:0}}
 function mpCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<5;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
-function mpRawSend(conn,obj){if(!conn||!conn.open)return;const s=JSON.stringify(obj);const N=40000;
+function mpRawSend(conn,obj){if(!conn||!conn.open)return;const s=JSON.stringify(obj);const N=3000;
   try{if(s.length<=N){conn.send({t:'m',s});return}const id=Math.random().toString(36).slice(2);const n=Math.ceil(s.length/N);for(let i=0;i<n;i++)conn.send({t:'c',id,i,n,s:s.slice(i*N,(i+1)*N)})}catch(e){console.warn('send failed',e)}}
 function mpRecvRaw(conn,d,cb){if(!d)return;if(d.t==='m'){cb(JSON.parse(d.s));return}
   if(d.t==='c'){const k=conn.peer+'/'+d.id;const b=MP.chunks[k]||(MP.chunks[k]={n:d.n,got:0,p:[]});if(b.p[d.i]==null){b.p[d.i]=d.s;b.got++}if(b.got===b.n){delete MP.chunks[k];cb(JSON.parse(b.p.join('')))}}}
