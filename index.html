@@ -260,6 +260,20 @@ body.port .cvSide span{flex:1;text-align:center}body.port .cvSide2 .cvGold{flex:
 body.port .cvList{left:6px;right:6px;width:auto;top:auto;bottom:62px;height:30%;max-height:none;background:#0d2b5ae0;border:2px solid #d6e9ff;border-radius:12px;padding:6px;box-sizing:border-box}
 body.port .cvMenu{left:6px;right:6px;width:auto;top:auto;bottom:calc(62px + 30% + 6px);flex-direction:row;overflow-x:auto;gap:4px}
 body.port .cvTab{flex:none;padding:7px 8px;font-size:12.5px;gap:4px}body.port .cvMenu{scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}body.mob.replaying #log{display:none}
+#mpBar{position:absolute;left:50%;top:72px;transform:translateX(-50%);z-index:9;display:none;align-items:center;gap:8px;background:linear-gradient(#2f6cbc,#1c4e98);border:2px solid #d6e9ff;border-radius:22px;padding:8px 18px;font-size:15px;box-shadow:0 4px 16px #000a;white-space:nowrap;max-width:calc(100vw - 24px);overflow:hidden;text-overflow:ellipsis}
+body.mob #mpBar{top:58px;font-size:13px;padding:7px 14px}body.replaying #mpBar,body.citymode #mpBar{display:none!important}
+body.mpwait #endTurn,body.mpwait #unitPanel,body.mpwait #waiting,body.mpwait #moveBar{display:none!important}
+.mpIn{width:100%;box-sizing:border-box;font-size:18px;padding:10px 12px;border-radius:8px;border:2px solid #9cc8ff;background:#0d2b5a;color:#fff;font-family:inherit;margin:4px 0 8px}
+.mpCodeIn{text-transform:uppercase;letter-spacing:6px;font-weight:800;text-align:center;font-size:22px}
+.mpGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}body.port .mpGrid{grid-template-columns:1fr}
+.mpCard{background:#0d2b5a99;border:1px solid #9cc8ff66;border-radius:10px;padding:10px}.mpCard h3{margin-top:0}.mpCard .btn{width:100%}
+.mpErr{background:#7d1b14;border:1px solid #ffb3a8;border-radius:8px;padding:8px 10px;margin:8px 0}
+.mpCodeBox{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0d2b5a;border:2px solid #ffd967;border-radius:12px;padding:8px 14px;flex-wrap:wrap}
+.mpCodeBox small{display:block;font-size:11px;letter-spacing:1px;opacity:.8}.mpCodeBox b{font-size:34px;letter-spacing:8px;color:#ffd967}
+.mpLink{font-family:monospace;font-size:12px;word-break:break-all}
+.mpPlayers{display:flex;flex-direction:column;gap:6px}.mpP{display:flex;align-items:center;gap:8px;background:#0d2b5a99;border:1px solid #9cc8ff55;border-radius:8px;padding:6px 10px;flex-wrap:wrap}
+.mpP .sw{width:16px;height:16px;border-radius:50%;border:2px solid #fff;display:inline-block}.mpP select{max-width:220px}
+
 body.replaying #log{display:none}
 .cvTitle{grid-template-columns:auto minmax(0,1fr) auto}.cvName{min-width:0;justify-content:center}.cvNm{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .cvNav{max-width:30vw}
@@ -322,6 +336,7 @@ body.mob.land #tileInfo{max-width:calc(100vw - 290px)}
 <div id="zoomBox"><button class="zb" id="zIn" title="Zoom in">＋</button><button class="zb" id="zOut" title="Zoom out">－</button><button class="zb" id="zHome" title="Center on selected unit / capital">◎</button><button class="zb" id="zMap" title="Show / hide the mini-map">🗺</button><button class="zb" id="zSnd" title="Sound on / off">🔊</button></div>
 <div id="waiting"></div>
 <div id="rpBar"></div>
+<div id="mpBar"></div>
 <button id="endTurn">End Turn ▶</button>
 <div id="toast"></div>
 <div id="modalBg"><div id="modal"></div></div>
@@ -650,13 +665,13 @@ function pickStarts(n){
 function newGame(o){
   G={turn:1,units:[],cities:[],civs:[],rel:{},wonders:{},log:[],nextId:1,diff:o.diff,size:o.size,over:false,winner:null,player:0,firsts:{}};
   const [w,h]=SIZES[o.size];genMap(w,h);
-  const keys=[o.civ];const rest=CIVS.map((c,i)=>i).filter(i=>i!==o.civ).sort(()=>Math.random()-0.5);
+  const humans=o.humans||[o.civ];const keys=humans.slice();const rest=CIVS.map((c,i)=>i).filter(i=>!humans.includes(i)).sort(()=>Math.random()-0.5);
   for(let i=0;i<o.opp;i++)keys.push(rest[i]);
   const starts=pickStarts(keys.length);
   const mkCiv=(id,k,C,ai,barb)=>({id,key:k,name:C.name,leader:C.leader,color:C.color,ai,alive:true,barb:!!barb,gold:20,sci:0,res:null,techs:{},rate:60,culture:0,cn:0,
     seen:new Array(w*h).fill(0),ag:(C.ag||1)*(0.8+Math.random()*0.4),noSites:0,goal:pick(['war','science','science','econ','culture']),
     gov:'despotism',anarchy:0,gpBorn:0,gpNext:120,conv:0,ms:0,eraIdx:0,ss:{},ssLaunch:0,att:{},start:(C.start||[]).slice()});
-  keys.forEach((k,i)=>G.civs.push(mkCiv(i,k,CIVS[k],i!==0||!!o.allAI)));
+  keys.forEach((k,i)=>G.civs.push(mkCiv(i,k,CIVS[k],i>=humans.length||!!o.allAI)));if(o.humans)G.mp={humans:humans.map((k,i)=>i),cur:0,names:o.names||{},seq:0};
   G.barb=keys.length;G.civs.push(mkCiv(G.barb,-1,BARB_CIV,true,true));
   for(let a=0;a<keys.length;a++)for(let b=a+1;b<keys.length;b++)G.rel[a+'-'+b]={met:false,war:false,since:0};
   G.civs.forEach((c,i)=>{if(c.barb)return;const s=starts[i];const t=tileAt(s.x,s.y);if(t.t==='hills'||t.t==='forest')t.t=t.t==='forest'?'plains':'hills';
@@ -673,8 +688,8 @@ function newGame(o){
   place(Math.floor(landT/110),6,t=>t.barbv=1);
   const arts=Object.keys(ARTIFACTS).sort(()=>Math.random()-0.5);place(6,7,t=>t.art=arts.pop());
   G.civs.forEach(c=>{if(c.barb)return;c.res=aiPickTech(c);updateSeenAll(c);const cap=citiesOf(c.id)[0];updateSeen(c,cap.x,cap.y,hasBon(c,'reveal')?8:4)});
-  if(!G.civs[0].ai){G.civs[0].res=null;}
-  log(`${yearStr(1)}: The ${G.civs[0].name} rise under ${G.civs[0].leader}!`);
+  G.civs.forEach(c=>{if(!c.ai&&!c.barb)c.res=null});
+  log(o.humans?`${yearStr(1)}: ${humans.length} rulers set out to build empires that stand the test of time!`:`${yearStr(1)}: The ${G.civs[0].name} rise under ${G.civs[0].leader}!`);
 }
 function applyStart(civ,cap){for(const s of civ.start){const [k,v]=s.split(':');
   if(k==='tech'){civ.techs[v]=1;updateEra(civ)}
@@ -822,6 +837,7 @@ function processCity(c){
     if(G.over)return;
     c.build=chooseBuild(c,it.kind==='u'?c.build:null);
     if(isPlayer(c.civ)){log(`✅ ${c.name} built ${it.i} ${done}. Now: ${itemInfo(c.build).n}`,c.x,c.y,false,c.id);queuePopup(()=>{openCity(c,`✅ Finished ${it.i} ${done} — choose what to build next`)})}
+    else if(MP.on&&isHumanCiv(c.civ)){hlog(c.civ,`✅ ${c.name} built ${it.i} ${done}. Now: ${itemInfo(c.build).n}`,c.x,c.y,false,c.id);hpop(c.civ,{k:'city',cid:c.id,note:`✅ Finished ${it.i} ${done} — choose what to build next`})}
   }
 }
 function wonderEffect(civ,c,id){
@@ -840,7 +856,7 @@ function techCost(civ){const known=Object.keys(civ.techs).length;const t=TECH[ci
 function availTechs(civ){return TECHS.filter(t=>!civ.techs[t.id]&&t.r.every(r=>civ.techs[r]))}
 function grantTech(civ,id,free){
   if(civ.techs[id])return;civ.techs[id]=1;if(civ.res===id){civ.res=null}
-  if(isPlayer(civ.id))log(`🔬 ${free?'Free tech: ':'Discovered '}${TECH[id].n}!`+unlockText(id));
+  hlog(civ.id,`🔬 ${free?'Free tech: ':'Discovered '}${TECH[id].n}!`+unlockText(id));
   if(FIRST[id]&&!G.firsts[id]){G.firsts[id]=civ.id;firstBonus(civ,id)}
   updateEra(civ);
 }
@@ -863,11 +879,11 @@ function updateEra(civ){const n=Object.keys(civ.techs).length;let e=0;for(let i=
     applyEraCode(civ,code)}}
 function applyEraCode(civ,code){if(code.startsWith('tech:')){const t=code.slice(5);if(!civ.techs[t]){civ.techs[t]=1;if(civ.res===t)civ.res=null}}else if(code.startsWith('gov:'))civ.gov=code.slice(4)}
 function processResearch(civ){
-  if(!civ.res){if(civ.ai)civ.res=aiPickTech(civ);else{ if(availTechs(civ).length) queuePopup(()=>techChoice()); return}}
+  if(!civ.res){if(civ.ai)civ.res=aiPickTech(civ);else{ if(isPlayer(civ.id)&&availTechs(civ).length) queuePopup(()=>techChoice()); return}}
   if(!civ.res)return;
   const cost=techCost(civ);
   if(civ.sci>=cost){civ.sci-=cost;const id=civ.res;grantTech(civ,id);civ.res=null;
-    if(civ.ai)civ.res=aiPickTech(civ);else if(availTechs(civ).length)queuePopup(()=>techChoice());}
+    if(civ.ai)civ.res=aiPickTech(civ);else if(isPlayer(civ.id)&&availTechs(civ).length)queuePopup(()=>techChoice());}
 }
 function unlockText(id){const r=[];for(const k in UT)if(UT[k].tech===id)r.push(UT[k].n);for(const k in BLD)if(BLD[k].tech===id)r.push(BLD[k].n);
   for(const k in WON)if(WON[k].tech===id)r.push(WON[k].n);for(const k in GOVS)if(GOVS[k].tech===id&&k!=='fundamentalism'||id==='religion'&&k==='fundamentalism')r.push(GOVS[k].n+' (government)');if(id==='spaceflight')r.push('Spaceship parts');return r.length?' Unlocks: '+[...new Set(r)].join(', '):''}
@@ -957,7 +973,7 @@ function bestDefender(x,y,a){const ds=G.units.filter(u=>u.x===x&&u.y===y&&u.civ!
 function fight(A,D,ah,dh,rec){const p=A/(A+D);while(ah>0&&dh>0){if(Math.random()<p)dh-=1.5;else ah-=1.5;if(rec)rec.push([Math.max(0,ah),Math.max(0,dh)])}return ah>0}
 function combatOdds(a,x,y,n){n=n||300;const d=bestDefender(x,y,a);if(!d)return 1;const A=attStr(a,x,y),D=defStr(d,a);if(hasBon(G.civs[a.civ],'overrun')&&A>=3*D)return 1;let w=0;for(let i=0;i<n;i++)if(fight(A,D,a.hp,d.hp))w++;return w/n}
 let LASTB=null,DEFER=false,RPL=null,RPLCAP=[];
-function rplVis(a,b){return !!(VIS&&((a&&VIS[idx(a[0],a[1])])||(b&&VIS[idx(b[0],b[1])])))}
+function rplVis(a,b){if(MP.on)return true;return !!(VIS&&((a&&VIS[idx(a[0],a[1])])||(b&&VIS[idx(b[0],b[1])])))}
 function rplSnap(u){return {id:u.id,type:u.type,civ:u.civ,army:u.army,vet:u.vet,hp:u.hp,x:u.x,y:u.y,mp:1,abil:u.abil||[]}}
 function gainXp(u){u.xp=(u.xp||0)+1;if(u.vet&&u.xp>=6&&u.xp%3===0&&hasBon(G.civs[u.civ],'eliteup')){const n=upgradeTarget(u);if(n){if(isPlayer(u.civ))log(`⬆️ Your elite ${unitName(u)} upgraded to ${UT[n].n}!`,u.x,u.y);u.type=n}}if(!u.vet&&u.xp>=3){u.vet=true;if(isPlayer(u.civ))log(`⭐ Your ${unitName(u)} became a Veteran (+50% strength)!`,u.x,u.y)}
   else if(u.vet&&u.xp>=6&&u.xp%3===0){const opts=Object.keys(ABIL).filter(k=>!hasAb(u,k));if(!opts.length)return;
@@ -977,7 +993,7 @@ function resolveBattle(a,d,x,y,win,last){
   const vis=isVisible(x,y)||isVisible(a.x,a.y);const pl=isPlayer(a.civ)||isPlayer(d.civ);
   if(win){a.hp=Math.max(1,Math.round(last[0]));killUnit(d);gainXp(a);if(hasBon(G.civs[a.civ],'healwin'))a.hp=10;
     if(vis&&!isPlayer(a.civ))fx(x,y,'💀','#f55');
-    if(pl)log(isPlayer(a.civ)?`⚔️ Your ${unitName(a)} defeated the ${G.civs[d.civ].name} ${unitName(d)}!`:`💥 Your ${unitName(d)} was destroyed by ${G.civs[a.civ].name} ${unitName(a)}.`,x,y);
+    if(pl)log(isPlayer(a.civ)?`⚔️ Your ${unitName(a)} defeated the ${G.civs[d.civ].name} ${unitName(d)}!`:`💥 Your ${unitName(d)} was destroyed by ${G.civs[a.civ].name} ${unitName(a)}.`,x,y);else if(MP.on&&isHumanCiv(d.civ))hlog(d.civ,`💥 Your ${unitName(d)} was destroyed by ${G.civs[a.civ].name} ${unitName(a)}.`,x,y);
     if(dom(a)==='land'&&!G.units.some(u=>u.x===x&&u.y===y&&!hidden(u))){const c=cityAt(x,y);const t=tileAt(x,y);
       if(c){a.x=x;a.y=y;captureCity(c,a.civ)}else if(t.barbv){a.x=x;a.y=y;destroyVillage(a,t)}else if(!UT[a.type].siege&&t.t!=='water'){a.x=x;a.y=y;if(a.civ!==G.barb)updateSeen(G.civs[a.civ],x,y,visR(a,t))}}
   }else{d.hp=Math.max(1,Math.round(last[1]));killUnit(a);gainXp(d);if(vis&&!isPlayer(a.civ))fx(a.x,a.y,'💀','#f55');
@@ -987,8 +1003,8 @@ function killUnit(u){const i=G.units.indexOf(u);if(i>=0)G.units.splice(i,1);if(U
 function resolveRetreat(B,k){const a=B.att,d=B.def;const [ah,dh]=B.rec[k];a.hp=Math.max(1,Math.round(ah));d.hp=Math.max(1,Math.round(dh));a.mp=0;a.moved=true;a.fort=false;if(!d.vet){d.vet=true;d.xp=Math.max(d.xp||0,3)}
   if(isPlayer(a.civ))log(`🏳 Your ${unitName(a)} retreated. The ${G.civs[d.civ].name} ${unitName(d)} gained a promotion.`,a.x,a.y)}
 function eliminate(old){const oc=G.civs[old];oc.alive=false;G.units=G.units.filter(u=>u.civ!==old);
-  log(`☠️ The ${oc.name} civilization has been destroyed!`,0,0,true);if(isPlayer(old))G.lost=true}
-function captureCity(c,ci){if(RPL&&VIS&&VIS[idx(c.x,c.y)]&&!isPlayer(ci)){const own=[];G.tiles.forEach((t,i)=>{if(t.city===c.id&&t.own===c.civ)own.push(i)});const e={k:'cap',cid:c.id,old:c.civ,neu:ci,own};RPLCAP.push(e)}
+  log(`☠️ The ${oc.name} civilization has been destroyed!`,0,0,true);if(isPlayer(old)&&!MP.on)G.lost=true}
+function captureCity(c,ci){if((RPL&&!isPlayer(ci)&&(MP.on||(VIS&&VIS[idx(c.x,c.y)])))||(MPL&&isPlayer(ci))){const own=[];G.tiles.forEach((t,i)=>{if(t.city===c.id&&t.own===c.civ)own.push(i)});const e={k:'cap',cid:c.id,old:c.civ,neu:ci,own};RPLCAP.push(e)}
   G.ncap=(G.ncap||0)+1;
   const old=c.civ,oc=G.civs[old],nc=G.civs[ci];
   if(c.cap&&oc.ssLaunch){oc.ssLaunch=0;oc.ss={};log(`💥 With ${c.name} captured, the ${oc.name} spaceship program has been lost!`,c.x,c.y,true)}
@@ -1000,7 +1016,7 @@ function captureCity(c,ci){if(RPL&&VIS&&VIS[idx(c.x,c.y)]&&!isPlayer(ci)){const 
     for(const t of G.tiles)if(t.city===c.id)t.own=ci;
     c.build=chooseBuild(c);const loot=Math.min(oc.gold,Math.round(oc.gold*0.15)+c.pop*4);oc.gold-=loot;nc.gold+=loot;
     log(`🏴 The ${nc.name} captured ${c.name} from the ${oc.name}${loot?` and took ${loot} gold`:''}!`,c.x,c.y,isPlayer(ci)||isPlayer(old));
-    if(isPlayer(old))queuePopup(()=>msgBox('City Lost!',`Sire, the ${nc.name} have captured <b>${c.name}</b>! We must strike back.`,'mil'));
+    if(isPlayer(old))queuePopup(()=>msgBox('City Lost!',`Sire, the ${nc.name} have captured <b>${c.name}</b>! We must strike back.`,'mil'));else if(MP.on&&isHumanCiv(old))hpop(old,{k:'msg',title:'City Lost!',html:`Sire, the ${nc.name} have captured <b>${c.name}</b>! We must strike back.`,adv:'mil'});
     if(isPlayer(ci))queuePopup(()=>msgBox('City Captured!',`Sire, we have captured the ${oc.name} city of <b>${c.name}</b>!${loot?` We have taken ${loot} gold pieces!`:''}`,'mil'));
   }
   if(!citiesOf(old).length)eliminate(old);
@@ -1010,15 +1026,15 @@ function captureCity(c,ci){if(RPL&&VIS&&VIS[idx(c.x,c.y)]&&!isPlayer(ci)){const 
 function destroyVillage(u,t){t.barbv=0;const civ=G.civs[u.civ];let g=40+Math.floor(Math.random()*60);if(hasBon(civ,'huts2'))g*=2;
   if(hasBon(civ,'barbcity')&&!G.cities.some(c=>dist(c.x,c.y,u.x,u.y)<3)){const c=foundCity(civ,u.x,u.y,false);c.build=chooseBuild(c);if(isPlayer(u.civ))log(`🏕 The barbarian village joins your empire as the city of ${c.name}!`,u.x,u.y,true);return}
   civ.gold+=g;if(isPlayer(u.civ)){log(`🔥 You destroyed a barbarian village and took ${g} gold!`,u.x,u.y);fx(u.x,u.y,'💰','#ffd967')}}
-function stepUnit(u,nx,ny,allowAttack){if(!RPL||isPlayer(u.civ)||(hidden(u)&&!u._landing))return _stepUnit(u,nx,ny,allowAttack);
+function stepUnit(u,nx,ny,allowAttack){const RL=RPL&&!isPlayer(u.civ)?RPL:MPL&&isPlayer(u.civ)?MPL:null;if(!RL||(hidden(u)&&!u._landing&&!isPlayer(u.civ)))return _stepUnit(u,nx,ny,allowAttack);
   const fx=u.x,fy=u.y,sn=rplSnap(u);const land=!!u._landing;u._landing=0;const r=_stepUnit(u,nx,ny,allowAttack);
-  if((r==='moved'||r==='captured')&&(u.x!==fx||u.y!==fy)&&u.type!=='spy'&&u.type!=='icbm'&&rplVis([fx,fy],[u.x,u.y]))RPL.push({k:'mv',id:u.id,u:sn,from:[fx,fy],to:[u.x,u.y],board:!!u.onboard,land});
-  if(RPLCAP.length){RPL.push(...RPLCAP);RPLCAP=[]}return r}
+  if((r==='moved'||r==='captured')&&(u.x!==fx||u.y!==fy)&&u.type!=='spy'&&u.type!=='icbm'&&rplVis([fx,fy],[u.x,u.y]))RL.push({k:'mv',id:u.id,u:sn,from:[fx,fy],to:[u.x,u.y],board:!!u.onboard,land});
+  if(RPLCAP.length){RL.push(...RPLCAP);RPLCAP=[]}return r}
 function _stepUnit(u,nx,ny,allowAttack){
   const t0=tileAt(nx,ny);const D=dom(u);
   if(u.type==='spy'){if(t0.t==='water')return 'blocked';const cost=mcost(u,u.x,u.y,nx,ny);u.x=nx;u.y=ny;u.mp=Math.max(0,r3(u.mp-cost));u.moved=true;if(REC&&u===REC.u)REC.pts.push([nx,ny]);else updateSeen(G.civs[u.civ],nx,ny,2);return 'moved'}
   if(D==='land'&&t0.t==='water'){const sh=transportAt(u.civ,nx,ny);if(!sh||u.onboard)return 'blocked';u.onboard=sh.id;u.x=nx;u.y=ny;u.mp=0;u.moved=true;u.fort=false;u.sleep=true;if(REC&&u===REC.u)REC.pts.push([nx,ny]);if(isPlayer(u.civ))log(`⛵ Your ${unitName(u)} boarded the ${UT[sh.type].n}.`,nx,ny);return 'moved'}
-  if(D==='land'&&u.onboard){if(enemyUnitAt(u.civ,nx,ny)||foreignAt(u.civ,nx,ny)>=0&&cityAt(nx,ny))return 'blocked';u.onboard=null;u.sleep=false;if(RPL)u._landing=1;const r=stepUnit(u,nx,ny,false);u.mp=0;return r}
+  if(D==='land'&&u.onboard){if(enemyUnitAt(u.civ,nx,ny)||foreignAt(u.civ,nx,ny)>=0&&cityAt(nx,ny))return 'blocked';u.onboard=null;u.sleep=false;if(RPL||MPL)u._landing=1;const r=stepUnit(u,nx,ny,false);u.mp=0;return r}
   const f=foreignAt(u.civ,nx,ny);
   if(f>=0){
     if(u.type==='caravan'&&cityAt(nx,ny)&&!atWar(u.civ,f)){const c=cityAt(nx,ny);const g=caravanGold(u,c);G.civs[u.civ].gold+=g;addAtt(f,u.civ,1);if(isPlayer(u.civ)){log(`💰 Your caravan traded in ${c.name} for ${g} gold!`,c.x,c.y,true);fx(c.x,c.y,'💰','#ffd967')}killUnit(u);return 'dead'}
@@ -1105,11 +1121,11 @@ function checkContacts(){
   const pos=new Map();for(const u of G.units)if(u.civ!==G.barb&&!hidden(u))pos.set(idx(u.x,u.y),u.civ);for(const c of G.cities)pos.set(idx(c.x,c.y),c.civ);
   const ents=[...G.units.filter(u=>u.civ!==G.barb&&!hidden(u)).map(u=>[u.civ,u.x,u.y]),...G.cities.map(c=>[c.civ,c.x,c.y])];
   for(const [ci,x,y] of ents)for(const [a,b] of inRadius(x,y,2)){const o=pos.get(idx(a,b));if(o!=null&&o!==ci){const r=rel(ci,o);if(!r.met){r.met=true;r.since=G.turn;
-    const pl=isPlayer(ci)?o:isPlayer(o)?ci:-1;if(pl>=0){const c=G.civs[pl];log(`🤝 You have met the ${c.name}!`,a,b);queuePopup(()=>meetPopup(c))}}}}
+    const pl=isPlayer(ci)?o:isPlayer(o)?ci:-1;if(pl>=0){const c=G.civs[pl];log(`🤝 You have met the ${c.name}!`,a,b);queuePopup(()=>meetPopup(c))}if(MP.on){if(isHumanCiv(ci)&&!isPlayer(ci))hlog(ci,`🤝 You have met the ${G.civs[o].name}!`,a,b);if(isHumanCiv(o)&&!isPlayer(o))hlog(o,`🤝 You have met the ${G.civs[ci].name}!`,a,b)}}}}
 }
 function declareWar(a,b){const r=rel(a,b);if(r.war)return;G.nwar=(G.nwar||0)+1;r.war=true;r.met=true;r.since=G.turn;addAtt(b,a,-6);
   log(`⚔️ The ${G.civs[a].name} declared war on the ${G.civs[b].name}!`,0,0,isPlayer(a)||isPlayer(b));
-  if(isPlayer(b))queuePopup(()=>msgBox('War!',`Sire! <b>${G.civs[a].leader}</b> of the ${G.civs[a].name} has declared war on us. Ready the defenses!`,'mil'))}
+  if(isPlayer(b))queuePopup(()=>msgBox('War!',`Sire! <b>${G.civs[a].leader}</b> of the ${G.civs[a].name} has declared war on us. Ready the defenses!`,'mil'));else if(MP.on&&isHumanCiv(b))hpop(b,{k:'msg',title:'War!',html:`Sire! <b>${MP.on&&isHumanCiv(a)?mpName(a)+' of the '+G.civs[a].name:G.civs[a].leader+' of the '+G.civs[a].name}</b> has declared war on us. Ready the defenses!`,adv:'mil'})}
 function makePeace(a,b){const r=rel(a,b);r.war=false;r.since=G.turn;log(`🕊 The ${G.civs[a].name} and ${G.civs[b].name} made peace.`,0,0,isPlayer(a)||isPlayer(b))}
 function nearestCityDist(a,b){let m=999;for(const c of citiesOf(a))for(const d of citiesOf(b))m=Math.min(m,dist(c.x,c.y,d.x,d.y));return m}
 function techPrice(civ,id){return Math.round(ERA_COST[TECH[id].e]*1.6+40)}
@@ -1118,24 +1134,24 @@ function aiDiplomacy(civ){
     const ratio=strength(civ.id)/Math.max(1,strength(o.id));const att=attitude(civ.id,o.id);
     if(!r.war){
       if(since<15||G.turn<25||civ.gov==='democracy')continue;const near=nearestCityDist(civ.id,o.id)<14?1:0.25;
-      let p=0.007*civ.ag*(0.4+Math.max(0,ratio-0.8))*near*(1-att*0.08);if(civ.goal==='war')p*=1.8;if(isPlayer(o.id))p*=[0.5,0.8,1,1.15,1.3][G.diff];
+      let p=0.007*civ.ag*(0.4+Math.max(0,ratio-0.8))*near*(1-att*0.08);if(civ.goal==='war')p*=1.8;if(isHumanCiv(o.id))p*=[0.5,0.8,1,1.15,1.3][G.diff];
       // the leader of a victory race makes enemies
       if(o.ssLaunch||achievements(o)>=CULT_TARGET-3||o.gold>=ECON_GOLD*0.75)p*=3;
       if(Math.random()<p){declareWar(civ.id,o.id);continue}
       // tribute demands against the player
-      if(isPlayer(o.id)&&ratio>1.3&&G.turn>40&&Math.random()<0.012*civ.ag&&o.gold>=60)queuePopup(()=>tributeDemand(civ));
+      if(isHumanCiv(o.id)&&ratio>1.3&&G.turn>40&&Math.random()<0.012*civ.ag&&o.gold>=60)hpop(o.id,{k:'tribute',civ:civ.id});
       // quiet tech trading between friendly AIs
-      if(!isPlayer(o.id)&&att>=0&&Math.random()<0.02){const t1=Object.keys(o.techs).filter(t=>!civ.techs[t]&&TECH[t].r.every(q=>civ.techs[q]));if(t1.length&&civ.gold>=60){const t=pick(t1);civ.gold-=40;o.gold+=40;grantTech(civ,t,true)}}
+      if(!isHumanCiv(o.id)&&att>=0&&Math.random()<0.02){const t1=Object.keys(o.techs).filter(t=>!civ.techs[t]&&TECH[t].r.every(q=>civ.techs[q]));if(t1.length&&civ.gold>=60){const t=pick(t1);civ.gold-=40;o.gold+=40;grantTech(civ,t,true)}}
     }else if(since>=18){
       let p=ratio<0.6?0.12:ratio<0.9?0.03:0.008;if(since>50)p+=0.03;
       if(Math.random()<p){
-        if(isPlayer(o.id)){if(o.gov==='democracy'){makePeace(civ.id,o.id);queuePopup(()=>msgBox('Peace',`${civ.leader} of the ${civ.name} offered peace. Under Democracy we must accept, Sire.`,'dom'))}else queuePopup(()=>peaceOffer(civ))}
+        if(isHumanCiv(o.id)){if(o.gov==='democracy'){makePeace(civ.id,o.id);hpop(o.id,{k:'msg',title:'Peace',html:`${civ.leader} of the ${civ.name} offered peace. Under Democracy we must accept, Sire.`,adv:'dom'})}else hpop(o.id,{k:'peace',civ:civ.id})}
         else makePeace(civ.id,o.id);
       }
     }
   }
 }
-function tributeDemand(civ){const p=G.civs[G.player];if(G.over||!civ.alive||atWar(civ.id,G.player))return;const amt=Math.max(30,Math.round(p.gold*0.2));
+function tributeDemand(civ){civ=G.civs[civ.id]||civ;const p=G.civs[G.player];if(G.over||!civ.alive||atWar(civ.id,G.player))return;const amt=Math.max(30,Math.round(p.gold*0.2));
   showModal(`<h2>Tribute Demanded</h2>${advisorBox('dom',`Sire, <b>${civ.leader}</b> of the ${civ.name} demands <b>${amt} gold</b> as tribute, or there will be consequences.`)}
    <div style="text-align:right;margin-top:10px"><button class="btn red" id="trNo">Refuse</button> <button class="btn gold" id="trYes">Pay ${amt} gold</button></div>`);
   $('trYes').onclick=()=>{p.gold-=Math.min(p.gold,amt);civ.gold+=amt;addAtt(civ.id,G.player,2);closeModal()};
@@ -1351,17 +1367,19 @@ function endTurn(){
   if(SIM)return;
   if(RPL&&RPLCAP.length)RPL.push(...RPLCAP);RPLCAP=[];const EV=RPL||[];RPL=null;
   const p=G.civs[G.player];
-  const autoMoves=()=>{  const q=[];
+  if(MP.on){mpAfterAIPhase(EV);refreshUI();return}
+  const after=()=>{const q=G.over?[]:playerAutoMoves();autosave();if(q.length&&!G.over){UI.animQ=q;UI.flushAfterQ=true;playQueued()}else if(!G.over)nextUnit(true)};
+  if(EV.length&&!G.over)rpStart(EV,after);else{after();if(!UI.animQ)flushPopups()}
+  refreshUI();
+}
+function flushPopups(){if(popQ.length&&!modalOpen&&popOK())popQ.shift()()}
+function playerAutoMoves(){const p=G.civs[G.player];const q=[];
   for(const u of unitsOf(p.id)){REC={u,pts:[[u.x,u.y]],huts:[]};const ghost={type:u.type,civ:u.civ,army:u.army};
     if(u.goto){const r=goTo(u,u.goto[0],u.goto[1],false);if(u.goto&&dist(u.x,u.y,u.goto[0],u.goto[1])===1&&foreignAt(u.civ,u.goto[0],u.goto[1])>=0){u.goto=null;log(`🚩 Your ${unitName(u)} has reached the enemy — attack when ready.`,u.x,u.y)}else if(r==='blocked')log(`🚩 Your ${unitName(u)} has reached the enemy — attack when ready.`,u.x,u.y)}else if(u.auto==='explore'){if(!explore(u)){u.auto=null;log(`🧭 Your ${unitName(u)} has nothing left to explore.`,u.x,u.y)}}
     const rec=REC;REC=null;if(rec.pts.length>1)q.push({u,pts:rec.pts,ghost,huts:rec.huts,r:'moved'});else for(const t of rec.huts)popHut(u,t)}
   updateVis();UI.sel=null;
-  return q};
-  const after=()=>{const q=G.over?[]:autoMoves();autosave();if(q.length&&!G.over){UI.animQ=q;UI.flushAfterQ=true;playQueued()}else if(!G.over)nextUnit(true)};
-  if(EV.length&&!G.over)rpStart(EV,after);else{after();if(!UI.animQ)flushPopups()}
-  refreshUI();
-}
-function flushPopups(){if(popQ.length&&!modalOpen)popQ.shift()()}
+  return q}
+
 // ---- enemy turn replay ----
 function rpStart(ev,after){const pos=new Map(),snap=new Map();
   for(const e of ev){if(e.k==='cap')continue;if(e.k==='mv'){if(!pos.has(e.id))pos.set(e.id,e.from.slice());if(!snap.has(e.id))snap.set(e.id,e.u)}
@@ -1380,7 +1398,7 @@ function rpNext(){const R=UI.rp;if(!R)return;if(modalOpen){setTimeout(rpNext,300
       const sn=R.snap.get(e.id)||e.u;R.pos.delete(e.id);
       let lastE=e;for(let q=R.i-1;q>=0;q--){if(R.ev[q].k==='mv'&&R.ev[q].id===e.id){lastE=R.ev[q];break}}
       UI.anim={u:{id:e.id},id:e.id,pts,ghost:{type:sn.type,civ:sn.civ,army:sn.army},t0:performance.now(),step:R.step,lunge:false,r:'moved',huts:[],queued:true,rp:true,dead:false,board:lastE.board};UI.dirty=true}
-    else{UI.battle={B:{a:{...e.a,x:e.from[0],y:e.from[1]},d:{...e.d,x:e.x,y:e.y},rec:e.rec,win:e.win,A:e.A,D:e.D},u:null,r:null,t0:performance.now(),step:Math.max(70,Math.min(R.fast?100:140,(R.fast?1000:1500)/e.rec.length)),retMax:-1,replay:true,aid:e.aid,did:e.did,ev:e};UI.dirty=true}};
+    else{UI.battle={B:{a:{...e.a,x:e.from[0],y:e.from[1]},d:{...e.d,x:e.x,y:e.y},rec:e.rec,win:e.win,A:e.A,D:e.D,retreated:!!e.ret},u:null,r:null,t0:performance.now(),step:Math.max(70,Math.min(R.fast?100:140,(R.fast?1000:1500)/e.rec.length)),retMax:-1,replay:true,aid:e.aid,did:e.did,ev:e};UI.dirty=true}};
   if(!rpOnScreen(A)||!rpOnScreen(B)){const [wx,wy]=rpWorld(A,B);UI.pan=[wx,wy];UI.dirty=true;setTimeout(go,R.fast?260:400)}else setTimeout(go,R.gap)}
 function rpMoveDone(A){const R=UI.rp;if(!R)return;R.pos.set(A.id,A.pts[A.pts.length-1].slice());R.ob.set(A.id,A.board?1:null);UI.dirty=true;rpNext()}
 function rpBattleDone(BT){const R=UI.rp;if(!R)return;const e=BT.ev;if(e.dDead)R.pos.delete(e.did);if(e.aDead)R.pos.delete(e.aid);else if(e.after)R.pos.set(e.aid,e.after.slice());UI.dirty=true;rpNext()}
@@ -1391,6 +1409,7 @@ function capitalsHeld(ci){return G.cities.filter(c=>c.orig>=0&&c.civ===ci).lengt
 function checkVictory(){
   if(G.over)return;
   if(G.lost&&!G.winner)G.winner={civ:-1,type:'Defeat',msg:'Your civilization has fallen to its enemies.'};
+  if(MP.on&&G.mp&&!G.winner&&G.mp.humans.every(h=>!G.civs[h].alive))G.winner={civ:-1,type:'Defeat',msg:'Every human player has fallen to the computer civilizations.'};
   if(!G.winner){const caps=G.cities.filter(c=>c.orig>=0);const alive=majors().filter(c=>c.alive);
     for(const civ of alive){if(caps.every(c=>c.civ===civ.id)||alive.length===1){G.winner={civ:civ.id,type:'Domination',msg:`The ${civ.name} control every original capital in the world!`}}}}
   if(!G.winner&&G.turn>MAX_TURN){const best=majors().filter(c=>c.alive).sort((a,b)=>(capitalsHeld(b.id)-capitalsHeld(a.id))||(score(b.id)-score(a.id)))[0];G.winner={civ:best.id,type:'Time Limit',msg:`2100 AD has arrived. The ${best.name} hold the most capitals and the greatest civilization.`}}
@@ -1398,7 +1417,7 @@ function checkVictory(){
 }
 
 // ===================== logging & effects =====================
-function log(text,x,y,important,cid){if(!G)return;G.log.push({t:G.turn,text,x:x||0,y:y||0,imp:!!important,cid:cid||0,pl:true});if(G.log.length>120)G.log.shift();if(!SIM)renderLog()}
+function log(text,x,y,important,cid){if(!G)return;G.log.push({t:G.turn,text,x:x||0,y:y||0,imp:!!important,cid:cid||0,pl:true,civ:MP.on&&!important?G.player:undefined});if(G.log.length>120)G.log.shift();if(!SIM)renderLog()}
 const FX=[];function fx(x,y,txt,col){if(SIM)return;FX.push({x,y,txt,col,t:performance.now()});UI.dirty=true}
 
 // ===================== UI STATE =====================
@@ -1851,7 +1870,8 @@ function refreshUI(){
   $('waiting').style.display=w.length?'block':'none';$('waiting').textContent=`${w.length} unit${w.length>1?'s':''} awaiting orders`;
   if(UI.hover&&UI.hoverMouse)onHover(UI.hover);placeHud();UI.dirty=true;
 }
-function renderLog(){const el=$('log');const items=G.log.filter(l=>l.t>=G.turn-(MOB?0:2)).slice(MOB?-2:-7);
+function myLog(l){return l.civ==null||l.civ===G.player}
+function renderLog(){const el=$('log');const items=G.log.filter(l=>l.t>=G.turn-(MOB?0:2)&&myLog(l)).slice(MOB?-2:-7);
   el.innerHTML=items.map((l,i)=>`<div class="${l.t<G.turn?'old':''}" data-i="${G.log.indexOf(l)}">${l.text}</div>`).join('');
   el.querySelectorAll('div').forEach(d=>d.onclick=()=>{const l=G.log[+d.dataset.i];if(l.cid){const c=cityById(l.cid);if(c&&isPlayer(c.civ)){openCity(c);return}}if(l.x||l.y)centerOn(l.x,l.y)})}
 function waitingUnits(){if(!G)return [];return unitsOf(G.player).filter(u=>u.mp>0&&!u.fort&&!u.sleep&&!u.goto&&!u.auto)}
@@ -1941,7 +1961,7 @@ function airAct(u,x,y){const c=cityAt(x,y);
   if(c&&c.civ===u.civ){u.x=x;u.y=y;u.mp=0;u.fort=true;log(`✈️ Your ${unitName(u)} rebased to ${c.name}.`,x,y);updateVis();nextUnit(true);return}
   if(!enemyUnitAt(u.civ,x,y)){toast('Pick an enemy unit to strike, or one of your cities to rebase');return}
   DEFER=!SIM;LASTB=null;doAttack(u,x,y);DEFER=false;const B=LASTB;if(B&&B.pending){startBattle(B,u,'attacked');return}refreshUI()}
-function eliteChoice(u,opts){if(!G.units.includes(u))return;showModal(`<h2>🎖 Elite Promotion!</h2>${advisorBox('mil',`Sire, our <b>${unitName(u)}</b> has fought bravely and earned an <b>Elite</b> ability. Choose one:`)}
+function eliteChoice(u,opts){u=G.units.find(o=>o.id===u.id)||u;if(!G.units.includes(u))return;showModal(`<h2>🎖 Elite Promotion!</h2>${advisorBox('mil',`Sire, our <b>${unitName(u)}</b> has fought bravely and earned an <b>Elite</b> ability. Choose one:`)}
   <div class="cards" style="margin-top:10px">${opts.map(k=>`<div class="card" data-a="${k}"><b>✦ ${ABIL[k].n}</b><div class="ds">${ABIL[k].d}</div></div>`).join('')}</div>`,true);
   $('modal').querySelectorAll('.card').forEach(el=>el.onclick=()=>{u.abil.push(el.dataset.a);if(el.dataset.a==='march')u.mp++;closeModal()})}
 function tw(h){if(!TOUCH||!h)return h;return ('>'+h+'<').replace(/>([^<]*)</g,(m,t)=>'>'+t.replace(/Hover over any item below and I'll tell you what it does\./g,'Tap an item below to build it.').replace(/Right-click deselects\. /g,'').replace(/\bClick\b/g,'Tap').replace(/\bclick\b/g,'tap').replace(/\bclicking\b/g,'tapping').replace(/\bHover\b/g,'Tap').replace(/\bhover\b/g,'tap')+'<').slice(1,-1)}
@@ -1951,8 +1971,8 @@ function toast(t){t=tw(t);const el=$('toast');el.textContent=t;el.style.display=
 const popQ=[];let modalOpen=false;
 function showModal(html,wide,cls){$('modalBg').className=cls||'';document.body.classList.toggle('citymode',cls==='citym');if(cls!=='citym')$('modal').style.removeProperty('--cvTop');$('modal').innerHTML=tw(html);$('modal').style.width=wide?'min(1060px,95vw)':'';$('modalBg').style.display='flex';modalOpen=true;
   const x=$('modal').querySelector('.x');if(x)x.onclick=closeModal;return $('modal')}
-function closeModal(){$('modalBg').style.display='none';modalOpen=false;$('modalBg').className='';document.body.classList.remove('citymode');if(UI.cityCam){UI.cam.x=UI.cityCam.x;UI.cam.y=UI.cityCam.y;UI.cam.z=UI.cityCam.z;UI.cityCam=null;UI.dirty=true}if(UI.rp){refreshUI();return}refreshUI();if(popQ.length)setTimeout(()=>{if(!modalOpen&&popQ.length)popQ.shift()()},60)}
-function queuePopup(f){if(SIM)return;if(modalOpen||UI.rp||RPL)popQ.push(f);else f()}
+function closeModal(){$('modalBg').style.display='none';modalOpen=false;$('modalBg').className='';document.body.classList.remove('citymode');if(UI.cityCam){UI.cam.x=UI.cityCam.x;UI.cam.y=UI.cityCam.y;UI.cam.z=UI.cityCam.z;UI.cityCam=null;UI.dirty=true}if(UI.rp){refreshUI();return}refreshUI();if(popQ.length)setTimeout(()=>{if(!modalOpen&&popQ.length&&popOK())popQ.shift()()},60)}
+function queuePopup(f){if(SIM)return;if(modalOpen||RPL||!popOK())popQ.push(f);else f()}
 function msgBox(title,html,adv){showModal(`<span class="x">✕</span><h2>${title}</h2>${adv?advisorBox(adv,html):html}<div style="text-align:right;margin-top:12px"><button class="btn gold" id="mOk">OK</button></div>`);$('mOk').onclick=closeModal}
 function confirmBox(title,text,yes){showModal(`<h2>${title}</h2><p>${text}</p><div style="text-align:right;margin-top:12px"><button class="btn" id="mNo">Cancel</button> <button class="btn gold" id="mYes">Yes</button></div>`);
   $('mNo').onclick=closeModal;$('mYes').onclick=()=>{closeModal();yes()}}
@@ -1961,7 +1981,7 @@ function meetPopup(c){msgBox(`You meet the ${c.name}`,`We have made contact with
 function peaceOffer(c){showModal(`<h2>Peace Proposal</h2>${advisorBox('dom',`Sire, <b>${c.leader}</b> of the ${c.name} proposes an end to the war.`)}<div style="text-align:right"><button class="btn red" id="pNo">Refuse</button> <button class="btn green" id="pYes">Accept Peace</button></div>`);
   $('pNo').onclick=()=>{rel(c.id,G.player).since=G.turn;closeModal()};$('pYes').onclick=()=>{makePeace(c.id,G.player);closeModal()}}
 
-function openCity(c,note,cat){
+function openCity(c,note,cat){c=cityById(c.id)||c;if(!G.cities.includes(c))return;
   const civ=G.civs[c.civ];const y=cityYield(c);const need=growNeed(c.pop);const it=c.build?itemInfo(c.build):null;
   const gturns=y.fs>0?Math.ceil((need-c.food)/y.fs):0;
   const growTxt=y.fs>0?`Population growth in ${gturns} turn${gturns>1?'s':''}`:y.fs<0?'Starving! The city will shrink':'Population is not growing';
@@ -2042,6 +2062,9 @@ function diplomacy(){const p=G.player,P=G.civs[p];const known=majors().filter(c=
     const att=attitude(c.id,p);const mood=att>=4?'😊 Friendly':att<=-4?'😠 Hostile':'😐 Neutral';
     const theirs=Object.keys(c.techs).filter(t=>!P.techs[t]&&TECH[t].r.every(q=>P.techs[q]));const mine=Object.keys(P.techs).filter(t=>!c.techs[t]&&TECH[t].r.every(q=>c.techs[q]));
     if(!c.alive)return `<tr><td><b>${c.name}</b></td><td colspan="3">☠️ Destroyed</td></tr>`;
+    if(MP.on&&isHumanCiv(c.id))return `<tr><td><span class="dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c.color}"></span> <b>${c.name}</b><br><span class="muted">👤 ${mpName(c.id)} · ${GOVS[c.gov].n}</span></td>
+      <td>${r.war?'<b style="color:#ff8a8a">⚔️ At War</b>':'🕊 Peace'}<br><span class="muted">Human player</span></td><td>Military: ${cmp}<br><span class="muted">Cities ${citiesOf(c.id).length} · Techs ${Object.keys(c.techs).length}</span></td>
+      <td style="line-height:2">${r.war?`<button class="btn green small" data-a="hpeace" data-c="${c.id}">Offer peace</button>`:`<button class="btn red small" data-a="war" data-c="${c.id}" ${P.gov==='democracy'?'disabled title="Democracies cannot declare war"':''}>Declare war</button>`} <button class="btn small" data-a="hgift" data-c="${c.id}" ${P.gold<50?'disabled':''}>Gift 💰50</button></td></tr>`;
     return `<tr><td><span class="dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c.color}"></span> <b>${c.name}</b><br><span class="muted">${c.leader} · ${GOVS[c.gov].n}</span></td>
     <td>${r.war?'<b style="color:#ff8a8a">⚔️ At War</b>':'🕊 Peace'}<br><span class="muted">${mood}</span></td><td>Military: ${cmp}<br><span class="muted">Cities ${citiesOf(c.id).length} · Techs ${Object.keys(c.techs).length} · 💰${c.gold}</span></td>
     <td style="line-height:2">${r.war?`<button class="btn green small" data-a="peace" data-c="${c.id}">Propose peace</button> <button class="btn small" data-a="pay" data-c="${c.id}" ${P.gold<100?'disabled':''}>Peace + 💰100</button>`
@@ -2053,6 +2076,8 @@ function diplomacy(){const p=G.player,P=G.civs[p];const known=majors().filter(c=
    <p class="muted">Buying or selling technology, gifts and paying tribute change how leaders feel about you. Hostile leaders declare war more often.</p>`,true);
   const m=$('modal');const say=(c,t)=>msgBox(c.name,advisorBox('dom',`${c.leader}: "${t}"`));
   m.querySelectorAll('button[data-a]').forEach(b=>b.onclick=()=>{const c=G.civs[+b.dataset.c];const a=b.dataset.a;const r=rel(p,c.id);const ratio=strength(c.id)/Math.max(1,strength(p));const since=G.turn-r.since;
+    if(a==='hpeace'){if(r._hp===G.turn){toast('You already offered peace this turn');return}r._hp=G.turn;hpop(c.id,{k:'hpeace',from:p});msgBox('Peace offer sent',`<p><b>${mpName(c.id)}</b> will see your offer at the start of their turn.</p>`,'dom');return}
+    if(a==='hgift'){P.gold-=50;c.gold+=50;hlog(c.id,`🎁 ${mpName(p)} of the ${P.name} sent you 50 gold.`,0,0,false);toast(`Sent 50 gold to ${mpName(c.id)}`);refreshUI();diplomacy();return}
     if(a==='war'){confirmBox('Declare War?',`Declare war on the ${c.name}?`,()=>{declareWar(p,c.id);refreshUI()});return}
     if(a==='gift'){P.gold-=50;c.gold+=50;addAtt(c.id,p,2);say(c,'A generous gift. We will remember this.');return}
     if(a==='trib'){if(r._trib&&G.turn-r._trib<10){say(c,'We paid you already. Do not test our patience.');return}r._trib=G.turn;if(ratio<0.6&&Math.random()<0.75){const g=Math.max(30,Math.round(c.gold*0.2));c.gold-=g;P.gold+=g;addAtt(c.id,p,-3);say(c,`Fine. Take these ${g} gold and leave us be.`)}else{addAtt(c.id,p,-3);if(c.gov!=='democracy'&&Math.random()<0.4){declareWar(c.id,p);closeModal()}else say(c,'You dare make demands of us? Never!')}return}
@@ -2107,18 +2132,18 @@ function mainMenu(){
   <div><h3>Map size</h3><div class="opts">${Object.keys(SIZES).map(s=>`<span class="opt ${NG.size===s?'on':''}" data-s="${s}">${s[0].toUpperCase()+s.slice(1)}</span>`).join('')}</div></div>
   <div><h3>Difficulty</h3><div class="opts">${DIFF.map((d,i)=>`<span class="opt ${NG.diff===i?'on':''}" data-d="${i}">${d.n}</span>`).join('')}</div></div></div>
   <div class="mrow" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px">
-   ${has?'<button class="btn" id="mCont">▶ Continue last game</button>':''}<button class="btn" id="mLoad">📂 Load saved game</button><button class="btn" id="mHelp">❓ How to play</button><button class="btn gold" id="mStart" style="font-size:18px;padding:8px 26px">Start New Game</button></div>`,true);
+   ${has?'<button class="btn" id="mCont">▶ Continue last game</button>':''}<button class="btn" id="mLoad">📂 Load saved game</button><button class="btn" id="mHelp">❓ How to play</button><button class="btn" id="mMulti">🌐 Multiplayer</button><button class="btn gold" id="mStart" style="font-size:18px;padding:8px 26px">Start New Game</button></div>`,true);
   const m=$('modal');
   m.querySelectorAll('[data-c]').forEach(e=>e.onclick=()=>{NG.civ=+e.dataset.c;mainMenu()});
   m.querySelectorAll('[data-o]').forEach(e=>e.onclick=()=>{NG.opp=+e.dataset.o;mainMenu()});
   m.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{NG.size=e.dataset.s;mainMenu()});
   m.querySelectorAll('[data-d]').forEach(e=>e.onclick=()=>{NG.diff=+e.dataset.d;mainMenu()});
-  $('mStart').onclick=()=>{closeModal();startGame()};$('mHelp').onclick=()=>{help()};
+  $('mStart').onclick=()=>{closeModal();startGame()};$('mHelp').onclick=()=>{help()};$('mMulti').onclick=()=>mpMenu();
   $('mLoad').onclick=()=>{if(!loadGame('roe_save'))toast('No saved game found');else closeModal()};
   if($('mCont'))$('mCont').onclick=()=>{if(loadGame('roe_auto'))closeModal()};
 }
 function cleanName(n){return String(n||'').replace(/[<>&"'`]/g,'').trim().slice(0,24)}
-function nameCity(c,after,first){showModal(`<h2>${first==='rename'?'Rename '+c.name:first?'Name your capital':'Name your new city'}</h2><p class="muted">${first==='rename'?'Pick a new name for this city.':first?'Every great empire starts somewhere.':'A new settlement has been founded!'} Type a name or keep the suggestion.</p>
+function nameCity(c,after,first){c=cityById(c.id)||c;showModal(`<h2>${first==='rename'?'Rename '+c.name:first?'Name your capital':'Name your new city'}</h2><p class="muted">${first==='rename'?'Pick a new name for this city.':first?'Every great empire starts somewhere.':'A new settlement has been founded!'} Type a name or keep the suggestion.</p>
   <input id="cName" maxlength="24" value="${c.name}" style="width:100%;box-sizing:border-box;font-size:20px;padding:10px 12px;border-radius:8px;border:2px solid #c9a646;background:#0e1422;color:#fff;font-family:inherit">
   <div style="text-align:right;margin-top:12px"><button class="btn" id="cSug">🎲 Suggest another</button> <button class="btn gold" id="cOk">✔ Name it</button></div>`);
   const inp=$('cName');setTimeout(()=>{inp.focus();inp.select()},30);
@@ -2135,7 +2160,8 @@ function startGame(){
    <p>Select your settlers, move them 3+ tiles away to a good spot (grassland, plains, hills, near water), then press <b>Found City</b>.</p><p class="muted">Press ☰ Menu → How to play any time.</p>`,'dom'));
   queuePopup(techChoice);
 }
-function gameMenu(){showModal(`<span class="x">✕</span><h2>Menu</h2><div style="display:flex;flex-direction:column;gap:8px;min-width:260px">
+function gameMenu(){if(MP.on){showModal(`<span class="x">✕</span><h2>Menu</h2><p class="muted">Online game · code <b>${MP.code}</b> · ${G.mp.humans.map(h=>`${mpName(h)} (${G.civs[h].name}${G.civs[h].ai?', computer':''})`).join(', ')}</p><div style="display:flex;flex-direction:column;gap:8px;min-width:260px"><button class="btn" id="gHelp">❓ How to play</button><button class="btn red" id="gQuit">🚪 Leave the online game</button></div>`);$('gHelp').onclick=help;$('gQuit').onclick=()=>confirmBox('Leave the game?',MP.host?'You are the host — leaving ends the online game for everyone.':'The computer will take over your civilization.',()=>{mpReset();G=null;mainMenu()});return}
+  showModal(`<span class="x">✕</span><h2>Menu</h2><div style="display:flex;flex-direction:column;gap:8px;min-width:260px">
   <button class="btn" id="gSave">💾 Save game</button><button class="btn" id="gLoad">📂 Load game</button><button class="btn" id="gHelp">❓ How to play</button><button class="btn" id="gNew">🌍 New game</button></div>`);
   $('gSave').onclick=()=>{if(saveGame('roe_save'))toast('Game saved');closeModal()};$('gLoad').onclick=()=>{if(!loadGame('roe_save'))toast('No saved game');else closeModal()};
   $('gHelp').onclick=help;$('gNew').onclick=()=>confirmBox('New game?','Abandon this game and start a new one?',mainMenu)}
@@ -2147,6 +2173,191 @@ function autosave(){saveGame('roe_auto')}
 function loadGame(key){const r=loadRaw(key);if(!r)return false;try{const d=JSON.parse(r);UI.anim=null;UI.animQ=null;UI.pend=null;UI.battle=null;UI.rp=null;RPL=null;RPLCAP=[];UI.flushAfterQ=false;document.body.classList.remove('replaying');rpBar();G=d.G;buildWorldArt();UI.sel=null;popQ.length=0;setupMini();updateVis();
   const c=citiesOf(G.player)[0]||G.units.find(u=>u.civ===G.player);if(c)centerOn(c.x,c.y);renderLog();refreshUI();
   if(G.over)queuePopup(gameOver);else{nextUnit(true);if(!G.civs[G.player].res)queuePopup(techChoice)}return true}catch(e){toast('Save file is damaged');return false}}
+
+// ===================== MULTIPLAYER (live, turn-by-turn, peer-to-peer) =====================
+const MP={on:false,host:false,me:-1,peer:null,conns:new Map(),hostConn:null,code:'',name:'',lobby:null,started:false,inEnd:false,preEv:null,chunks:{},peerLoad:null,seats:new Map(),left:new Set(),lastSeq:0,timer:null};
+let MPL=null;
+const MP_PREFIX='rise-of-empires-v1-',MP_MAXH=4;
+function isHumanCiv(ci){const c=G&&G.civs[ci];return !!(c&&!c.ai&&!c.barb)}
+function mpActive(){return G&&G.mp?G.mp.humans[G.mp.cur]:-1}
+function mpMyTurn(){return !MP.on||!G||!G.mp||mpActive()===G.player}
+function mpName(ci){return (G&&G.mp&&G.mp.names&&G.mp.names[ci])||G.civs[ci].name}
+function mpHumanAlive(ci){const c=G.civs[ci];return !!(c&&c.alive&&!c.ai)}
+function mpNextHuman(cur){for(let i=cur+1;i<G.mp.humans.length;i++)if(mpHumanAlive(G.mp.humans[i]))return i;return -1}
+function mpFirstHuman(){for(let i=0;i<G.mp.humans.length;i++)if(mpHumanAlive(G.mp.humans[i]))return i;return -1}
+function popOK(){return !UI.rp&&!(MP.on&&G&&!G.over&&(MP.inEnd||!mpMyTurn()))}
+// notices for human players who are not at this device right now
+function mpBox(ci,item){if(!G.mpBox)G.mpBox={};(G.mpBox[ci]=G.mpBox[ci]||[]).push(item)}
+function hlog(ci,text,x,y,imp,cid){if(isPlayer(ci))log(text,x,y,imp,cid);else if(MP.on&&isHumanCiv(ci))mpBox(ci,{k:'log',text,x:x||0,y:y||0,imp:!!imp,cid:cid||0})}
+function hpop(ci,item){if(isPlayer(ci))queuePopup(()=>runNotice(item));else if(MP.on&&isHumanCiv(ci))mpBox(ci,item)}
+function runNotice(n){
+  if(n.k==='city'){const c=cityById(n.cid);if(c&&isPlayer(c.civ))openCity(c,n.note)}
+  else if(n.k==='msg')msgBox(n.title,n.html,n.adv);
+  else if(n.k==='peace'){const c=G.civs[n.civ];if(c&&c.alive&&atWar(c.id,G.player))peaceOffer(c)}
+  else if(n.k==='tribute'){const c=G.civs[n.civ];if(c&&c.alive)tributeDemand(c)}
+  else if(n.k==='hpeace'){const c=G.civs[n.from];if(c&&c.alive&&atWar(c.id,G.player))confirmBox('Peace offer',`<b>${mpName(n.from)}</b> of the ${c.name} offers to end the war. Accept peace?`,()=>{makePeace(n.from,G.player);refreshUI()})}
+}
+// ---------- transport (PeerJS over WebRTC, with our own chunking) ----------
+function mpParam(k){try{return new URLSearchParams(location.search).get(k)}catch(e){return null}}
+function mpLoadPeer(){if(window.Peer)return Promise.resolve();if(MP.peerLoad)return MP.peerLoad;
+  MP.peerLoad=new Promise((res,rej)=>{const s=document.createElement('script');s.src=mpParam('peerlib')||'https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js';
+    s.onload=()=>res();s.onerror=()=>{MP.peerLoad=null;rej(new Error('Could not load multiplayer. Check your internet connection.'))};document.head.appendChild(s)});return MP.peerLoad}
+function mpPeerOpts(){const q=mpParam('peerhost');if(q){const [h,p]=q.split(':');return {host:h,port:+p||9000,path:'/',secure:false,debug:0}}return {debug:0}}
+function mpCode(){const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<5;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
+function mpRawSend(conn,obj){if(!conn||!conn.open)return;const s=JSON.stringify(obj);const N=40000;
+  try{if(s.length<=N){conn.send({t:'m',s});return}const id=Math.random().toString(36).slice(2);const n=Math.ceil(s.length/N);for(let i=0;i<n;i++)conn.send({t:'c',id,i,n,s:s.slice(i*N,(i+1)*N)})}catch(e){console.warn('send failed',e)}}
+function mpRecvRaw(conn,d,cb){if(!d)return;if(d.t==='m'){cb(JSON.parse(d.s));return}
+  if(d.t==='c'){const k=conn.peer+'/'+d.id;const b=MP.chunks[k]||(MP.chunks[k]={n:d.n,got:0,p:[]});if(b.p[d.i]==null){b.p[d.i]=d.s;b.got++}if(b.got===b.n){delete MP.chunks[k];cb(JSON.parse(b.p.join('')))}}}
+function mpSend(msg,exceptPid){if(MP.host){for(const [pid,c] of MP.conns)if(pid!==exceptPid)mpRawSend(c,msg)}else mpRawSend(MP.hostConn,msg)}
+function mpErr(e){const t=e&&e.type;return t==='peer-unavailable'?'No game was found with that code. Check the code with your host.':t==='network'||t==='server-error'||t==='socket-error'||t==='socket-closed'?'Could not reach the multiplayer server. Check your internet connection and try again.':t==='browser-incompatible'?'This browser cannot play online. Try Chrome or Safari.':(e&&e.message)||'Connection problem.'}
+function mpReset(){try{if(MP.peer)MP.peer.destroy()}catch(e){}clearTimeout(MP.timer);Object.assign(MP,{on:false,host:false,me:-1,peer:null,conns:new Map(),hostConn:null,code:'',lobby:null,started:false,inEnd:false,preEv:null,chunks:{},seats:new Map(),left:new Set(),lastSeq:0});MPL=null;document.body.classList.remove('mpwait');mpBar()}
+// ---------- menus ----------
+function mpSavedName(){try{return localStorage.getItem('roe_name')||''}catch(e){return ''}}
+function mpMenu(prefill,err){showModal(`<h2>🌐 Multiplayer</h2>
+  <p>Play live with friends on their own phones or computers. One person hosts and shares a 5-letter code. Everyone takes turns, and computer civilizations fill out the map.</p>
+  ${err?`<div class="mpErr">⚠️ ${err}</div>`:''}
+  <h3>Your name</h3><input id="mpName" class="mpIn" maxlength="16" placeholder="Type your name" value="${mpSavedName()}">
+  <div class="mpGrid"><div class="mpCard"><h3>🏠 Host a game</h3><p class="muted">Choose the map and settings, then share the code with friends.</p><button class="btn gold" id="mpHostB">Host a game</button></div>
+   <div class="mpCard"><h3>➡️ Join a game</h3><input id="mpCodeIn" class="mpIn mpCodeIn" maxlength="5" placeholder="CODE" value="${prefill||''}" autocapitalize="characters" autocomplete="off"><button class="btn green" id="mpJoinB">Join</button></div></div>
+  <p class="muted">Everyone needs to stay online while the game is going. Up to ${MP_MAXH} players.</p>
+  <div style="text-align:left;margin-top:8px"><button class="btn" id="mpBack">◀ Back</button></div>`,false);
+  const nm=()=>{const n=cleanName($('mpName').value).slice(0,16);if(!n){toast('Type your name first');$('mpName').focus();return null}try{localStorage.setItem('roe_name',n)}catch(e){}return n};
+  $('mpBack').onclick=()=>{mpReset();mainMenu()};
+  $('mpCodeIn').oninput=e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'')};
+  [$('mpName'),$('mpCodeIn')].forEach(i=>i.onkeydown=e=>e.stopPropagation());
+  $('mpHostB').onclick=()=>{const n=nm();if(n)mpHost(n)};
+  $('mpJoinB').onclick=()=>{const n=nm();if(!n)return;const c=$('mpCodeIn').value.trim().toUpperCase();if(c.length!==5){toast('Enter the 5-letter code');$('mpCodeIn').focus();return}mpJoin(c,n)}}
+function mpBusy(t){showModal(`<h2>🌐 Multiplayer</h2><p style="font-size:17px">⏳ ${t}</p><div style="text-align:left"><button class="btn" id="mpCancel">Cancel</button></div>`);$('mpCancel').onclick=()=>{mpReset();mpMenu()}}
+async function mpHost(name,tries=0){mpReset();MP.host=true;MP.name=name;mpBusy('Setting up your game…');
+  try{await mpLoadPeer()}catch(e){mpReset();mpMenu('',e.message);return}
+  MP.code=mpCode();MP.lobby={players:[{pid:'host',name,civ:NG.civ}],size:NG.size==='large'?'medium':NG.size,diff:NG.diff,ai:Math.min(3,NG.opp)};
+  const peer=new Peer(MP_PREFIX+MP.code,mpPeerOpts());MP.peer=peer;
+  peer.on('open',()=>{if(MP.peer!==peer)return;mpLobbyUI()});
+  peer.on('connection',conn=>mpHostConn(conn));
+  peer.on('disconnected',()=>{if(MP.peer===peer&&!peer.destroyed)try{peer.reconnect()}catch(e){}});
+  peer.on('error',e=>{if(MP.peer!==peer)return;if(e.type==='unavailable-id'&&tries<3){mpHost(name,tries+1);return}if(e.type==='peer-unavailable')return;
+    if(MP.started){toast(mpErr(e));return}mpReset();mpMenu('',mpErr(e))})}
+function mpJoin(code,name){mpReset();MP.name=name;MP.code=code;mpBusy(`Joining game <b>${code}</b>…`);
+  mpLoadPeer().then(()=>{const peer=new Peer(undefined,mpPeerOpts());MP.peer=peer;
+    MP.timer=setTimeout(()=>{if(MP.peer===peer&&!MP.lobby){mpReset();mpMenu(code,'Could not connect to the host. Check the code, make sure the host is still in the lobby, or try another network (some mobile networks block direct connections).')}},20000);
+    peer.on('open',()=>{const conn=peer.connect(MP_PREFIX+code,{reliable:true,serialization:'json'});MP.hostConn=conn;
+      conn.on('open',()=>mpRawSend(conn,{t:'hello',name}));
+      conn.on('data',d=>mpRecvRaw(conn,d,mpClientMsg));
+      conn.on('close',()=>{if(MP.hostConn===conn)mpHostGone()});
+      conn.on('error',()=>{})});
+    peer.on('error',e=>{if(MP.peer!==peer)return;if(MP.started){toast(mpErr(e));return}mpReset();mpMenu(code,mpErr(e))})
+  }).catch(e=>{mpReset();mpMenu(code,e.message)})}
+function mpHostConn(conn){conn.on('data',d=>mpRecvRaw(conn,d,m=>mpHostMsg(conn,m)));conn.on('close',()=>mpPeerLeft(conn.peer));conn.on('error',()=>{})}
+function mpTaken(){return new Set(MP.lobby.players.map(p=>p.civ))}
+function mpHostMsg(conn,m){
+  if(m.t==='hello'){if(MP.started||MP.lobby.players.length>=MP_MAXH){mpRawSend(conn,{t:'full',started:MP.started});setTimeout(()=>conn.close(),500);return}
+    const taken=mpTaken();let civ=CIVS.findIndex((c,i)=>!taken.has(i));MP.conns.set(conn.peer,conn);
+    MP.lobby.players.push({pid:conn.peer,name:cleanName(m.name).slice(0,16)||'Player',civ});mpLobbySync();sfx('ui');return}
+  if(m.t==='pick'){const p=MP.lobby.players.find(p=>p.pid===conn.peer);if(p&&!mpTaken().has(m.civ)&&CIVS[m.civ])p.civ=m.civ;mpLobbySync();return}
+  if(m.t==='baton'){mpOnBaton(m,conn.peer);return}
+}
+function mpClientMsg(m){
+  if(m.t==='lobby'){clearTimeout(MP.timer);MP.lobby=m.lobby;MP.myPid=MP.peer&&MP.peer.id;if(!MP.started)mpLobbyUI();return}
+  if(m.t==='full'){mpReset();mpMenu(MP.code,m.started?'That game has already started.':'That game is full.');return}
+  if(m.t==='start'){MP.started=true;closeModal();mpEnterGame(m.G,m.seat);return}
+  if(m.t==='baton'){mpOnBaton(m);return}
+  if(m.t==='left'){toast(`${m.name} left the game — the computer now plays the ${m.civ}.`);return}
+}
+function mpLobbySync(){mpSend({t:'lobby',lobby:MP.lobby});mpLobbyUI()}
+function mpLink(){return location.origin+location.pathname+'#join-'+MP.code}
+function mpLobbyUI(){if(MP.started)return;const L=MP.lobby;const me=MP.host?'host':MP.myPid;const taken=mpTaken();const H=MP.host;
+  const opt=(k,v,label,on)=>`<span class="opt ${on?'on':''}" data-${k}="${v}">${label}</span>`;
+  showModal(`<h2>🌐 Game lobby</h2>
+  <div class="mpCodeBox"><div><small>GAME CODE</small><b>${MP.code}</b></div><button class="btn" id="mpCopy">📋 Copy invite link</button></div>
+  <p class="muted" style="margin:6px 0 0">Friends open the game, tap <b>🌐 Multiplayer</b> and type the code — or open <span class="mpLink">${mpLink()}</span></p>
+  <h3>Players (${L.players.length}/${MP_MAXH})</h3>
+  <div class="mpPlayers">${L.players.map((p,i)=>{const mine=p.pid===me;const C=CIVS[p.civ];return `<div class="mpP"><span class="sw" style="background:${C.color}"></span><b>${p.name}</b>${i===0?' <span class="muted">(host)</span>':''}${mine?' <span class="muted">(you)</span>':''}
+    <span style="margin-left:auto">${mine?`<select class="btn small" id="mpCiv">${CIVS.map((c,k)=>(!taken.has(k)||k===p.civ)?`<option value="${k}" ${k===p.civ?'selected':''}>${c.name} — ${c.leader}</option>`:'').join('')}</select>`:`${C.name}`}</span></div>`}).join('')}
+    ${L.players.length<2?'<div class="muted" style="padding:6px">Waiting for friends to join…</div>':''}</div>
+  <h3>Settings</h3>${H?`<div class="row" style="gap:18px;flex-wrap:wrap"><div><small class="muted">Computer civs</small><div class="opts">${[0,1,2,3,4].map(n=>opt('ai',n,n,L.ai===n)).join('')}</div></div>
+    <div><small class="muted">Map size</small><div class="opts">${Object.keys(SIZES).map(s=>opt('sz',s,s[0].toUpperCase()+s.slice(1),L.size===s)).join('')}</div></div>
+    <div><small class="muted">Difficulty</small><div class="opts">${DIFF.map((d,i)=>opt('df',i,d.n,L.diff===i)).join('')}</div></div></div>`
+    :`<p>${L.ai} computer civ${L.ai===1?'':'s'} · ${L.size[0].toUpperCase()+L.size.slice(1)} map · ${DIFF[L.diff].n}</p><p class="muted">Waiting for the host to start the game…</p>`}
+  <div class="mrow" style="display:flex;gap:10px;justify-content:space-between;margin-top:14px;flex-wrap:wrap"><button class="btn red" id="mpLeave">Leave</button>${H?`<button class="btn gold" id="mpStart" ${L.players.length<2?'disabled':''} style="font-size:17px;padding:8px 24px">▶ Start game</button>`:''}</div>`,true);
+  const m=$('modal');
+  $('mpCopy').onclick=()=>{const l=mpLink();try{navigator.clipboard.writeText(l).then(()=>toast('Invite link copied'),()=>toast('Code: '+MP.code))}catch(e){toast('Code: '+MP.code)}};
+  $('mpLeave').onclick=()=>{mpReset();mainMenu()};
+  if($('mpCiv'))$('mpCiv').onchange=e=>{const v=+e.target.value;if(H){L.players[0].civ=v;mpLobbySync()}else mpRawSend(MP.hostConn,{t:'pick',civ:v})};
+  if(H){m.querySelectorAll('[data-ai]').forEach(e=>e.onclick=()=>{L.ai=+e.dataset.ai;mpLobbySync()});
+    m.querySelectorAll('[data-sz]').forEach(e=>e.onclick=()=>{L.size=e.dataset.sz;mpLobbySync()});
+    m.querySelectorAll('[data-df]').forEach(e=>e.onclick=()=>{L.diff=+e.dataset.df;mpLobbySync()});
+    $('mpStart').onclick=mpStartGame}}
+function mpStartGame(){const L=MP.lobby;if(L.players.length<2)return;MP.started=true;
+  const names={};L.players.forEach((p,i)=>names[i]=p.name);
+  newGame({humans:L.players.map(p=>p.civ),names,opp:L.ai,size:L.size,diff:L.diff});
+  L.players.forEach((p,i)=>MP.seats.set(p.pid,i));
+  for(const [pid,c] of MP.conns)mpRawSend(c,{t:'start',G,seat:MP.seats.get(pid)});
+  closeModal();mpEnterGame(G,0)}
+// ---------- playing ----------
+function mpEnterGame(G2,seat){G=G2;G.player=seat;MP.on=true;MP.me=seat;MP.started=true;MP.lastSeq=G.mp.seq||0;
+  UI.anim=null;UI.animQ=null;UI.pend=null;UI.sel=null;UI.battle=null;UI.rp=null;popQ.length=0;
+  buildWorldArt();MP.terr=G.tiles.map(t=>t.t).join('');setupMini();updateVis();const cap=citiesOf(G.player)[0];centerOn(cap.x,cap.y);
+  UI.cam.z=MOB?(innerHeight>innerWidth?0.95:1.05):innerWidth>1700?1.6:1.35;renderLog();refreshUI();
+  const me=G.civs[G.player],others=G.mp.humans.filter(h=>h!==G.player).map(h=>`<b>${mpName(h)}</b> (${G.civs[h].name})`).join(', ');
+  queuePopup(()=>nameCity(cap,null,true));
+  queuePopup(()=>msgBox(`The ${me.name} — ${yearStr(1)}`,`<p>Welcome, <b>${mpName(G.player)}</b>! You are playing with ${others}.</p><p>Players take turns one at a time. When someone ends their turn, you'll see the moves they made that your units can see. Computer civilizations move after the last player.</p><p><b>${me.name} bonus:</b> ${CIVS[me.key].sd}.</p>`,'dom'));
+  queuePopup(techChoice);
+  saveGame('roe_mp');
+  if(mpMyTurn())mpBeginTurn();else mpWaitUI()}
+function mpBeginTurn(){if(!MP.on||!G||G.over||!mpMyTurn())return;document.body.classList.remove('mpwait');mpBar();MPL=[];
+  const box=(G.mpBox&&G.mpBox[G.player])||[];if(G.mpBox)delete G.mpBox[G.player];
+  for(const n of box){if(n.k==='log')log(n.text,n.x,n.y,n.imp,n.cid);else popQ.push(()=>runNotice(n))}
+  const p=G.civs[G.player];if(!p.alive){mpWaitUI();return}
+  if(!p.res&&availTechs(p).length&&!popQ.includes(techChoice))popQ.push(techChoice);
+  renderLog();toast(`Your turn, ${mpName(G.player)}! (${yearStr(G.turn)})`);sfx('city',null,{gap:0});
+  const q=playerAutoMoves();if(q.length){UI.animQ=q;UI.flushAfterQ=true;playQueued()}else{nextUnit(true);flushPopups()}
+  refreshUI()}
+function mpWaitUI(){if(!MP.on)return;document.body.classList.add('mpwait');UI.sel=null;UI.pend=null;renderMoveBar();mpBar();refreshUI()}
+function mpBar(){const el=$('mpBar');if(!el)return;if(!MP.on||!G||!G.mp||G.over||mpMyTurn()){el.style.display='none';return}
+  const a=mpActive(),me=G.civs[G.player];
+  el.innerHTML=!me.alive?`👁 Your civilization has fallen — watching the game`:MP.inEnd||a<0?`⏳ Computer civilizations are moving…`:`⏳ Waiting for <b>${mpName(a)}</b> <span style="color:${G.civs[a].color};text-shadow:none">●</span> ${G.civs[a].name}`;el.style.display='flex'}
+function endTurnPressed(){if(MP.on)mpEndTurn();else endTurn()}
+function mpEndTurn(){if(!G||G.over||!mpMyTurn()||UI.anim||UI.battle||UI.rp||modalOpen)return;UI.pend=null;renderMoveBar();
+  const ev=MPL||[];MPL=null;const nx=mpNextHuman(G.mp.cur);
+  if(nx>=0){G.mp.cur=nx;mpPassBaton(ev);mpWaitUI();return}
+  MP.preEv=ev;MP.inEnd=true;mpWaitUI();setTimeout(()=>{try{endTurn()}catch(e){MP.inEnd=false;console.error(e);toast('Error: '+e.message)}},30)}
+// called at the end of endTurn() in multiplayer: hand the new turn to the first player
+function mpAfterAIPhase(EV){MP.inEnd=false;const f=mpFirstHuman();if(f>=0)G.mp.cur=f;const all=[...(MP.preEv||[]),...EV];MP.preEv=null;
+  mpPassBaton(all);const mine=mpFilterEv(EV);const go=()=>{if(G.over){flushPopups();return}if(mpMyTurn())mpBeginTurn();else mpWaitUI()};
+  if(mine.length&&!G.over)rpStart(mine,go);else go();refreshUI()}
+function mpPassBaton(ev){G.mp.seq=(G.mp.seq||0)+1;MP.lastSeq=G.mp.seq;for(const s of MP.left)if(G.civs[s])G.civs[s].ai=true;
+  mpSend({t:'baton',G,ev,seq:G.mp.seq});try{localStorage.setItem('roe_mp',JSON.stringify({v:1,G}))}catch(e){}}
+function mpFilterEv(ev){updateVis();const me=G.player;const V=p=>p&&VIS[idx(p[0],p[1])];
+  return ev.filter(e=>{if(e.k==='cap'){const c=cityById(e.cid);return e.neu!==me&&(e.old===me||!!(c&&V([c.x,c.y])))}
+    if(e.k==='mv')return e.u.civ!==me&&!!(V(e.from)||V(e.to));
+    return e.a.civ!==me&&(e.d.civ===me||!!(V(e.from)||V([e.x,e.y])))})}
+function mpOnBaton(m,fromPid){if(MP.host)mpSend(m,fromPid);if(!MP.on)return;if((m.seq||0)<=MP.lastSeq)return;MP.lastSeq=m.seq;
+  if(UI.rp)rpEnd();
+  for(const s of MP.left)if(m.G.civs[s])m.G.civs[s].ai=true;
+  G=m.G;G.player=MP.me;UI.sel=null;UI.pend=null;UI.anim=null;UI.animQ=null;UI.battle=null;UI.reach=null;UI.path=null;
+  const terr=G.tiles.map(t=>t.t).join('');if(terr!==MP.terr){MP.terr=terr;buildWorldArt()}
+  FOG.dirty=true;updateVis();renderLog();
+  const ev=mpFilterEv(m.ev||[]);
+  const go=()=>{try{localStorage.setItem('roe_mp',JSON.stringify({v:1,G}))}catch(e){}
+    if(G.over){if(!popQ.includes(gameOver))queuePopup(gameOver);flushPopups();return}
+    if(MP.host&&!mpHumanAlive(mpActive())){mpSkipActive();return}
+    if(mpMyTurn())mpBeginTurn();else mpWaitUI()};
+  if(ev.length&&!G.over)rpStart(ev,go);else go();refreshUI()}
+// host: a player's turn can't happen (they left) — move on
+function mpSkipActive(){if(!MP.host||!MP.on||G.over)return;const nx=mpNextHuman(G.mp.cur);
+  if(nx>=0){G.mp.cur=nx;mpPassBaton([]);if(mpMyTurn())mpBeginTurn();else mpWaitUI();return}
+  MP.preEv=[];MP.inEnd=true;mpWaitUI();setTimeout(()=>endTurn(),30)}
+function mpPeerLeft(pid){const conn=MP.conns.get(pid);MP.conns.delete(pid);
+  if(!MP.started){MP.lobby.players=MP.lobby.players.filter(p=>p.pid!==pid);mpLobbySync();return}
+  const seat=MP.seats.get(pid);if(seat==null||MP.left.has(seat))return;MP.left.add(seat);const civ=G.civs[seat];const name=mpName(seat);
+  civ.ai=true;if(!civ.res)civ.res=aiPickTech(civ);
+  toast(`${name} left — the computer now plays the ${civ.name}.`);mpSend({t:'left',name,civ:civ.name});
+  if(mpActive()===seat&&!UI.rp&&!MP.inEnd)mpSkipActive()}
+function mpHostGone(){if(!MP.on){mpReset();mpMenu(MP.code,'The host closed the lobby.');return}
+  const me=G.player;for(const c of G.civs)if(!c.barb&&c.id!==me&&!c.ai){c.ai=true;if(!c.res)c.res=aiPickTech(c)}
+  if(UI.rp)rpEnd();mpReset();G.mp=null;document.body.classList.remove('mpwait');
+  msgBox('Host disconnected','<p>The host has left, so the online game has ended. You can keep playing this game on your own — the other players\' civilizations are now run by the computer.</p>','dom');
+  nextUnit(true);refreshUI()}
 
 // ===================== SOUND EFFECTS (synthesized, no files) =====================
 const SND={ctx:null,on:true,master:null,last:{},noiseBuf:null,vol:1};
@@ -2274,7 +2485,7 @@ function onHover(t){
   if(u&&(x!==u.x||y!==u.y)&&tl.t!=='water'&&!(UT[u.type].a===0&&G.units.some(o=>o.x===x&&o.y===y&&o.civ!==u.civ))){const p=findPath(u,x,y,2500);if(p){UI.path=p;const f=foreignAt(u.civ,x,y);
     if(f>=0&&G.units.some(o=>o.x===x&&o.y===y&&o.civ===f)&&UT[u.type].a>0)UI.odds=combatOdds(u,x,y,400)}}
 }
-function onClick(e){if(UI.rp)return;
+function onClick(e){if(UI.rp)return;if(MP.on&&!mpMyTurn()){toast(G.mp&&G.civs[G.player].alive?`It's ${mpName(mpActive())}'s turn — you can look around while you wait.`:'Watching the game.');return}
   // city banners
   for(const b of UI.banners)if(e.clientX>=b.x&&e.clientX<=b.x+b.w&&e.clientY>=b.y&&e.clientY<=b.y+b.h){if(isPlayer(b.c.civ)){openCity(b.c);return}}
   const [x,y]=tileFromEvent(e);if(!inb(x,y))return;const p=G.civs[G.player];const u=UI.sel;
@@ -2372,7 +2583,9 @@ function drawBattle(s,now){const BT=UI.battle;if(!BT)return;const B=BT.B;if(BT.r
   ctx.font=`900 ${Math.max(16,Math.round(s*(done?0.55:0.38)))}px "Trebuchet MS",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=5;ctx.strokeStyle='#000';ctx.strokeText(lab,mx,my-s*1.05);
   ctx.fillStyle=done?(B.win===(B.a.civ===G.player)?'#ffe27a':'#ff6b6b'):'#fff';ctx.fillText(lab,mx,my-s*1.05);
   UI.dirty=true;if(el>B.rec.length+0.6&&BT.replay){UI.battle=null;rpBattleDone(BT);return}
-  if(el>B.rec.length+0.6){const u=BT.u,r=BT.r;UI.battle=null;$('moveBar').style.display='none';if(B.pending){if(B.retreated)resolveRetreat(B,BT.rk);else resolveBattle(B.att,B.def,B.x,B.y,B.win,B.last)}updateVis();checkVictory();if(!G.units.includes(u)||u.mp<=0)nextUnit(true);else{UI.reach=null;refreshUI()}}}
+  if(el>B.rec.length+0.6){const u=BT.u,r=BT.r;UI.battle=null;$('moveBar').style.display='none';if(B.pending){const mr=MPL?{k:'atk',aid:B.att.id,did:B.def.id,a:rplSnap(B.att),d:rplSnap(B.def),from:[B.att.x,B.att.y],x:B.x,y:B.y,rec:B.rec,win:B.win,A:B.A,D:B.D,ret:!!B.retreated}:null;
+    if(B.retreated)resolveRetreat(B,BT.rk);else resolveBattle(B.att,B.def,B.x,B.y,B.win,B.last);
+    if(mr&&MPL){mr.after=G.units.includes(B.att)?[B.att.x,B.att.y]:null;mr.dDead=!G.units.includes(B.def);mr.aDead=!G.units.includes(B.att);MPL.push(mr);if(RPLCAP.length){MPL.push(...RPLCAP);RPLCAP=[]}}}updateVis();checkVictory();if(!G.units.includes(u)||u.mp<=0)nextUnit(true);else{UI.reach=null;refreshUI()}}}
 function startAnim(u,pts,ghost,r,enemyT,x,y,huts,queued){
   UI.pend=null;renderMoveBar();UI.path=null;UI.odds=null;
   const lunge=(r==='attacked'||r==='dead')&&pts.length===3&&pts[0][0]===pts[2][0]&&pts[0][1]===pts[2][1];
@@ -2397,10 +2610,10 @@ function finishMove(A){const u=A.u;for(const t of A.huts||[])if(t.hut&&G.units.i
   if(!G.units.includes(u)||u.mp<=0||u.goto)nextUnit(true);else{UI.reach=null;refreshUI()}}
 function playQueued(){const q=UI.animQ.shift();if(!q){UI.animQ=null;nextUnit(true);if(UI.flushAfterQ){UI.flushAfterQ=false;flushPopups()}return}if(!G.units.includes(q.u)&&!q.dead){playQueued();return}startAnim(q.u,q.pts,q.ghost,q.r,false,0,0,q.huts,true)}
 function panTo(x,y){const [wx,wy]=hexCenter(x,y);const [dx,dy]=camOff();UI.pan=[wx+dx/UI.cam.z,wy+dy/UI.cam.z];UI.dirty=true}
-window.addEventListener('keydown',e=>{if(!G)return;if(UI.anim||UI.battle||UI.rp)return;
+window.addEventListener('keydown',e=>{if(!G)return;if(UI.anim||UI.battle||UI.rp)return;if(MP.on&&!mpMyTurn())return;
   if(e.key==='Escape'){if(modalOpen)closeModal();else if(UI.pend)cancelMove();else{UI.sel=null;refreshUI()}return}
   if(modalOpen)return;const u=UI.sel;
-  if(e.key==='Enter'){if(UI.pend)confirmMove();else endTurn();}
+  if(e.key==='Enter'){if(UI.pend)confirmMove();else endTurnPressed();}
   else if(e.key===' '&&u){e.preventDefault();u.mp=0;nextUnit(true)}
   else if(e.key==='f'&&u){u.fort=true;nextUnit(true)}
   else if(e.key==='n'){nextUnit(true)}
@@ -2413,13 +2626,14 @@ $('zHome').onclick=()=>{if(!G)return;const u=UI.sel;if(u)centerOn(u.x,u.y);else{
 function placeZoom(){const r=$('miniWrap').getBoundingClientRect();$('zoomBox').style.bottom=(innerHeight-r.top+8)+'px'}
 $('pSci').onclick=()=>{if(G)techTree()};
 $('pGov').onclick=()=>{if(G)govModal()};
-$('endTurn').onclick=()=>{if(modalOpen||UI.rp)return;if(UI.anim||UI.battle){UI.endQ=true;toast('Ending the turn once your units finish moving…');return}endTurn()};
+$('endTurn').onclick=()=>{if(modalOpen||UI.rp)return;if(MP.on&&!mpMyTurn())return;if(UI.anim||UI.battle){UI.endQ=true;toast('Ending the turn once your units finish moving…');return}endTurnPressed()};
 $('rateUp').onclick=()=>{const p=G.civs[G.player];p.rate=Math.min(100,p.rate+10);refreshUI()};
 $('rateDn').onclick=()=>{const p=G.civs[G.player];p.rate=Math.max(0,p.rate-10);refreshUI()};
+document.addEventListener('click',e=>{if(!MP.on||mpMyTurn()||!G)return;if(e.target.closest('#bTech,#bCities,#bDiplo,#bVic,#pSci,#pGov,#rateUp,#rateDn,#bMore')){e.stopPropagation();e.preventDefault();toast('Wait for your turn to give orders.')}},true);
 $('bTech').onclick=()=>techTree();$('bCities').onclick=citiesList;$('bDiplo').onclick=diplomacy;$('bVic').onclick=victoryScreen;$('bMenu').onclick=gameMenu;
 $('modalBg').addEventListener('pointerdown',e=>{if(e.target===$('modalBg')&&$('modal').querySelector('.x'))closeModal()});
 
-function loop(){const now=performance.now();if(UI.endQ&&!UI.anim&&!UI.battle&&G&&!modalOpen){UI.endQ=false;endTurn()}if(UI.anim)tickAnim(now);if(UI.battle)UI.dirty=true;
+function loop(){const now=performance.now();if(UI.endQ&&!UI.anim&&!UI.battle&&G&&!modalOpen){UI.endQ=false;endTurnPressed()}if(UI.anim)tickAnim(now);if(UI.battle)UI.dirty=true;
   if(UI.pan){UI.cam.x+=(UI.pan[0]-UI.cam.x)*0.16;UI.cam.y+=(UI.pan[1]-UI.cam.y)*0.16;if(Math.abs(UI.pan[0]-UI.cam.x)+Math.abs(UI.pan[1]-UI.cam.y)<1.5){UI.cam.x=UI.pan[0];UI.cam.y=UI.pan[1];UI.pan=null}UI.dirty=true}
   if(UI.dirty||FX.length||UI.anim){UI.dirty=false;draw()}requestAnimationFrame(loop)}
 
@@ -2464,7 +2678,7 @@ function mobileHub(){if(!G)return;const p=G.civs[G.player];let ci=0;for(const c 
   <h3>⚖️ Trade split</h3><div class="row" style="gap:8px"><b style="font-size:15px">🔬 Science ${p.rate}% · 💰 Gold ${100-p.rate}%</b><button class="btn" id="hUp">🔬 More science</button><button class="btn" id="hDn">💰 More gold</button></div>`);
   const act={tech:techTree,cities:citiesList,diplo:diplomacy,vic:victoryScreen,gov:govModal,menu:gameMenu,
     map:()=>{document.body.classList.toggle('showmini');closeModal()},snd:()=>{sndSet(!SND.on);mobileHub()},
-    log:()=>{const items=G.log.slice(-25).reverse();const m2=showModal(`<span class="x">✕</span><h2>📜 Recent events</h2><div id="hLog">${items.map(l=>`<div class="card" style="margin-bottom:5px" data-i="${G.log.indexOf(l)}"><b style="display:inline;font-size:11px;opacity:.8">${yearStr(l.t)}</b> ${l.text}</div>`).join('')||'<div class="muted">Nothing yet.</div>'}</div>`);
+    log:()=>{const items=G.log.filter(myLog).slice(-25).reverse();const m2=showModal(`<span class="x">✕</span><h2>📜 Recent events</h2><div id="hLog">${items.map(l=>`<div class="card" style="margin-bottom:5px" data-i="${G.log.indexOf(l)}"><b style="display:inline;font-size:11px;opacity:.8">${yearStr(l.t)}</b> ${l.text}</div>`).join('')||'<div class="muted">Nothing yet.</div>'}</div>`);
       m2.querySelectorAll('[data-i]').forEach(d=>d.onclick=()=>{const l=G.log[+d.dataset.i];closeModal();if(l.cid){const c=cityById(l.cid);if(c&&isPlayer(c.civ)){openCity(c);return}}if(l.x||l.y)centerOn(l.x,l.y)})}};
   m.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>act[b.dataset.h]());
   m.querySelector('#hUp').onclick=()=>{p.rate=Math.min(100,p.rate+10);refreshUI();mobileHub()};
@@ -2475,7 +2689,7 @@ $('zMap').onclick=()=>{document.body.classList.toggle('showmini');UI.dirty=true}
 layoutMode();
 resize();
 if(SIM){try{runSim(+SIM)}catch(e){$('simOut').textContent='ERROR '+e.stack;document.title='SIMDONE'}}
-else{loop();mainMenu()}
+else{loop();mainMenu();const jm=(location.hash||'').match(/^#join-([A-Z0-9]{5})$/i);if(jm)mpMenu(jm[1].toUpperCase())}
 </script>
 </body>
 </html>
